@@ -44,10 +44,7 @@ include('../Classes/Report_class.php');
   <title>URSTMS-Staff</title>
 
   <style type="text/css">
-
-
-
-.preLoader{
+  .preLoader{
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -187,12 +184,9 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
  else:
   ?>
 
-
-
- 
  
         <?php basic_staff_request: ?>
-        <!-- Data Tables of staff request start  -->
+        <!-- Data Tables of staff request start -->
         <div class="row">
           <div class="col-12">
             <div class="card">
@@ -429,7 +423,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
     <script src="../super-admins/js/data-table/tableExport.js"></script>
     <script src="../super-admins/js/data-table/data-table-active.js"></script>
-    <!-- <script src="js/data-table/bootstrap-table-editable.js"></script> -->
+    <script src="../js/data-table/bootstrap-table-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
     <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>

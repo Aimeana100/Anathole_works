@@ -615,8 +615,7 @@
         ].join(''));
 
         this.$container.insertAfter(this.$el);
-        this.$tableContainer = this.$conexit
-        tainer.find('.fixed-table-container');
+        this.$tableContainer = this.$container.find('.fixed-table-container');
         this.$tableHeader = this.$container.find('.fixed-table-header');
         this.$tableBody = this.$container.find('.fixed-table-body');
         this.$tableLoading = this.$container.find('.fixed-table-loading');
