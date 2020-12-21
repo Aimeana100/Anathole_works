@@ -13,7 +13,7 @@ include('../Classes/Report_class.php');
   header('location:index.php');
 
   else:
-    // $stf_role = 13;
+    
     $stf_role = $_SESSION['role'];
     // $staf_id = 4;
     $staf_id = $_SESSION['stf_id'];
@@ -216,7 +216,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list container">
                             <div class="sparkline13-hd row">
                                 <div class="main-sparkline13-hd co-6">
-                                    <h1>ALL <span class="table-project-n">STAFFS</span> Records</h1>
+                                    <h1>MY <span class="table-project-n">REQUEST</span> Records</h1>
                                 </div>
                                 <div class="main-sparkline13-hd col-6 float-right text-right ">
 

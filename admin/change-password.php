@@ -56,7 +56,7 @@ if(isset($_POST['update-password']))
             <div class="card-header border-0">
               <div class="card border-grey border-lighten-3 m-0">
                    <h6 class="card-subtitle line-on-side text-black text-center font-small-3 pt-2">
-                    <span>Enter your details</span>
+                    <span>Enter your creditials</span>
                   </h6>
                 </div>
                 <div class="card-content">

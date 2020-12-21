@@ -12,25 +12,28 @@ $Req_id = $_POST['req_id'];
 // $request_details = $request->getRequestDeatailsByReq_id($Req_id);
 
 $report = new Report();
-$request_details = $report->getReportByReq_id($Req_id);
+$request_details = $report->getReportByReq_id($Req_id)[0];
 
 if(isset($request_details)){
  
- $staff_first_name = $request_details[0]["stf_fname"];
- $staff_last_name = $request_details[0]["stf_lname"];
- $staff_departement = $request_details[0]["dept_name"];
- $staff_function = $request_details[0]["role_name"];
-//  $staff_school= $request_details[0]["scl_name"];
-//  $college_id = $request_details[0]["coll_id"];
- $req_purpose = $request_details[0]["req_purpose"];
- $req_result = $request_details[0]["req_expected_result"];
- $req_destination = $request_details[0]["des_name"];
- $req_departure = $request_details[0]["req_departure"];
- $req_return = $request_details[0]["req_return"];
- $req_transiport = $request_details[0]["trans_id"];
- $missiion_duration = $request_details[0]["mission_n_days"];
- $principal_sansation = $request_details[0]["principal_sansation"];
- $request_submission_date = $request_details[0]["req_action_date"];
+ $staff_first_name = $request_details["stf_fname"];
+ $staff_last_name = $request_details["stf_lname"];
+ $staff_departement = $request_details["dept_name"];
+ $staff_function = $request_details["role_name"];
+//  $staff_school= $request_details["scl_name"];
+//  $college_id = $request_details["coll_id"];
+ $req_purpose = $request_details["req_purpose"];
+ $req_result = $request_details["req_expected_result"];
+ $req_destination = $request_details["des_name"];
+ $req_departure = $request_details["req_departure"];
+ $req_return = $request_details["req_return"];
+ $req_transiport = $request_details["trans_id"];
+ $missiion_duration = $request_details["mission_n_days"];
+ $principal_sansation = $request_details["principal_sansation"];
+
+ $mission_date = $request_details["dest_arrival"];
+ $report_submission_date = $request_details["report_date"];
+ $mission_outcomes = $request_details["res_skills_gained"];
  }
 
 
@@ -105,7 +108,7 @@ if(isset($request_details)){
       <b> </b> <span><b>Date</b> </span>
       </div>
       <div  class="col-lg-8 col-md-7 col-sm-6 col-xs-12">
-        <?php echo $request_submission_date." at ".$req_destination;  ?>
+        <?php echo $mission_date." at ".$req_destination;  ?>
       </div>
       </div>
        <hr>
@@ -127,7 +130,7 @@ if(isset($request_details)){
       <b></b> <span><b>MISSION OUTCOMES:  </b></span>
       </div><br>
       <div  class="form-group  col-lg-8 col-md-7 col-sm-6 col-xs-12">
-     <textarea style="width: 100%; border: none;"  id="req-outcomes" name="req-purpose" placeholder="enter text- mission outcomes here"  row="4" title="Mission outcomes is mandatory" > </textarea>
+     <textarea style="width: 100%; border: none;"  id="req-outcomes" name="req-purpose" ><?php echo $mission_outcomes?> </textarea>
      </div>
       </div>
 
@@ -150,7 +153,7 @@ if(isset($request_details)){
 
     <div class="row pl-4">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <span><b>Done on</b> </span> <?php echo "      ".date("Y-m-d"); ?>
+    <span><b>Done on</b> </span> <?php echo "      ".$report_submission_date ; ?>
     </div>      
    </div>
 
@@ -161,7 +164,7 @@ if(isset($request_details)){
 
      
 
-  <div class="text-center pt-1 "><button  type="button" onclick="SubmitMissionOutcomes()" class="btn btn-primary">Submit Report</button></div>
+  <!-- <div class="text-center pt-1 "><button  type="button" onclick="SubmitMissionOutcomes()" class="btn btn-primary">Submit Report</button></div> -->
   </form>
        
  </section>        
