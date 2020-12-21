@@ -1,0 +1,113 @@
+#username-profile{
+    border-bottom: 3px solid #0044cc;
+  }
+
+   #username-profile:after{
+  content:'';
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 0;
+  height: 0;
+  border-top: 8px solid #0044cc;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+
+   }
+   ul.navigation.navigation-main{
+       margin-bottom:10px;
+   }
+
+   ul.navigation.navigation-main li.nav-item:not(.depertment-name){
+     border-bottom: 0.2px solid rgb(152, 120, 140);
+     border-left: 1px ridge #0044cc;
+     margin : 0px 4px;
+   }
+
+   ul.navigation.navigation-main li.nav-item.depertment-name a span.menu-title, ul.navigation.navigation-main li.nav-item.depertment-inbox a span.menu-title
+   {
+    font-size: 18px;
+   }
+   ul.navigation.navigation-main li.nav-item.depertment-name, ul.navigation.navigation-main li.nav-item.depertment-inbox, ul.navigation.navigation-main li.nav-item.user-inbox-title
+   {
+    border-bottom: 1px solid #0044cc; 
+    border-top: 4px solid #0044cc; 
+    border-left: 1px ridge #0044cc;
+    border-top-left-radius: 50px;
+   }
+   ul.navigation.navigation-main li.nav-item.depertment-inbox
+   {
+     margin-top: 2px;
+   }
+
+
+   /* profile  popup look*/
+
+   #username-profile{
+    border-bottom: 3px solid #0044cc;
+  }
+
+   #username-profile:after{
+  content:'';
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 0;
+  height: 0;
+  border-top: 8px solid #0044cc;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+
+   }
+
+  
+div.row-flex-container{
+  display: flex;
+  margin: 12px 0px;
+  flex-direction: row;
+  font-size: 100%;   
+ }
+
+.colomn-flex-left{
+  flex: 0 0 165px;
+}
+.colomn-flex-right{
+  place-items: start;
+  display: flex;
+  flex: 1;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+ 
+}
+.colomn-flex-middle{
+  display: flex;
+  min-width: 30%;
+  place-items: start;
+  flex-wrap: nowrap;
+ }
+
+div.row-flex-container.has-long-label .colomn-flex-left{
+ flex: 0 1 250px;
+ 
+
+}
+.colomn-flex-right label{
+  margin: 0em 1px;     
+}
+
+.column-flex-container{
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  place-items: right;
+  
+  
+}
+
+
+/* #success-message, #danger-message {
+  display: none; 
+}  */
+   

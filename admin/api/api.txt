@@ -1,0 +1,23 @@
+
+{"web":"http://api.ipapi.com/", "key": "4d8088fb6a955a2710320f5b2b495dc9"}
+{"web":"http://ipinfo.io", "key": "9748d0fd112d02"}
+{"web":"http://ipdata.co", "key": "963f4c40c4bb0adad4fde3e00a14ee73ff587e24a5155a3956afa26d"}
+{"web":"googlemap", "key": "AIzaSyBHCSsp_RW40MlncJ0VZ39L0rAzHaay97M"}
+
+AIzaSyBHCSsp_RW40MlncJ0VZ39L0rAzHaay97M
+
+//use for ipinfo
+
+var token = "9748d0fd112d02";
+$.get("https://ipinfo.io?token=$TOKEN", function(response) {
+  console.log(response.ip, response.country);
+}, "jsonp")
+
+
+geofence
+
+APP ID
+TkX0Sgg3n2y3XiiFzD5k
+
+code
+h7E6PUc0eTtQISjhmZOgJ4G9CjUuN-CjExT4rjPbapo
