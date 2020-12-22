@@ -32,7 +32,11 @@
         $principal_id = $request_details[0]["principal_id"];
         $principal_sansation = $request_details[0]["principal_sansation"];
 
+        $request_status = array("hod_reacted"=> isset($hod_id) ? true:false, "dean_reacted"=> isset($dean_id) ? true:false, "principal_reacted"=> isset($principal_id) ? true:false, "about_hod_reacted" => [ "id" =>$which_hod_acted_on_request[0]["stf_id"], "fname" => $which_hod_acted_on_request[0]["stf_fname"], "lname" => $which_hod_acted_on_request[0]["stf_lname"]], "about_dean_reacted" => [ "id" =>$which_dean_acted_on_request[0]["stf_id"], "fname" => $which_dean_acted_on_request[0]["stf_fname"], "lname" => $which_dean_acted_on_request[0]["stf_lname"]],  "about_principal_reacted" => [ "id" =>$which_principal_acted_on_request[0]["stf_id"], "fname" => $which_principal_acted_on_request[0]["stf_fname"], "lname" => $which_principal_acted_on_request[0]["stf_lname"]], "all_about_request" =>$request_details[0] );
 
+        echo json_encode($request_status);
+
+exit();
         $output = "";
         $output = '<table><tr style="border-bottom: 1px solid #000; color: #000000" ><th colspan="2"> Request Tracking</th></tr>
       <tr style=" color:#000000; border-bottom: 1px solid #000 ;border-left: 1px solid #000;" ><td colspan="2">Request id: '.$request_details[0]["req_id"].'</td> </tr>
@@ -47,7 +51,6 @@
         if(isset($which_hod_acted_on_request))
 
        {
-
 
           $output .= '<tr style="border-bottom: 1px solid #000 ;border-left: 1px solid #000;" > <td rowspan="2">'.$message.'</td><td>'.$which_hod_acted_on_request[0]["stf_fname"]." ".$which_hod_acted_on_request[0]["stf_lname"].'</td></tr> <tr  style="border-bottom: 1px solid #000;" ><td> on '.$which_hod_acted_on_request[0]["hod_action_date"].'</td> </tr>';
 
@@ -159,9 +162,72 @@ if ($Canprint) {
 
  }
 
-      echo $output;  
+      //echo $output;  
  }  
 // }
 
 
  ?> 
+         <div class="row d-flex justify-content-center">
+            <div class="col-12">
+                <ul id="progressbar" class="text-center">
+                    <li class="active step0"></li>
+                    <li class="active step0"></li>
+                    <li class="active step0"></li>
+                    <li class="step0"></li>
+                    <li class="step0"></li>
+                </ul>
+            </div>
+        </div>
+
+<div class="fullwidth"> 
+      <div class="container separator">
+        <h3>Vertical layout</h3>
+
+        <ul class="progress-tracker progress-tracker--vertical">
+          <li class="progress-step is-complete">
+            <div class="progress-marker"></div>
+            <div class="progress-text">
+              <h4 class="progress-title">Step 1</h4>
+              Summary text explaining this step to the user
+            </div>
+          </li>
+
+          <li class="progress-step is-complete">
+            <div class="progress-marker"></div>
+            <div class="progress-text">
+              <h4 class="progress-title">Step 2</h4>
+              Summary text explaining this step to the user
+            </div>
+          </li>
+
+          <li class="progress-step is-active" aria-current="step">
+            <div class="progress-marker"></div>
+            <div class="progress-text">
+              <h4 class="progress-title">Step 3</h4>
+              Summary text explaining this step to the user
+            </div>
+          </li>
+
+          <li class="progress-step">
+            <div class="progress-marker"></div>
+            <div class="progress-text">
+              <h4 class="progress-title">Step 4</h4>
+              Summary text explaining this step to the user
+            </div>
+          </li>
+
+          <li class="progress-step">
+            <div class="progress-marker"></div>
+            <div class="progress-text">
+              <h4 class="progress-title">Step 5</h4>
+              Summary text explaining this step to the user
+            </div>
+          </li>
+        </ul>        
+      
+      </div>
+    </div>
+        
+
+        

@@ -205,6 +205,18 @@ function Principal_takeActionOnRequest($principal_id, $principal_comment, $princ
     $this->db_handle->update($query, $paramType, $paramValue);      
 }
 
+
+function changeRequestStatus($Req_id,$new_status){
+    $query = "UPDATE `urstms`.`requests`  SET req_status = ? WHERE req_id = ?";
+    $paramType = "ii";
+    $paramValue = array(
+        $new_status,
+        $Req_id        
+    );
+    
+    $this->db_handle->update($query, $paramType, $paramValue);
+}
+
 }
 
 
