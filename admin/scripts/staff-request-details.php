@@ -501,12 +501,12 @@ $(document).ready(function(){
 
     mywindow.document.write('<html><head><title>URSTMS-'+<?php echo $Req_id; ?> +'</title>');
     mywindow.document.write('<link rel="stylesheet" type="text/css" href="../app-assets/css/vendors.css">');
-    mywindow.document.write('<link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap-extended.css">');
+    mywindow.document.write('<link rel="stylesheet" type="text/css" href="../app-assets/css/bootstrap-extended.css">');
 
     mywindow.document.write('<link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap-extended.css">');
     mywindow.document.write('<link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap.css">');
     mywindow.document.write('<link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap.min.css">');
-    mywindow.document.write('<link rel="stylesheet" type="text/css" href="app-assets/css/new-customized.css">');
+    mywindow.document.write('<link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css">');
 
     mywindow.document.write('<style>*{font-size:23px} div.row-flex-container{display: flex;margin: 12px 0px;flex-direction: row;font-size: 100%;} .colomn-flex-left{flex: 0 0 165px;} .colomn-flex-right{place-items: start;display: flex;flex: 1;flex-wrap: nowrap;justify-content: space-around;} .colomn-flex-middle{display: flex; min-width: 30%; place-items: start; flex-wrap: nowrap;} div.row-flex-container.has-long-label .colomn-flex-left{flex: 0 1 270px;} .colomn-flex-right label{margin: 0em 1px;} .column-flex-container{display: flex; flex: auto; flex-direction: column; place-items: right;}</style>');
      
