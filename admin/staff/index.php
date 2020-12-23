@@ -7,7 +7,6 @@ include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
-
   if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
 
   header('location:../index.php');
@@ -51,6 +50,13 @@ include('../Classes/Report_class.php');
   margin-right: auto;
   width: 100%;
 }
+
+/* hide bootstrap data table buttons and fields */
+/* .dataTables_filter, .dataTables_info { display: none; } */
+.bs-bars.pull-left, .pull-right.search, .fixed-table-pagination>div {
+  display:block;
+}
+
 
 div.row-flex-container{
      display: flex;
@@ -99,11 +105,12 @@ div.row-flex-container{
      
    }
 
+
+
   </style>
   <!-- bootstrap from jewery -->
   <link rel="stylesheet" type="text/css" href="../super-admins/css/bootstrap.min.css">
 
-  
   <link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet">
   <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css"
   rel="stylesheet">
@@ -111,8 +118,8 @@ div.row-flex-container{
   <link rel="stylesheet" type="text/css" href="../app-assets/css/app.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css">
+  <!-- <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css"> -->
   <link rel="stylesheet" type="text/css" href="../app-assets/fonts/simple-line-icons/style.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
 
@@ -122,6 +129,7 @@ div.row-flex-container{
 
 
 <script src="../app-assets/js/scripts/html2canvas.js" type="text/javascript"></script>
+
  
 <!-- forms -->
     <!-- modals CSS
@@ -154,10 +162,13 @@ div.row-flex-container{
     <link rel="stylesheet" href="../super-admins/css/notifications/notifications.css">
 
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.css"/> -->
  
- 
-
+ <!-- progress tracker -->
+ <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/site.css">
+  <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/progress-tracker.css">
+  <link rel="stylesheet" href="  https://use.fontawesome.com/releases/v5.7.2/css/all.css
+">
 </head>
 
 <body style="color: #000000" class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar"
@@ -257,7 +268,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                           <td><?php echo $request_instance[$key]["req_departure"]; ?></td>
                                           <td><?php echo $request_instance[$key]["req_return"]; ?></td>
                                           <td>
-                                          <input req-id="<?php echo htmlentities($request_instance[$key]["req_id"]);  ?>" type="button" class="btn-sm border-0 <?php echo $request_instance[$key]['statuses'] == 1 ? 'btn-success': 'btn-warning'; ?>" value="<?php echo $request_instance[$key]['statuses'] == 1 ? 'ON': 'OFF'; ?>" />
+                                          <input req-id="<?php echo htmlentities($request_instance[$key]["req_id"]);  ?>" type="button" class="btn-sm border-0 my-request-status <?php echo $request_instance[$key]['req_status'] == 1 ? 'btn-success': 'btn-warning'; ?>" value="<?php echo $request_instance[$key]['req_status'] == 1 ? 'ON': 'OFF'; ?>" />
                                           <?php ; ?>
                                           </td>
                                           <td class="datatable-ct">
@@ -291,7 +302,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
                 <?php endif; ?>
               </div>
-       
+        
 
                                <!-- Basic Tables end -->
 
@@ -327,10 +338,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
       </div>
         <div class="modal-body" id="request-progress">
 
-             </div>
-            </div>
-          </div>
+
+       </div>
       </div>
+    </div>
+</div>
 
     <!-- request details preview start -->    
 
@@ -407,6 +419,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 <!-- End of Report Form -->       
 <?php include('../includes/footer.php');?>
+<script src="../super-admins/js/progress-tracker/scripts/site.js"></script>
+
 
   <!-- BEGIN VENDOR JS-->
   <script src="../app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
@@ -419,12 +433,17 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <!-- END MODERN JS-->
 
 
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script>
 
   <!-- js bootstrap table from jwrly template -->
     <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
     <script src="../super-admins/js/data-table/tableExport.js"></script>
     <script src="../super-admins/js/data-table/data-table-active.js"></script>
     <!-- <script src="../js/data-table/bootstrap-table-editable.js"></script> -->
+    <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
+    <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
+    <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>
+    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
     <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>
@@ -448,9 +467,13 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     <script src="../super-admins/js/notifications/Lobibox.js"></script>
     <script src="../super-admins/js/notifications/notification-active.js"></script>
 
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script>
+    <!-- progress tracker -->
+    <!-- <script src="../super-admins/js/progress-tracker/scripts/site.js"></script> -->
+     
 
  <script>
+
+// $('#table').DataTable({sDom: 'lrtip'});
 
 
 // staff view his/her request
@@ -462,18 +485,84 @@ $('#table').on('click', '.staff-track-request', function(){
                 method:"post",  
                 data:{req_id:reqId},
                 success:function(data){
-                      $('#request-progress').html(data);  
-                      // $('#dataModal').modal("show");  
-                 }  
+                  let data_formulated = JSON.parse(data);
+
+                  console.log(data_formulated.all_about_request.hod_sansation);
+                      // $('#request-progress').html(data);  
+var track_progress = '<div class="fullwidth"><div class="container  separator">'+
+'<ul class="progress-tracker progress-tracker--vertical">'+
+'<li class="progress-step';
+if(data_formulated.hod_reacted){
+  track_progress += ' is-complete"><div class="progress-marker"  data-text="1"></div><div class="progress-text"><h4 class="progress-title">L1: Depertement</h4>';
+  
+  if(data_formulated.all_about_request.hod_sansation == 1){
+    track_progress += '<h5 class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i>Approved</h5> by <h6>'+data_formulated.about_hod_reacted.fname+' '+data_formulated.about_hod_reacted.lname+ '</h6>  </div></li>';
+  }
+  else{
+    track_progress += '<h5 class="text-danger">Disapproved</h5></div></li>';
+  }
+}
+else{
+  track_progress += '"><div class="progress-marker"  data-text="1"></div><div class="progress-text"><h4 class="progress-title">L1: Depertement</h4>';
+  
+  if(data_formulated.all_about_request.hod_sansation == 0){
+    track_progress += '<h5 class="text-info"> Sansation Waiting... </h5></div></li>';
+  }
+
+}
+
+track_progress +='<li class="progress-step';
+if(data_formulated.dean_reacted){
+  track_progress +=' is-complete "><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L2: School</h4>';
+  if(data_formulated.all_about_request.dean_sansation == 1){
+    track_progress += '<h5 class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i>Approved </h5> by <h6>'+data_formulated.about_dean_reacted.fname+' '+data_formulated.about_dean_reacted.lname+ '</h6>  </div></li>';
+  }
+  else{
+    track_progress += '<h5 class="text-danger">Disapproved</h5></div></li>';
+  }
+}
+else{
+  track_progress += '"><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L2: School</h4>';
+  
+  if(data_formulated.all_about_request.dean_sansation == 0){
+    track_progress += '<h5 class="text-info"> Sansation Waiting... </h5></div></li>';
+  }
+
+}
+track_progress +='<li class="progress-step';
+
+if(data_formulated.principal_reacted){
+  track_progress +=' is-complete "><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L2: College</h4>';
+  if(data_formulated.all_about_request.principal_sansation == 1){
+    track_progress += '<h5 class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i>Approved</h5> by <h6>'+data_formulated.about_principal_reacted.fname+' '+data_formulated.about_principal_reacted.lname+ '</h6>  </div></li>';
+  }
+  else{
+    track_progress += '<h5 class="text-danger">Disapproved</h5></div></li>';
+  }
+}
+else{
+  track_progress += '"><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L1: College</h4>';
+  
+  if(data_formulated.all_about_request.principal_sansation == 0){
+    track_progress += '<h5 class="text-info"> Sansation Waiting... </h5></div></li>';
+  }
+
+}
+
+track_progress +='</ul></div>';
+
+        $('#request-progress').html(track_progress);  
+
+                }
            });  
 
 });
-
 
 $('#table').on('click', '.view-request-details', function(){
            var reqId = $(this).attr("req-id");
            var staf_id = <?php echo $staf_id; ?>;        
            console.log(staf_id);
+           var staf_id = <? echo $staf_id; ?>;        
                 $.ajax({  
                 url:"../scripts/staff-request-details.php", 
                 method:"post",  
@@ -503,6 +592,31 @@ $('#table').on('click', '.give-mission-report', function(){
            }); 
 
 });
+
+ 
+$('#table tbody').on( 'click', 'td input.my-request-status', function () {
+  if(confirm('you are about to change status')){
+  var thisButton = $(this);
+  // var this_table_data = $(this).closest()
+  // var name = $(this).closest('td');
+  // console.log(name);
+  var current_status = $(this).attr("value");
+  var reqId = $(this).attr("req-id");
+  var newstatus = "";
+  $.ajax({  
+                url:"../scripts/change-request-status.php", 
+                method:"post",  
+                data:{req_id:reqId},
+                success:function(data){
+                  data =  JSON.parse(data);
+                  let newStatus = data.status;
+                  thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
+                  thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
+                  thisButton.val(newStatus == 1 ? "ON" : "OFF");
+            }  
+           });
+          }
+} );
 
 
 
@@ -568,8 +682,8 @@ $('#table').on('click', '.give-mission-report', function(){
       
       var all_callback = JSON.parse(data)
       var DBcallback = JSON.parse(all_callback.result);
-console.log(all_callback);
-console.log(DBcallback);
+        // console.log(all_callback);
+        // console.log(DBcallback);
 
       let first_columns = ['<input data-index="0" name="btSelectItem" type="checkbox">','<span class"text-success">New</span>'];
       let tableColumns = [DBcallback.req_id, DBcallback.des_name, DBcallback.req_departure, DBcallback.req_return]
