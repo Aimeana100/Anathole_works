@@ -29,7 +29,7 @@
         
     if(!empty($fetchedUserData)){
       if($staff->VerfyPassword($uname, $upassword)){
-
+echo $staff->VerfyPassword($uname, $upassword); exit();
         $_SESSION['stf_id'] = $fetchedUserData[0]['stf_id'];
         $_SESSION['userlogin'] = isset($fetchedUserData[0]['username']) ? $fetchedUserData[0]['username'] : $fetchedUserData[0]['stf_email'];
         $user_role = $fetchedUserData[0]['role_id'];
