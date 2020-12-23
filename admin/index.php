@@ -155,8 +155,18 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
 
 <button type="submit" class="btn btn-primary btn-block btn-lg" name="login"><i class="ft-unlock"></i> Login</button>
 </form>
+<<<<<<< HEAD
 <div class="text-center mt-1" ><a href="./forgot-password.php">Forgot password/ request new</div>
                   
+=======
+    <br>
+    <div class="text-center">
+      <a href="password_forgot.php" > I forgot my password</a> <i class="ft-lock"></i>
+
+    </div>
+      
+
+>>>>>>> 56ab0e79cbee2be36472b6133527736b4981e7d7
 </div>
 </div>
 

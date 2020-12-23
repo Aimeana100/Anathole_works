@@ -196,7 +196,19 @@
           <b> 
 
 
-          <?php echo $staff_hod_details[0]["stf_fname"] ." ".$staff_hod_details[0]["stf_lname"]."  "; ?> </b>
+          <?php 
+          if(isset($staff_hod_details))
+          {
+
+          echo $staff_hod_details[0]["stf_fname"] ." ".$staff_hod_details[0]["stf_lname"]."  "; 
+
+          }
+          else{
+            echo "hod not registered";
+          }
+
+
+          ?> </b>
           <span> signature</span>
            <span> <?php echo "signs" ?></span>
 
@@ -214,7 +226,15 @@
       </div>
       <div  class="text-center mt-1 col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <b>
-         <?php echo $staff_principal_details[0]["stf_fname"]." ".$staff_principal_details[0]["stf_lname"]." " ; ?> </b>
+         <?php if(isset($staff_principal_details))
+         {
+           echo $staff_principal_details[0]["stf_fname"]." ".$staff_principal_details[0]["stf_lname"]." " ;
+         }
+         else{
+          echo " Principal not registered";
+         }
+          ?>
+          </b>
           <span> signature</span>
            <span> <?php echo "signs" ?></span>
         </div>
@@ -227,7 +247,19 @@
         </div>
         <div class="col-lg-8 col-md-7 col-sm-8"> 
           <b> 
-          <?php echo $staff_HR_details[0]["stf_fname"]." ".$staff_HR_details[0]["stf_lname"]."  "; ?> </b>
+          <?php
+
+          if(isset($staff_HR_details))
+          {
+                      echo $staff_HR_details[0]["stf_fname"]." ".$staff_HR_details[0]["stf_lname"]."  "; 
+          }
+          else{
+            echo "HR not registred";
+          }
+
+
+
+          ?> </b>
           <span> signature</span>
            <span> <?php echo "signs" ?></span>
         </div>
