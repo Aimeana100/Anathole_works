@@ -562,7 +562,7 @@ $('#table').on('click', '.view-request-details', function(){
            var reqId = $(this).attr("req-id");
            var staf_id = <?php echo $staf_id; ?>;        
            console.log(staf_id);
-           var staf_id = <? echo $staf_id; ?>;        
+                  
                 $.ajax({  
                 url:"../scripts/staff-request-details.php", 
                 method:"post",  
