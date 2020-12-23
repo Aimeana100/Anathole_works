@@ -103,7 +103,7 @@ class DBController {
     }
 
     function closeDB(){
-        mysqli_close($this->$conn);
+        mysqli_close($this->connectDB());
     }
     
 

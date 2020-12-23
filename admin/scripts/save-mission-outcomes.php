@@ -298,7 +298,7 @@ title="Enter departure date in this format YYYY-MM-DD"/>
   
     function SubmitMissionOutcomes(){   
 
-    var req_id = <? echo $Req_id; ?>;
+    var req_id = <?php echo $Req_id; ?>;
     var current_date_time = getDateTime();
     var mission_out_comes = $('#req-outcomes').val();
     var arrival_date = $.trim($('#arrival-date').val());
