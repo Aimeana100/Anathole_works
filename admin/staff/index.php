@@ -10,13 +10,14 @@ include('../Classes/Report_class.php');
 
   if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
 
-  header('location:index.php');
+  header('location:../index.php');
 
   else:
     
     $stf_role = $_SESSION['role'];
     // $staf_id = 4;
     $staf_id = $_SESSION['stf_id'];
+    // echo $_SESSION['stf_id']." ".$staf_id;exit();
 
     $organisation = new Organisation();
   // instantiate request
@@ -471,7 +472,7 @@ $('#table').on('click', '.staff-track-request', function(){
 
 $('#table').on('click', '.view-request-details', function(){
            var reqId = $(this).attr("req-id");
-           var staf_id = <? echo $staf_id; ?>;        
+           var staf_id = <?php echo $staf_id; ?>;        
            console.log(staf_id);
                 $.ajax({  
                 url:"../scripts/staff-request-details.php", 
@@ -508,7 +509,7 @@ $('#table').on('click', '.give-mission-report', function(){
     function SubmitFormRequest() {
     var errors = [];
     var stf_id = <?php echo $staf_id ?>;
-    var supervisor_id  = <? echo isset($staff_hod_details[0]['stf_id']) ? $staff_hod_details[0]['stf_id'] : isset($staff_dean_details[0]['stf_id']) ? $staff_dean_details[0]['stf_id'] : $staff_principal_details[0]['stf_id'] ?>;
+    var supervisor_id  = <?php echo isset($staff_hod_details[0]['stf_id']) ? $staff_hod_details[0]['stf_id'] : isset($staff_dean_details[0]['stf_id']) ? $staff_dean_details[0]['stf_id'] : $staff_principal_details[0]['stf_id'] ?>;
     var req_purpose = $('#req_purpose').val();
     var exp_result = $('#exp-result').val();
     var destination = $('#destination').children(":selected").attr("value");
@@ -622,7 +623,7 @@ var do_direct_action_on_request = $('.give-sansation');
   async function fetchDataForm(){
     let fetch_data = '';
     var reqId = $(this).attr("req-id");
-    var hod_id = <? echo $staf_id; ?>
+    var hod_id = <?php echo $staf_id; ?>
 
     try {
       fetch_data = await $.ajax({

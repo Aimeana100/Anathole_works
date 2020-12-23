@@ -293,7 +293,13 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
         </div>
         <div class="colomn-flex-middle"> 
           <b> 
-           <?php echo $staff_hod_details[0]["stf_fname"] ." ".$staff_hod_details[0]["stf_lname"]." "; ?> 
+           <?php
+           if(isset($staff_hod_details))
+           {
+            echo $staff_hod_details[0]["stf_fname"] ." ".$staff_hod_details[0]["stf_lname"]." ";
+           }
+             
+            ?> 
           </b>
         </div>
         <div class="colomn-flex-right" >
@@ -317,7 +323,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
         </div>
         <div class="colomn-flex-middle"> 
           <b> 
-           <?php echo $staff_hod_details[0]["stf_fname"] ." ".$staff_hod_details[0]["stf_lname"]." "; ?> 
+           <?php
+           if(isset($staff_hod_details))
+           {
+            echo $staff_hod_details[0]["stf_fname"] ." ".$staff_hod_details[0]["stf_lname"]." "; 
+           } ?> 
           </b>
         </div>
         <div class="colomn-flex-right" >
@@ -334,7 +344,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
         </div>
         <div class="colomn-flex-middle"> 
           <b> 
-          <?php echo $staff_HR_details[0]["stf_fname"]."Acknowledged by HR ".$staff_HR_details[0]["stf_lname"]."  "; ?> 
+          <?php
+          if(isset($staff_HR_details))
+            {
+              echo $staff_HR_details[0]["stf_fname"]."Acknowledged by HR ".$staff_HR_details[0]["stf_lname"]."  ";
+            }  ?> 
           </b>
         </div>
         <div class="colomn-flex-right" >
@@ -462,20 +476,20 @@ $(document).ready(function(){
 
    // take action on request.  in request details
 
-function DoActionOnRequest(){
-var hod_id = <? echo $staf_id;?>;
-var req_id = $('.mission-serial-number').attr("req_identification_number");
-console.log(req_id);
-window.alert(hod_id+ ' '+ req_id);
+// function DoActionOnRequest(){
+// var hod_id = <?php echo $staf_id;?>;
+// var req_id = $('.mission-serial-number').attr("req_identification_number");
+// console.log(req_id);
+// window.alert(hod_id+ ' '+ req_id);
 
-window.console.log(hod_id+"  "+req_id);
-var hod_comment=$('#action_comment').val();
-var hod_sansation=$('#hod_sansation').children(":selected").attr("value");
-$.post("scripts/hod-action-on-request.php",{req_id: req_id,hod_comment: hod_comment, hod_sansation: hod_sansation,hod_id:hod_id},
-function(data) {
-window.alert(data);
-});
-}
+// window.console.log(hod_id+"  "+req_id);
+// var hod_comment=$('#action_comment').val();
+// var hod_sansation=$('#hod_sansation').children(":selected").attr("value");
+// $.post("scripts/hod-action-on-request.php",{req_id: req_id,hod_comment: hod_comment, hod_sansation: hod_sansation,hod_id:hod_id},
+// function(data) {
+// window.alert(data);
+// });
+// }
 
 
     function PrintElem()
