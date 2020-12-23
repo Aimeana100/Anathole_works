@@ -147,7 +147,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
 
       <div class="row mx-auto mt-2">
                 
-        <div req_identification_number=<? echo $Req_id; ?> class="col-8 mx-auto text-center text-body mission-serial-number">
+        <div req_identification_number="<?php echo $Req_id; ?>" class="col-8 mx-auto text-center text-body mission-serial-number">
         <span style="color: #000000" ><b>  Mission Serial N<sup>o</sup>  &nbsp</b>  
              <?php echo $Req_id; ?>
           </span> 
