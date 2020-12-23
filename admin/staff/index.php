@@ -272,12 +272,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                           <?php ; ?>
                                           </td>
                                           <td class="datatable-ct">
-
+                                          <div class="acition-btn">
                                          <input data-target="#staff-track-request-progress" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > 
                                          <input data-target="#Request-view-details" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > 
                                          <input data-target="#mission-report" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-blue give-mission-report" value="report" data-toggle="modal" > 
  
-                                            
+                                            </div>
                                           </td>
                                           
                                             </tr>

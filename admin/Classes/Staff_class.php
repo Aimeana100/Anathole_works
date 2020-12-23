@@ -40,9 +40,26 @@ class Staff{
 
     // verfy if username and password match the database 
     // return true if matchs
-    function VerfyPassword($username,$password){
+    function VerfyPassword($username,$password)
+    {
         $UserFetchedData = $this->getUserDataByCreditials($username,$password);
         return ((password_verify($password, $UserFetchedData[0]['password'])) AND ($UserFetchedData[0]['username'] == $username OR $UserFetchedData[0]['stf_email'] == $username )) ? true : false ;
+    
+        }
+
+        function resetPassword($uname,$pass)
+        {
+            $query = "UPDATE staffs_info SET  `staffs_info`.`password` = ? WHERE `staffs_info`.`stf_email` = ? ";
+            $paramType = "ss";
+            $paramValue = array(
+                $pass,
+                $uname
+
+            );
+            
+            $updated = $this->db_handle->update($query, $paramType, $paramValue);
+            return $updated;
+
         }
     // end of functions called in user login functions
 

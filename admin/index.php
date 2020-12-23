@@ -127,6 +127,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
 <strong>Oh ! </strong> <?php echo htmlentities($wrongemail); ?>
   </div>
+  
 <?php endif;?>
 
 
@@ -135,7 +136,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
                       
 
 <fieldset class="form-group position-relative has-icon-left">
-<input type="text" class="form-control input-lg" id="username" name="username" placeholder="Your Username" tabindex="1" required data-validation-required-message="Please enter your username.">
+<input value="<?php echo isset($_GET['username']) ? $_GET['username'] : null ?>" type="text" class="form-control input-lg" id="username" name="username" placeholder="Your Username" tabindex="1" required data-validation-required-message="Please enter your username.">
 <div class="form-control-position"><i class="ft-user"></i>
 </div>
 <div class="help-block font-small-3"></div>
@@ -154,6 +155,10 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
 
 <button type="submit" class="btn btn-primary btn-block btn-lg" name="login"><i class="ft-unlock"></i> Login</button>
 </form>
+<<<<<<< HEAD
+<div class="text-center mt-1" ><a href="./forgot-password.php">Forgot password/ request new</div>
+                  
+=======
     <br>
     <div class="text-center">
       <a href="password_forgot.php" > I forgot my password</a> <i class="ft-lock"></i>
@@ -161,6 +166,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
     </div>
       
 
+>>>>>>> 56ab0e79cbee2be36472b6133527736b4981e7d7
 </div>
 </div>
 
