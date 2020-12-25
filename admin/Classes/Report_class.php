@@ -42,7 +42,6 @@ function Is_mission_reported($Allrequsts_set){
     }
     return (in_array($Allrequsts_set, array_column($mission_array_objected, "req_id"),true)) ? true : false;
 
-
 }
 
 // depertament
@@ -54,6 +53,32 @@ function getAllReportByDept($dept_id)
     $paramType = "i";
     $paramValue = array(
         $dept_id
+    );
+    
+    $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
+    return $result;
+}
+
+
+// get all reports by scholl ID
+function getAllReportBySchool($school_id)
+{
+    $query = "SELECT * FROM travel_result INNER JOIN requests ON requests.req_id = travel_result.req_id INNER JOIN user_request ON user_request.req_id = requests.req_id INNER JOIN action_notifications ON user_request.req_id = action_notifications.req_id INNER JOIN staffs_info ON staffs_info.stf_id = user_request.stf_id INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN schools ON departements.scl_id = schools.scl_id AND schools.scl_id = ?  INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN destination ON requests.dest_id = destination.des_id INNER JOIN transiport ON transiport.trans_id = requests.trans_id ORDER BY requests.req_id DESC;";
+    $paramType = "i";
+    $paramValue = array(
+        $school_id
+    );
+    
+    $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
+    return $result;
+}
+
+function getAllReportByStfId($stf_id)
+{
+    $query = "SELECT * FROM travel_result INNER JOIN requests ON requests.req_id = travel_result.req_id INNER JOIN user_request ON user_request.req_id = requests.req_id INNER JOIN action_notifications ON user_request.req_id = action_notifications.req_id INNER JOIN staffs_info ON staffs_info.stf_id = user_request.stf_id AND staffs_info.stf_id = ? INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN destination ON requests.dest_id = destination.des_id INNER JOIN transiport ON transiport.trans_id = requests.trans_id ORDER BY requests.req_id DESC;";
+    $paramType = "i";
+    $paramValue = array(
+        $stf_id
     );
     
     $result = $this->db_handle->runQuery($query, $paramType, $paramValue);

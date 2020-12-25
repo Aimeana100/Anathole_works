@@ -98,10 +98,10 @@
 <body  style=" background: #6A5ACD;" class="vertical-layout vertical-menu-modern 1-column bg-lighten-2 menu-expanded fixed-navbar"
 data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
  
-      <div class="content-body">
-        <section class="flexbox-container">
-          <div class="col-12 d-flex align-items-center justify-content-center">
-            <div class="col-md-4 col-10 box-shadow-2 p-0">
+      <div class="content-body h-100 row">
+        <!-- <section class=" flexbox-container"> -->
+          <div class="col-12 h-80 d-flex align-items-center justify-content-center">
+            <div class="col-md-8 col-sm-12 col-xs-12 col-lg-4 box-shadow100">
               <div class="card border-grey border-lighten-3 m-0">
                 <div class="card-header border-0">
                   <div class="text-black card-title text-center">
@@ -113,26 +113,26 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
                 </div>
                 <div class="card-content">
                   <div class="card-body">
- <?php if($wrongpassword):?>                   
-<div class="alert bg-danger alert-icon-left alert-dismissible mb-2" role="alert">
-<span class="alert-icon"><i class="la la-thumbs-o-down"></i></span>
-<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-<strong>Oh  </strong> <?php echo htmlentities($wrongpassword); ?>
-  </div>
-<?php endif;?>
+            <?php if($wrongpassword):?>                   
+            <div class="alert bg-danger alert-icon-left alert-dismissible mb-2" role="alert">
+            <span class="alert-icon"><i class="la la-thumbs-o-down"></i></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <strong>Oh  </strong> <?php echo htmlentities($wrongpassword); ?>
+              </div>
+            <?php endif;?>
 
- <?php if($wrongemail):?>                   
-<div class="alert bg-danger alert-icon-left alert-dismissible mb-2" role="alert">
-<span class="alert-icon"><i class="la la-thumbs-o-down"></i></span>
-<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-<strong>Oh ! </strong> <?php echo htmlentities($wrongemail); ?>
-  </div>
-  
-<?php endif;?>
+            <?php if($wrongemail):?>                   
+            <div class="alert bg-danger alert-icon-left alert-dismissible mb-2" role="alert">
+            <span class="alert-icon"><i class="la la-thumbs-o-down"></i></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <strong>Oh ! </strong> <?php echo htmlentities($wrongemail); ?>
+              </div>
+              
+            <?php endif;?>
 
 
 
-<form class="form-horizontal" method="post">
+            <form class="form-horizontal" method="post">
                       
 
 <fieldset class="form-group position-relative has-icon-left">
@@ -155,25 +155,18 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
 
 <button type="submit" class="btn btn-primary btn-block btn-lg" name="login"><i class="ft-unlock"></i> Login</button>
 </form>
-<<<<<<< HEAD
+
 <div class="text-center mt-1" ><a href="./forgot-password.php">Forgot password/ request new</div>
-                  
-=======
+
     <br>
-    <div class="text-center">
-      <a href="password_forgot.php" > I forgot my password</a> <i class="ft-lock"></i>
 
-    </div>
-      
-
->>>>>>> 56ab0e79cbee2be36472b6133527736b4981e7d7
 </div>
 </div>
 
               </div>
             </div>
           </div>
-        </section>
+        <!-- </section> -->
       </div>
 
 

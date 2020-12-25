@@ -397,13 +397,15 @@ Take action</a>
   <?php  if((isset($principal_sansation)) AND $principal_sansation == 1 ): ?>
   <div class="text-center"><button  id="create_pdf" type="button" onclick="PrintElem()" class="btn btn-primary">print</button></div> 
 
-  <?php else:     
+  <?php else: 
   ?>
   <div class="alert alert-primary mb-2" role="alert">
   
   <div class="text-center"><button  id="create_pdf" type="button" onclick="PrintElem()" class="btn btn-primary">print</button></div> 
 <strong>Request In progress</strong> Waiting For Last Aprroval
 </div> 
+<a style="margin: 0px ;padding: 3px;" reqId="<?php echo $Req_id; ?>" tabindex="0" data-toggle="popover"  class="btn btn-primary view-give-sansation" role="button" data-trigger="click">
+Take action</a>
 <?php endif ?>
 
        

@@ -92,7 +92,7 @@ function getAllRequestsByDept($dept_id)
     return $result;
 }
 
-function getAllRequestsBySchool($school_id)
+function getAllRequestsBySchoolId($school_id)
 {
     $query = "SELECT * FROM user_request INNER JOIN requests ON user_request.req_id = requests.req_id INNER JOIN action_notifications ON user_request.req_id = action_notifications.req_id INNER JOIN staffs_info ON staffs_info.stf_id = user_request.stf_id INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN schools ON schools.scl_id = departements.scl_id AND schools.scl_id = ? INNER JOIN colleges ON colleges.coll_id = schools.coll_id INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN destination ON requests.dest_id = destination.des_id INNER JOIN transiport ON transiport.trans_id = requests.trans_id ORDER BY requests.req_id DESC;";
     $paramType = "i";
@@ -179,7 +179,7 @@ function Dean_takeActionOnRequest($dean_id, $dean_comment, $dean_sansation, $dea
     $query = "UPDATE `urstms`.`user_request`  SET Dean_id = ?, dean_comment = ?, dean_sansation = ?,  dean_action_date = ? WHERE req_id = ?";
     $paramType = "isisi";
     $paramValue = array(
-        $Dean_id,
+        $dean_id,
         $dean_comment,
         $dean_sansation,
         $dean_action_date,

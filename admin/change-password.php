@@ -50,9 +50,10 @@ if(isset($_POST['update-password']))
     }
 
 ?>
-        <section class="flexbox-container">
-          <div class="col-12 d-flex align-items-center justify-content-center">
-            <div class="col-md-6 col-lg-4   col-10 box-shadow-2 p-0">
+      <div class="content-body h-100 row">
+        <!-- <section class="flexbox-container"> -->
+          <div class="col-12 h-80 d-flex align-items-center justify-content-center">
+            <div class="col-md-8 col-sm-12 col-xs-12 col-lg-4 box-shadow100">
             <div class="card-header border-0">
               <div class="card border-grey border-lighten-3 m-0">
                    <h6 class="card-subtitle line-on-side text-black text-center font-small-3 pt-2">
@@ -136,9 +137,9 @@ if(isset($_POST['update-password']))
 
 
             </div>
-          <!-- </div> -->
-        </section>
-      <!-- </div> -->
+          </div>
+        <!-- </section> -->
+      </div>
 
 
   <!-- BEGIN VENDOR JS-->

@@ -201,6 +201,17 @@ $paramType = "i";
         return $result;
     }
 
+    function getAllStaff_in_school($school_id){
+        $query = "SELECT staffs_info.* ,departements.*, roles.*, schools.*, colleges.*, COUNT(user_request.stf_id) as nb_of_request_per_staff FROM staffs_info INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN schools ON schools.scl_id = departements.scl_id AND schools.scl_id = ? INNER JOIN colleges ON colleges.coll_id = schools.coll_id INNER JOIN user_request ON user_request.stf_id = staffs_info.stf_id GROUP BY user_request.stf_id;";
+        $paramType = "i";
+        $paramValue = array(
+            $school_id
+        );
+        
+        $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
+        return $result;
+    }
+
 
     function getAllStaff_in_college($coll_id){
         $query = "SELECT staffs_info.* ,departements.*, roles.*, schools.*, colleges.* FROM staffs_info INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON colleges.coll_id = schools.coll_id AND colleges.coll_id = ?;";
@@ -223,5 +234,17 @@ $paramType = "i";
         $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
         return $result;
     }
+
+    function changeStaffStatus($staff_id,$new_status){
+        $query = "UPDATE `urstms`.`staffs_info`  SET statuses = ? WHERE stf_id = ?";
+        $paramType = "ii";
+        $paramValue = array(
+            $new_status,
+            $staff_id        
+        );
+        
+        $this->db_handle->update($query, $paramType, $paramValue);
+    }
+
 }
 ?>

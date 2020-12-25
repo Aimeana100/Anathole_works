@@ -11,9 +11,6 @@
  include('Classes/Login/Functions.php');
  include('../mailer.php');
 
- 
-
-
   $wrongemail = "";
   $password_reset = "";
  
@@ -37,9 +34,9 @@
             if($send_email)
             {
                 $changePass = $staff->resetPassword($email, $hashed_pass);
-                if($changePass){
+                if($changePass)
+                {
                   $password_reset = "Reset successfully visit email to continue";
-
                 }
                 else{
                   $wrongemail = $changePass;
@@ -76,10 +73,10 @@
 <body  style=" background: #6A5ACD;" class="vertical-layout vertical-menu-modern 1-column bg-lighten-2 menu-expanded fixed-navbar"
 data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
  
-      <div class="content-body">
-        <section class="flexbox-container">
-          <div class="col-12 d-flex align-items-center justify-content-center">
-            <div class="col-md-4 col-10 box-shadow-2 p-0">
+      <div class="content-body h-100 row row">
+        <!-- <section class="flexbox-container"> -->
+          <div class="col-12 h-80 d-flex align-items-center justify-content-center">
+            <div class="col-md-8 col-sm-12 col-xs-12 col-lg-4 box-shadow100">
               <div class="card border-grey border-lighten-3 m-0">
                 <div class="card-header border-0">
                   <div class="text-black card-title text-center">
@@ -128,7 +125,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
               </div>
             </div>
           </div>
-        </section>
+        <!-- </section> -->
       </div>
 
 

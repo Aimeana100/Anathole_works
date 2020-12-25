@@ -12,6 +12,13 @@ class DBController {
     // private $password = "6LSwAhSFbV";
     // private $database = "sql9381078";
     // private $conn;
+
+
+    // private $host = "sql9.freemysqlhosting.net";
+    // private $user = "epiz_27536849";
+    // private $password = "mIpx46lqqGG0";
+    // private $database = "epiz_27536849_XXX";
+    // private $conn;
     
     function __construct(){
         $this->conn = $this->connectDB();

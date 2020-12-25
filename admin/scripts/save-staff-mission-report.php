@@ -33,17 +33,17 @@
       
       if($report_last_id){  
       $connection->commitTransaction();
-      echo json_encode(array("success"=>"1", "message"=>"you reported successfully", "insertedID"=>"$report_last_id"));
+      echo json_encode(array("success"=>true, "message"=>"you reported successfully", "insertedID"=>"$report_last_id"));
       }
       else{
         $connection->rollBackTransaction();
-        echo json_encode(array("success"=>"0", "message"=>"report unsuccessfull"));
+        echo json_encode(array("success"=>false, "message"=>"report unsuccessfull"));
 
       }
     }
 
        catch(Exception $e){
-        echo json_encode(array("success"=>"0", "message"=>"report unsuccessfull", "error"=>$e->getMessage()));
+        echo json_encode(array("success"=>false, "message"=>"report unsuccessfull", "error"=>$e->getMessage()));
     }
 
 }else

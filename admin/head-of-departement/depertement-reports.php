@@ -8,35 +8,39 @@ include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
 
-  if (((strlen($_SESSION['userlogin'])==0) or (!isset($_SESSION['stf_id'])) or  (strlen($_SESSION['stf_id'])==0))):
+  if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
 
   header('location:../index.php');
 
   else:
-    // $stf_role = 13;
-    $stf_role = $_SESSION['role'];
-    // $staf_id = 4;
-    $staf_id = $_SESSION['stf_id'];
+    $stf_role = 7;
+    // $stf_role = $_SESSION['role'];
+    $staf_id = 6;
+    // $staf_id = $_SESSION['stf_id'];
 
-    $organisation = new Organisation();
-  // instantiate request
-    $request = new Request();
-    $request_instance = $request->getAllRequestsByStaff($staf_id);
-    $request_dept_instance = $request->getAllRequestsByDept($HOD_dept);
+    $HOD_id = $_SESSION['stf_id'];
 
-   // getting data to pre-fill the form
-    $staff = new Staff();
-     // instantiate reports
-     $report = new Report();
+    $staff = new Staff();     
+    // instantiate reports
+     $reports = new Report();
 
     $staff_details = $staff->getStaffById($staf_id);
-    $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
+    $HOD_dept = $staff_details[0]['dept_id'];
+
+    // instantiate request
+    $request = new Request();
+
+  $request_dept_instance = $request->getAllRequestsByDept($HOD_dept);
+  $report_instance = $reports->getAllReportByDept($HOD_dept);
+
+  
+
+    $staff_details = $staff->getStaffById($staf_id);
+    // $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
     $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
     $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
     $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
     $logged_in_user_role = $staff_details[0]['role_id'];
-
-    $staffs_in_dept = $staff->getAllStaff_in_dept($HOD_dept);
 
 
 ?>
@@ -116,7 +120,7 @@ div.row-flex-container{
   <link rel="stylesheet" type="text/css" href="../app-assets/css/app.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
+  <!-- <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css"> -->
   <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/fonts/simple-line-icons/style.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
@@ -126,7 +130,8 @@ div.row-flex-container{
  <link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css">
 
 
-<script src="app-assets/js/scripts/html2canvas.js" type="text/javascript"></script>
+<script src="../app-assets/js/scripts/html2canvas.js" type="text/javascript"></script>
+ 
  
 <!-- forms -->
     <!-- modals CSS
@@ -142,13 +147,29 @@ div.row-flex-container{
     <!-- date picker -->
     <link rel="stylesheet" href="../super-admins/css/datapicker/datepicker3.css">
 
+     <!-- from jewery temperate -->
+ <!-- boot table -->
+ <link rel="stylesheet" type="text/css" href="../super-admins/css/data-table/bootstrap-table.css">
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="../super-admins/css/style.css">
+
+<link rel="stylesheet" href="../super-admins/css/font-awesome.min.css">
+
+
+
     <!-- notifications CSS
 		============================================ -->
     <link rel="stylesheet" href="../super-admins/css/notifications/Lobibox.min.css">
     <link rel="stylesheet" href="../super-admins/css/notifications/notifications.css">
 
 
-
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.css"/> -->
+ 
+ <!-- progress tracker -->
+ <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/site.css">
+  <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/progress-tracker.css">
+  <link rel="stylesheet" href="  https://use.fontawesome.com/releases/v5.7.2/css/all.css
+">
 </head>
 
 <body style="color: #000000" class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar"
@@ -168,11 +189,15 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
       <div class="content-header row">
       </div>
   <div class="content-body">
-        <!-- Revenue, Hit Rate & Deals -->
+  <?php if (isset($_GET['option']) AND $_GET['option'] == "change-password"):  
+ include_once('../change-password.php');
+ 
 
-
+ else:
+  ?>
  <div class="">
-        <!-- Data Tables of staff reports start  -->
+  
+        <!-- Data Tables of staff request start  -->
         <div class="row">
           <div class="col-12">
             <div class="card">
@@ -195,13 +220,9 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd row">
                                 <div class="main-sparkline13-hd co-6">
-                                    <h1>ALL <span class="table-project-n">Reports</span></h1>
+                                    <h1>ALL <span class="table-project-n">Departements Staffs</span>/ <?php echo $staff_details[0]['dept_name'] ?></h1>
                                 </div>
-                                <div class="main-sparkline13-hd col-6 text-right ">
-                                    <button class="btn-md m-b-r-0 b-0 add-staff float-right">
-                                    <a class="zoomInDown mg-t secondary p-2" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" id="btn-open-request-form" ><i class="fa fa-add"></i> Add request</a>
-                                    </button>
-                                </div>
+
                             </div>
                             <div class="sparkline13-graph">
                                 <div class="datatable-dashv1-list custom-datatable-overright">
@@ -217,56 +238,55 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                     <thead>
                       <tr>
                       <th data-field="state" data-checkbox="true"></th>
-                      <th>#</th>
-                        <th data-field="staf-ID">staf ID</th>
-                        <th data-field="First-name">First name</th>
-                        <th data-field="Last-name"> Last name</th>
-                        <th data-field="Position">Position</th>
-                        <th data-field="Status">Status</th>
-                        <th data-field="Action">Action</th>
+                      <th data-field="id">req_ID</th>
+                      <th data-field="destination">Destination</th>
+                      <th data-field="mission-outcomes" >Mission Outcomes</th>
+                      <th data-field="report-date" >Report Date</th>
+                      <th data-field="Status" data-editable="true">Received</th>
+                      <th data-field="action"  class="text-center">Action</th>
                       </tr>
                     </thead>
                     <tbody>
+                <?php 
 
-                    <?php 
-                    $cnt=1;
-                    if(!empty($staffs_in_dept)):
-                    foreach($staffs_in_dept as $key => $value):
-                    ?>
+
+                $cnt=1;
+                if(!empty($report_instance)):
+                foreach($report_instance as $key => $value):
+                   ?>
 
                 <tr>
-                <th scope="row"><?php echo htmlentities($cnt);?></th>
                 <td></td>
-                <td><?php echo htmlentities($request_dept_instance[$key]["req_id"]);?></td>
-                <td><?php echo htmlentities($request_dept_instance[$key]["stf_fname"]);?></td>
-                <td><?php echo htmlentities($request_dept_instance[$key]["stf_lname"]);?></td>
-                <td><?php echo htmlentities($request_dept_instance[$key]["role_name"]);?></td>
-                <td><?php echo htmlentities($request_dept_instance[$key]["dept_name"]);?></td>
-                <td><?php echo htmlentities($request_dept_instance[$key]["req_departure"]);?></td>
-                <td><?php echo htmlentities($request_dept_instance[$key]["req_return"]);?></td>
-                <td><?php echo htmlentities($request_dept_instance[$key]["hod_sansation"] == 1 ? "Approved" : $request_dept_instance[$key]["hod_sansation"] == 2 ? "Disapproved" : "Pending"); ?></td>
-                <td class="datatable-ct">
-                 <div>
-                 <input data-target="#Request-view-details" req-id="<?php echo htmlentities($request_dept_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow hod-view-staff-request-details" value="View" data-toggle="modal" > 
-                 <a style="margin: 0px ;padding: 3px;" req-id="<?php echo htmlentities($request_dept_instance[$key]["req_id"]); ?>" tabindex="0"  class="btn btn-primary give-sansation" role="button" data-trigger="click"> Act</a>
-                 </div>
-                 </td>
-               
-                <?php $cnt++; endforeach; endif; ?>
-                 </tbody>
+              <td><?php echo $report_instance[$key]["req_id"]; ?></td>
+              <td><?php echo $report_instance[$key]["des_name"]; ?></td>
+              <td><?php echo $report_instance[$key]["res_skills_gained"]; ?></td>
+              <td><?php echo $report_instance[$key]["report_date"]; ?></td>
+              <td><?php echo $report_instance[$key]["statuses"] == 1 ? "Yes" : "No"  ; ?></td>
+              <td class="datatable-ct">
+              <!-- <input data-target="#staff-track-request-progress" req-id="<?php echo htmlentities($report_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" >  -->
+              <input data-target="#Report-view-details" req-id="<?php echo htmlentities($report_instance[$key]["req_id"]) ?>" reportId = "<?php echo htmlentities($report_instance[$key]["res_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-report-details" value="View" data-toggle="modal" > 
+
+              </td>
+            </tr>
+
+                <?php endforeach; endif;
+                      ?>
+                    </tbody>
                   </table>
                   </div>
                   </div>
                   </div>
                     </div>
                 </div>
-            <!-- </div>
-        </div> -->
+            </div>
+        </div>
    
                 </div>
               </div>
             </div>
           </div>
+          <?php endif; ?>
+
         </div>
 
         <!-- Basic Tables end -->
@@ -290,10 +310,28 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 </div> -->
 
 
+    <!-- request details preview start -->
+
+       <div  style="z-index:9999" id="Request-view-details" class="container-fluid modal modal-adminpro-general fullwidth-popup-InformationproModal fadeIn " role="dialog">
+       <div class="modal-dialog modal-lg " role="document" >
+          <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><b>REQUEST DETAILS</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div style="margin: 0px; padding: 0px;" class="modal-body" id="request_detail">
+
+             </div>
+            </div>
+          </div>
+      </div>
+
+
+
 
 <!-- request form modal start -->
-
-
 
 <div class="modal fade bd-example-modal-lg" id="request-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -317,6 +355,26 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 </div>
 
 
+  
+
+    <!-- reportt details preview start -->
+
+    <div  style="" id="Report-view-details" class="container-fluid modal modal-adminpro-general fullwidth-popup-InformationproModal fadeIn " role="dialog">
+       <div class="modal-dialog modal-lg " role="document" >
+          <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><b>REPORT DETAILS</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div style="margin: 0px; padding: 0px;" class="modal-body" id="report_detail">
+
+             </div>
+            </div>
+          </div>
+      </div>
+
 </div>
 
 <!-- pre-loader for waiting  -->
@@ -328,18 +386,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
   <!-- BEGIN VENDOR JS-->
   <script src="../app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
-  <!-- BEGIN VENDOR JS-->
-  <!-- BEGIN PAGE VENDOR JS-->
-  <!-- <script src="app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
-  <script src="app-assets/vendors/js/charts/raphael-min.js" type="text/javascript"></script>
-  <script src="app-assets/vendors/js/charts/morris.min.js" type="text/javascript"></script>
-  <script src="app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js" type="text/javascript"></script>
-  <script src="app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js"
-  type="text/javascript"></script> -->
 
-  <!-- <script src="app-assets/data/jvector/visitor-data.js" type="text/javascript"></script> -->
-  <!-- END PAGE VENDOR JS-->
-  <!-- BEGIN MODERN JS-->
 
   <script src="../app-assets/js/core/app-menu.js" type="text/javascript"></script>
   <script src="../app-assets/js/core/app.js" type="text/javascript"></script>
@@ -379,79 +426,121 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
  <script>
 
-//  track a staff request
-   var mytrack  = $('.track-request');
-   mytrack.popover({
-   placement: 'left',
-   content:  fetchData,
-   html: true
-   });
-
-   function fetchData(){
-      var fetch_data = '';
-      var reqId = $(this).attr("reqId"); 
-      $.ajax({  
-           url:"scripts/track-my-request.php",  
-           method:"POST",  
-           async:false,
-           data:{req_id:reqId},  
-           success:function(data){  
-                fetch_data = data;  
-           }  
-      });  
-      return fetch_data;  
- } 
-// });
-
 
 // hod view the single staff request
 
-$('.hod-view-staff-request-details').click(function(){  
-           var reqId = $(this).attr("req-id");
-           var staf_id = <?php echo $staf_id; ?>;
-           var hod_view_single_req = "hod";
-                $.ajax({  
-                url:"scripts/staff-request-details.php",  
-                method:"post",
-                data:{req_id:reqId, staf_id:staf_id, who_views_single_req : hod_view_single_req},
-                success:function(data){
-                      $('#request_detail').html(data);  
-                      // $('#dataModal').modal("show");  
-                 }  
-           });  
-      });
-
-
-// staff view his/her request
-
-       $('.view-request-details').click(function(){         
-           var reqId = $(this).attr("req-id");
-           var staf_id = <?php echo $staf_id; ?>;
-           console.log(reqId);
-                $.ajax({  
-                url:"scripts/staff-request-details.php",  
+ 
+$('#table tbody').on( 'click', 'td input.current-staff-status', function () {
+  if(confirm('you are about to change staff status')){
+  var thisButton = $(this);
+  // var this_table_data = $(this).closest()
+  // var name = $(this).closest('td');
+  // console.log(name);
+  var current_status = $(this).attr("value");
+  var staffId = $(this).attr("staff-id");
+  var newstatus = "";
+  $.ajax({  
+                url:"../scripts/change-staff-status.php", 
                 method:"post",  
-                data:{req_id:reqId, staf_id:staf_id},
+                data:{staff_id:staffId},
                 success:function(data){
-                      $('#request_detail').html(data);  
-                      // $('#dataModal').modal("show");  
+                  console.log(data);
+                  data =  JSON.parse(data);
+                  let newStatus = data.status;
+                  thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
+                  thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
+                  thisButton.val(newStatus == 1 ? "Active" : "Deactive");
+            }  
+           });
+          }
+} );
+
+
+
+$('#table').on('click', '.do-action-button', function(){
+           var reqId = $(this).attr("req-id");
+           var staf_id = <?php echo $staf_id; ?>;        
+           console.log(staf_id +" " +reqId);
+                  
+                $.ajax({  
+                url:"../scripts/track-my-request.php", 
+                method:"POST",  
+                data:{req_id:reqId},
+                success:function(data){
+                   let data_formulated = JSON.parse(data);
+                  // console.log(data_formulated.all_about_request.hod_sansation);
+
+                  if(!data_formulated.hod_reacted){
+                  let form_hod_sansation = '<form name="remark" method="post"><div style="text-align: center;"><select id="hod_sansation" name="hod_sansation" style="color:black; display:inline-block; max-width: 200px;" class="form-control" name="status" required> <option value="">Choose your option</option> <option value="1">Approved</option> <option value="2">Not Approved</option> </select></div> <input type="hidden" id="Req-Hod-Ids" class="Req-Hod-Ids" name="Req-Hod-Ids" req_id="'+reqId+'" hod_id="'+staf_id+' "> <textarea  placeholder="leave the comment here" id="action_comment" class="form-control m-t-2" name="action_comment" rows="5" required></textarea> <div class="text-center"> <button onclick="Do_direct_ActionOnRequest()" type="button" class="btn pt-0 mt-1 btn-blue m-b-xs Do_direct_ActionOnRequest" name="submitAction" value="Send sansation">Send sansation</button> </div></form>';
+                  $('#action-on-request-form').html(form_hod_sansation);  
+                  
+                  }
+                  else  
+                  {
+                    let message = '<h4 class="bg-success" > This Request '+data_formulated.all_about_request.hod_sansation == 1 || data_formulated.all_about_request.hod_sansation == true? " Approved " : " Disapproved" +'</h4>'
+                  $('#action-on-request-form').html(message);  
+
+                  }
+                    
                  }  
            });  
-      });
+
+});
+
+
+
+
+   // take action on request. for direct action in table 
+
+   function Do_direct_ActionOnRequest(){
+      // getting ids from hidden input in popover  on direct action    
+    // errors = {"approver_id": "", "request:id": "", "comment": "", "sansation": ""};
+    errors_array = [];
+    var hod_id = $('#Req-Hod-Ids').attr("hod_id");
+    var req_id = $('#Req-Hod-Ids').attr("req_id");
+    var hod_comment=$('#action_comment').val();
+    var hod_sansation=$('#hod_sansation').children(":selected").attr("value");
+
+    if(hod_comment == null || hod_comment == ""){
+      errors_array.push("comment field can't be empty");
+    }
+    if(hod_sansation == null || hod_sansation == "")
+    {
+      errors_array.push("choose to approve or not");
+    }    
+    if(errors_array.length != 0){
+
+      Lobibox.notify('warning',{
+      sound: false,
+      width: 400,
+      position: 'top right',
+      msg: errors_array
+  });
+      alert(errors_array);
+    }
+    else{
+    $.post("action-on-request/hod-action-on-request.php",{req_id: req_id,hod_comment: hod_comment, hod_sansation: hod_sansation, hod_id:hod_id},
+    function(data) {
+      console.log(data);
+      let actionFedback = JSON.parse(data);
+      console.log(actionFedback);
+    });
+    }
+    }
 
 
     function SubmitFormRequest() {
     var errors = [];
     var stf_id = <?php echo $staf_id ?>;
-    // var supervisor_id  = <?php echo  $staff_hod_details[0]['stf_id'] ?>;
-    var req_purpose = $('#req_purpose').val();
-    var exp_result = $('#exp-result').val();
-    var destination = $('#destination').children(":selected").attr("value");
+    var supervisor_id  = <?php echo  $staff_dean_details[0]['stf_id'] ?>;
+    var req_purpose=$('#req_purpose').val();
+    var exp_result=$('#exp-result').val();
+    var destination=$('#destination').children(":selected").attr("value");
     var transiport =$("input[name='transiportation']:checked").val();
-    var req_departure = $('#departure-date').val();
+    var req_departure=$('#departure-date').val();
     var req_return = $('#return-date').val();
-    var req_distance = $('#distance-of-travel').val();
-    var req_mission_duration = $('#mission-duration').val();
+    var req_distance=$('#distance-of-travel').val();
+    var req_mission_duration =$('#mission-duration').val();
     // alert(departure_date);
      
      if (req_purpose.trim().length == 0) {
@@ -489,7 +578,7 @@ $('.hod-view-staff-request-details').click(function(){
      
    else {
     
-    $.post("../scripts/save-staff-request.php", { stf_id: stf_id, req_purpose: req_purpose, exp_result: exp_result, destination: destination, transiport: transiport, req_departure: req_departure, req_return: req_return, req_distance: req_distance, req_mission_duration: req_mission_duration, supervisor: supervisor_id},
+    $.post("scripts/save-staff-request.php", { stf_id: stf_id, req_purpose: req_purpose, exp_result: exp_result, destination: destination, transiport: transiport, req_departure: req_departure, req_return: req_return, req_distance: req_distance, req_mission_duration: req_mission_duration, supervisor: supervisor_id},
     function(data) {
       alert(data);
       if (data != false) {
@@ -502,22 +591,6 @@ $('.hod-view-staff-request-details').click(function(){
   }
   
 }
-     $('.give-report').click(function(){ 
-         var reqId = $(this).attr("reqId");
-           $('#request-id').html(reqId);
-                $.ajax({  
-                url:"scripts/save-mission-outcomes.php",  
-                method:"post",
-                data:{req_id:reqId},  
-                success:function(data){  
-                      $('#reporot-form-container').html(data);
-                      $("#myModal").on('shown.bs.modal', function(){
-                      $(this).find('#inputName').focus();
-                    });
-                      // $('#dataModal').modal("show");  
-                 }  
-           });  
-      });
 
 
 
@@ -530,7 +603,7 @@ $('.hod-view-staff-request-details').click(function(){
 
  // a popover form for actions on reqeust
 
-var do_direct_action_on_request = $('.give-sansation');
+var do_direct_action_on_request = $('#table .give-sansation');
    do_direct_action_on_request.popover({
    placement: 'left',
    title : '<h4 class="text-center" ><i class="la la-arrow-right"></i><b> React to this request</b></h4>',
@@ -545,7 +618,7 @@ var do_direct_action_on_request = $('.give-sansation');
    function fetchDataForm(){
     var fetch_data = '';
     var reqId = $(this).attr("req-id");
-    var hod_id = <?php echo $staf_id; ?>
+    var hod_id = <? echo $staf_id; ?>
 
       $.ajax({
       url:"scripts/hod-direct-action-on-request.php",
@@ -562,37 +635,30 @@ var do_direct_action_on_request = $('.give-sansation');
 
 
 
-   // take action on request. for direct action in table 
 
-    function Do_direct_ActionOnRequest(){
+//  track a staff request
+var mytrack  = $('.track-request');
+   mytrack.popover({
+   placement: 'left',
+   content:  'fetchData',
+   html: true
+   });
 
-      // getting ids from hidden input in popover  on direct action
-    
-    // errors = {"approver_id": "", "request:id": "", "comment": "", "sansation": ""};
-    errors_array = [];
-    var hod_id = $('#Req-Hod-Ids').attr("hod_id");
-    var req_id = $('#Req-Hod-Ids').attr("req_id");
-    var hod_comment=$('#action_comment').val();
-    var hod_sansation=$('#hod_sansation').children(":selected").attr("value");
-
-    if(hod_comment == null || hod_comment == ""){
-      errors_array.push("comment field can't be empty");
-    }
-    if(hod_sansation == null || hod_sansation == "")
-    {
-      errors_array.push("choose to approve or not");
-    }    
-    if(errors_array.length != 0){
-      alert(errors_array);
-    }
-    else{
-    $.post("scripts/hod-action-on-request.php",{req_id: req_id,hod_comment: hod_comment, hod_sansation: hod_sansation, hod_id:hod_id},
-    function(data) {
-   window.alert(data);
-    });
-    }
-    }
-
+   function fetchData(){
+      var fetch_data = '';
+      var reqId = $(this).attr("reqId"); 
+      $.ajax({  
+           url:"scripts/track-my-request.php",  
+           method:"POST",  
+           async:false,
+           data:{req_id:reqId},  
+           success:function(data){  
+                fetch_data = data;  
+           }  
+      });  
+      return fetch_data;  
+ } 
+// });
 
 
 // check ip data/ locations ...

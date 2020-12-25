@@ -1,5 +1,4 @@
 <?php
-
 include('../../Classes/DBController.php');
 include('../../Classes/Staff_class.php');
 include('../../Classes/Requests_class.php');
@@ -9,15 +8,15 @@ include('../../../mailer.php');
 if (isset($_POST['req_id'])){
 
 $Req_id = $_POST['req_id'];
-$HOD_id = $_POST['hod_id'];
-$sensation =$_POST['hod_sansation'];
-$hod_comment = $_POST['hod_comment'];
+$DEAN_id = $_POST['dean_id'];
+$sensation =$_POST['dean_sansation'];
+$dean_comment = $_POST['dean_comment'];
 // date_default_timezone_set('Asia/Kolkata');
 $actiondate = date('Y-m-d G:i:s ', strtotime("now"));
 $sansation_in_word = $sensation == 1 ? "Approved" : "Disapproved";
 
-if(empty($Req_id) OR $Req_id == "" OR empty($HOD_id) OR 
-empty($sensation) OR $sensation == null OR empty($hod_comment) OR $hod_comment == "" )
+if(empty($Req_id) OR $Req_id == "" OR empty($DEAN_id) OR 
+empty($sensation) OR $sensation == null OR empty($dean_comment) OR $dean_comment == "" )
  {
 	  echo json_encode( array("success" => 0, "message" => "data sent not valid"));
  }
@@ -39,35 +38,28 @@ if(isset($single_request_instance))
 }
 
 $subject = "URSTMS sansation on misson Request";
-$pmsg ="<strong> Hello ".$requestor_first_name."</strong> <br> your mission request <b>".$Req_id."</b> has been ".$sansation_in_word." by <b>Head of Depertement</b><br> COMMENT: ".$hod_comment."";
+$pmsg ="<strong> Hello ".$requestor_first_name."</strong> <br> your mission request <b>".$Req_id."</b> has been ".$sansation_in_word." by <b>Dean of school</b><br> COMMENT: ".$dean_comment."";
 
 try {
-$connection->startTransaction();echo "successiful";
-
+$connection->startTransaction();
 if ((true) AND send_email($requestor_email,$pmsg,$requestor_first_name,$subject))
 {
-$hod_action_on_request = $request->HOD_takeActionOnRequest($HOD_id, $hod_comment, $sensation, $actiondate, $Req_id);
+$dean_action_on_request = $request->Dean_takeActionOnRequest($DEAN_id, $dean_comment, $sensation, $actiondate, $Req_id);
 $connection->commitTransaction();
-if($hod_action_on_request)
-{
-	echo json_encode( array("success" => 1, "message" => "done"));
-}
-
+	echo json_encode( array("success" => true, "message" => "done "));
 }
 else{
 	$connection->rollBackTransaction();
-	echo json_encode( array("success" => 0, "message" => "sansansion not well set, something went wrong"));
+	echo json_encode( array("success" => false, "message" => "sansansion not well set, something went wrong"));
 	
 }
 
 }
  catch (Exception $e) {
-	echo json_encode( array("success" => 0, "message" => "sansansion not well set, something went wrong", "error"=>$e->getMessage()));
+	echo json_encode( array("success" => false, "message" => "sansansion not well set, something went wrong", "error"=>$e->getMessage()));
 
    }
 
 }
 }
-
-
-	?>
+?>

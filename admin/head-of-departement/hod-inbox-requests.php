@@ -12,24 +12,26 @@ include('../Classes/Report_class.php');
   header('location:../index.php');
 
   else:
-    
-    $stf_role = $_SESSION['role'];
-    // $staf_id = 4;
-    $staf_id = $_SESSION['stf_id'];
-    // echo $_SESSION['stf_id']." ".$staf_id;exit();
+    $stf_role = 7;
+    // $stf_role = $_SESSION['role'];
+    $staf_id = 6;
+    // $staf_id = $_SESSION['stf_id'];
 
     $organisation = new Organisation();
-  // instantiate request
+    $HOD_id = $_SESSION['stf_id'];
+  
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($HOD_id);
+    
     $request = new Request();
     $request_instance = $request->getAllRequestsByStaff($staf_id);
-
-   // getting data to pre-fill the form
+;   // getting data to pre-fill the form
     $staff = new Staff();
      // instantiate reports
      $report = new Report();
 
     $staff_details = $staff->getStaffById($staf_id);
-    $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
+    // $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
     $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
     $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
     $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
@@ -177,9 +179,9 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
   <!-- fixed-top-->
-   <?php include_once('../includes/staff_header.php'); ?>
+  <?php include_once('../includes/staff_header.php'); ?>
  <!-- always at left -->
-   <?php require_once('components/staff-side-bar.php');?>
+ <?php require_once('components/hod-side-bar.php');?>
 
 
 

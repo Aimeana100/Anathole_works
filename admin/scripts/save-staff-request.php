@@ -28,13 +28,10 @@
        empty($req_distance) or empty($req_mission_duration))
 
        {
-        echo json_encode(array("success"=> 0, "message"=> "data bad format or not fill"));
+        echo json_encode(array("success"=> 0, "message"=> "data bad format or not fill "));
 
        }
-       else{
-
-
-      
+       else{      
 
       $table_row = "";    
 

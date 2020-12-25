@@ -35,7 +35,7 @@
                   <span style="font-family: Archivo Black;" class=" text-bold-900"><?php echo htmlentities(ucfirst($_SESSION['userlogin']));?></span>
                 </span>
                 <span class="avatar avatar-online bg-white" >
-                  <img src="../app-assets/images/user-hod.png" alt="avatar"><i></i>
+                  <img src="../../app-assets/images/user-hod.png" alt="avatar"><i></i>
                 </span>
               </a>
 

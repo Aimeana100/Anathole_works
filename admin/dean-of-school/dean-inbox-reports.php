@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+// error_reporting(0);
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
@@ -13,19 +13,37 @@ include('../Classes/Report_class.php');
   header('location:index.php');
 
   else:
- 
-    $stf_role = $_SESSION['role'];
-    $staf_id = $_SESSION['stf_id'];
+  
+      // $stf_role = 6;
+      // $stf_role = $_SESSION['role'];
+      $staf_id = 8;
+      // $staf_id = $_SESSION['stf_id'];
+  
+      // $HOD_id = $_SESSION['stf_id'];
+      $organisation = new Organisation();
+      $staff = new Staff();
+      $staff_details = $staff->getStaffById($staf_id);
+  
+      $schl_id=$staff_details[0]['scl_id'];
+      $HOD_id = $_SESSION['stf_id'];
+  
+      $request = new Request();
+    //   $request_instance = $request->getAllRequestsByStaff($staf_id);
+  ;   // getting data to pre-fill the form
+      $staff = new Staff();
+       // instantiate reports
+       $report = new Report();
+  
 
-    $organisation = new Organisation();
-
+         // instantiate reports
+         $report = new Report();
+         $report_instance = $report->getAllReportByStfId($staf_id);
+     
    // getting data to pre-fill the form
     $staff = new Staff();
-     // instantiate reports
-     $report = new Report();
-     $report_instance = $report->getAllReportByStfId($staf_id);
+
     $staff_details = $staff->getStaffById($staf_id);
-    $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
+    // $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
     $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
     $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
     $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
@@ -155,14 +173,11 @@ div.row-flex-container{
 data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
-
-  <!-- fixed-top-->
-   <?php include_once('../includes/staff_header.php'); ?>
- <!-- always at left -->
-   <?php require_once('components/staff-side-bar.php');?>
-
-
-
+    <!-- fixed-top-->
+    <?php include_once('../includes/staff_header.php'); ?>
+   <!-- always at left -->
+     <?php require_once('components/dean-of-school-side-bar.php');?>
+  
   <div class="app-content content">
     <div class="content-wrapper">
       <div class="content-header row">
@@ -375,27 +390,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
  <script>
-// $('.view-report-details').click(function(){ 
-//          var reqId = $(this).attr("reqId");
-//                 $.ajax({  
-//                 url:"scripts/save-mission-outcomes.php",  
-//                 method:"post",
-//                 data:{req_id:reqId},  
-//                 success:function(data){  
-//                       $('#report_detail').html(data);
-//                       $("#myModal").on('shown.bs.modal', function(){
-//                       $(this).find('#inputName').focus();
-//                     });
-//                     // $('#dataModal').modal("show");  
-//                  }  
-//            });  
-//       });
-
 
       $('#table').on('click', '.view-report-details', function(){
            var reqId = $(this).attr("req-id");
            console.log(reqId);
-                $.ajax({  
+                $.ajax({
+                async:true, 
                 url:"../scripts/staff-report-details.php", 
                 method:"POST",  
                 data:{req_id:reqId},
