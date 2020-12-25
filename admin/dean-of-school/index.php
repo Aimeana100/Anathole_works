@@ -164,8 +164,7 @@ div.row-flex-container{
  <!-- progress tracker -->
  <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/site.css">
   <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/progress-tracker.css">
-  <link rel="stylesheet" href="  https://use.fontawesome.com/releases/v5.7.2/css/all.css
-">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 </head>
 
 <body style="color: #000000" class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar"
