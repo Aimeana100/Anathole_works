@@ -11,7 +11,7 @@ if (!window.console) {
         postMessage({type: "log", data: msgs});
     };
     window.console.error =
-    window.console.warn = 
+    window.console.warn =
     window.console.log =
     window.console.trace = window.console;
 }
@@ -23,7 +23,7 @@ window.onerror = function(message, file, line, col, err) {
         message: message,
         data: err.data,
         file: file,
-        line: line, 
+        line: line,
         col: col,
         stack: err.stack
     }});

@@ -62,17 +62,53 @@
 
    }
 
+   
+  
+div.row-flex-container{
+  display: flex;
+  margin: 12px 0px;
+  flex-direction: row;
+  font-size: 100%;   
+ }
 
-  for add staff form
+.colomn-flex-left{
+  flex: 0 0 165px;
+}
+.colomn-flex-right{
+  place-items: start;
+  display: flex;
+  flex: 1;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+ 
+}
+.colomn-flex-middle{
+  display: flex;
+  min-width: 30%;
+  place-items: start;
+  flex-wrap: nowrap;
+ }
 
- *{
-  font-family: Crimson Text;
+div.row-flex-container.has-long-label .colomn-flex-left{
+ flex: 0 1 250px;
+ 
+
 }
-.row.pl-4{
-  margin-bottom: 10px;
-  margin-top: 10px;
+.colomn-flex-right label{
+  margin: 0em 1px;     
 }
-#success-message, #danger-message {
+
+.column-flex-container{
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  place-items: right;
+  
+  
+}
+
+
+/* #success-message, #danger-message {
   display: none; 
-}
+}  */
    

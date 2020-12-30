@@ -103,8 +103,7 @@ function AddStaff(){
     }
     if (staff_gender == "") {
         error.push("<p>Select a gender</>");
-      }
-      
+    }
     if (staff_position == null) {
       error.push("<p>Position can't be empty</p>");
     }
@@ -131,12 +130,11 @@ function AddStaff(){
       msg: '<b> PLease Fill out the form propery</b>'
   });
 }
-
 else{
   $("#wait").css("display","block");
   $.post("../scripts/save-new-staff.php", { Emp_id: staff_id, first_name: staff_fname,  last_name: staff_lname, email: staff_email, telphone: staff_tel, gender: staff_gender, Position: staff_position, Department: dept, insert_staff: true},
   function(data){
-    console.log(data);
+    alert(data);
     $("#wait").css("display","none");
     Lobibox.notify('success', {
       sound: false,
@@ -144,7 +142,7 @@ else{
       position: 'top right',
       msg: data
   });
-    $("#add-staff-form-fill")[0].reset();
+    // $("#add-staff-form-fill")[0].reset();
     $(window).scrollTop(0)
   //   $("html, body").animate({
   //   scrollTop: $("#success-message").offset().top
