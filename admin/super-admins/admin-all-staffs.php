@@ -2,8 +2,6 @@
 session_start();
 // error_reporting(0);
 
-
-
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
@@ -15,7 +13,6 @@ include('../Classes/Login/Functions.php');
 
 $session_instance = new Sessions();
 $loginFunctions = new Functions();
-
 
   // if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
   if(!$loginFunctions->checkLoginState($session_instance)):

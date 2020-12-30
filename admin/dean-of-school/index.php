@@ -1,7 +1,7 @@
 <?php
 session_start();
-// error_reporting(0);
 
+// error_reporting(0); 
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
@@ -15,9 +15,8 @@ $session_instance = new Sessions();
 $loginFunctions = new Functions();
 
 
-  if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
-  // if(!$loginFunctions->checkLoginState($session_instance)):
-    
+  // if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  if(!$loginFunctions->checkLoginState($session_instance)):    
 
   header('location:../index.php');
 
@@ -29,10 +28,10 @@ $loginFunctions = new Functions();
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-    // if($staff_details[0]['scl_id'] != 6):
-  // header('location:../index.php');
-  // exit();
-    // else: 
+    if($staff_details[0]['scl_id'] != 6):
+  header('location:../index.php');
+  exit();
+    else: 
   
     
 
@@ -786,4 +785,4 @@ jsonIp_data(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
 
 </body>
 </html>
-<?php endif; ?> 
+<?php endif; endif; ?> 

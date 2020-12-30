@@ -45,7 +45,6 @@ $_SESSION['userlogin'] = isset($staff_details[0]['username']) ? $staff_details[0
   <style type="text/css">
 
 
-
 .preLoader{
   display: block;
   margin-left: auto;
