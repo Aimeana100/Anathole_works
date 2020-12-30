@@ -24,8 +24,7 @@
       if(empty($stf_id) or empty($supervisor_id) or 
       empty($req_purpose) or empty($exp_result) or 
       empty($destination) or empty($transiport) or 
-      empty($req_departure) or empty($req_return) or
-       empty($req_distance) or empty($req_mission_duration))
+      empty($req_departure) or empty($req_return))
 
        {
         echo json_encode(array("success"=> 0, "message"=> "data bad format or not fill "));

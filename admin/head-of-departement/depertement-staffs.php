@@ -1,21 +1,43 @@
 <?php
 session_start();
 // error_reporting(0);
+
+
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-  if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
+
+
+if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  // if(!$loginFunctions->checkLoginState($session_instance)):
+    
 
   header('location:../index.php');
 
   else:
-    $stf_role = 7;
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
+    // $staf_id = 4;x
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+  //   if($staff_details[0]['dept_id'] != 7):
+  // header('location:../index.php');
+  // exit();
+  //   else: 
+        
+    // $stf_role = 7;
     // $stf_role = $_SESSION['role'];
-    $staf_id = 4;
+    // $staf_id = 4;
     // $staf_id = $_SESSION['stf_id'];
 
     $HOD_id = $_SESSION['stf_id'];
@@ -220,7 +242,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd row">
                                 <div class="main-sparkline13-hd co-6">
-                                    <h1>ALL <span class="table-project-n">Departements Staffs</span>/ <?php echo $staff_details[0]['dept_name'] ?></h1>
+                                    <h1>ALL <span class="table-project-n">Departements Staffs</span></h1>
                                 </div>
 
                             </div>
@@ -265,7 +287,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                 <td><?php echo htmlentities($staffs_in_dept[$key]["stf_lname"]);?></td>
                 <td><?php echo htmlentities($staffs_in_dept[$key]["role_name"]);?></td>
                 <td><?php echo htmlentities($staffs_in_dept[$key]["nb_of_request_per_staff"]);?></td>
-                <td>
+                <td class="datatable-ct" >
                 <input staff-id="<?php echo htmlentities($staffs_in_dept[$key]["stf_id"]);  ?>" type="button" class="btn-sm border-0 current-staff-status <?php echo $staffs_in_dept[$key]['statuses'] == 1 ? 'btn-success': 'btn-warning'; ?>" value="<?php echo $staffs_in_dept[$key]['statuses'] == 1 ? 'Active': 'Disactive'; ?>" />
 
 

@@ -4,79 +4,71 @@
 
 // error_reporting(0);
 
-//  include ('handle_login.php');
-
  include('Classes/DBController.php');
  include('Classes/Staff_class.php');
+ include('Classes/Login/Sessions_class.php');
+ include('Classes/Login/Functions.php');
 
 
   $wrongemail = "";
   $wrongpassword = "";
+  $session_instance = new Sessions();
+  $loginFunctions = new Functions();
+  // echo ($_SESSION['role_id']); exit();
+// session_destroy();exit();
+  $isLoggedIN = $loginFunctions->checkLoginState($session_instance);
 
 
- 
-  if(isset($_POST['login']))
-  {
-    $uname =$_POST['username'];
-    $upassword=$_POST['password'];
-    $fetchedUserData = array();
-    
-    $staff = new Staff();
-    $fetchedUserData = $staff->getUserData($uname);
-    
-    if(!empty($fetchedUserData)){
-    $fetchedUserData = $staff->getUserDataByCreditials($uname,$upassword);
-        
-    if(!empty($fetchedUserData)){
-      if($staff->VerfyPassword($uname, $upassword)){
-        $_SESSION['stf_id'] = $fetchedUserData[0]['stf_id'];
-        $_SESSION['userlogin'] = isset($fetchedUserData[0]['username']) ? $fetchedUserData[0]['username'] : $fetchedUserData[0]['stf_email'];
-        $user_role = $fetchedUserData[0]['role_id'];
+  if($isLoggedIN)
+    {
 
-        switch ($user_role) {
-          case '7':
-            $departement_id = $fetchedUserData[0]['dept_id'];
-             $_SESSION['dept_id'] = $departement_id;
-             $_SESSION['role'] = $user_role;
-             header('Location: head-of-departement/index.php');
-          break;
-          
-          case '6':
-            $_SESSION['dean_id'] = $fetchedUserData[0]['stf_id'];
-            $_SESSION['dept_id'] = $fetchedUserData[0]['scl_id'];
-            header('Location: dean-of-school/index.php');
-          break;
-          case '3':
-            $_SESSION['dept_id'] = $fetchedUserData[0]['coll_id'];
-            header('Location: super-admins.php');
-          break;
-      
-          
-          default:
-          $_SESSION['stfId'] = $fetchedUserData[0]['stf_id'];
-          $_SESSION['role'] = $user_role;
-          header('Location: staff/index.php');
-          break;
-        }
-        
-        
-
-      }
-      else{
-        $wrongpassword="You entered wrong password.";
-      }
-
+      $loginFunctions->DirectUserPage($_SESSION['role_id'], $_SESSION['AdministrationID']);
     }
     
-  }
-  else{
-    $wrongemail = "User not registered with us."; 
-  }
-}
+    else
+    { 
+      // exit();
 
-    
+      if (isset($_POST['login']) && isset($_POST['username']) && isset($_POST['password'])) 
+      {
+          $uname = $_POST['username'];
+          $upassword = $_POST['password'];
 
-?>
+          // $fetchedUserData = array();
+          $staff = new Staff();
+          $fetchedUserDatabyUsername = $staff->getUserData($uname);        
+          if (!empty($fetchedUserDatabyUsername))
+          {
+
+              if (!empty($fetchedUserDatabyUsername)){
+                  if (password_verify($upassword,$fetchedUserDatabyUsername[0]['password'])) {
+                      $usernameORemail = isset($fetchedUserDatabyUsername[0]['username']) ? $fetchedUserDatabyUsername[0]['username'] : $fetchedUserDatabyUsername[0]['stf_email'];
+                      $createdSessID = $loginFunctions->createRecord($session_instance, $usernameORemail, $fetchedUserDatabyUsername[0]['stf_id'], $fetchedUserDatabyUsername[0]['role_id']);
+                      // $_SESSION['stf_id'] = $fetchedUserData[0]['stf_id'];
+                      // $_SESSION['userlogin'] = isset($fetchedUserData[0]['username']) ? $fetchedUserData[0]['username'] : $fetchedUserData[0]['stf_email'];
+                      $user_role = $fetchedUserDatabyUsername[0]['role_id'];
+                      // if($fetchedUserData[0]['role_id'] == 7 ){ $direction =  }
+
+
+                      $loginFunctions->DirectUserPage($user_role, $fetchedUserDatabyUsername[0]['role_id']);
+
+                      
+
+                  } else {
+                      $wrongpassword = "You entered wrong password.";
+                  }
+              }
+          } else {
+              $wrongemail = "User not registered with us.";
+          }
+
+          
+  
+ 
+      }
+
+
+      ?>
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 <head>
@@ -95,12 +87,12 @@
   <link rel="stylesheet" type="text/css" href="app-assets/css/pages/login-register.css">
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
-<body  style=" background: #6A5ACD;" class="vertical-layout vertical-menu-modern 1-column bg-lighten-2 menu-expanded fixed-navbar"
+<body  style=" background: #6A5ACD;" class=""
 data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
  
       <div class="content-body h-100 row">
         <!-- <section class=" flexbox-container"> -->
-          <div class="col-12 h-80 d-flex align-items-center justify-content-center">
+          <div class="col-12 h-100 d-flex align-items-center justify-content-center">
             <div class="col-md-8 col-sm-12 col-xs-12 col-lg-4 box-shadow100">
               <div class="card border-grey border-lighten-3 m-0">
                 <div class="card-header border-0">
@@ -113,22 +105,22 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
                 </div>
                 <div class="card-content">
                   <div class="card-body">
-            <?php if($wrongpassword):?>                   
+            <?php if ($wrongpassword):?>                   
             <div class="alert bg-danger alert-icon-left alert-dismissible mb-2" role="alert">
             <span class="alert-icon"><i class="la la-thumbs-o-down"></i></span>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
             <strong>Oh  </strong> <?php echo htmlentities($wrongpassword); ?>
               </div>
-            <?php endif;?>
+            <?php endif; ?>
 
-            <?php if($wrongemail):?>                   
+            <?php if ($wrongemail):?>                   
             <div class="alert bg-danger alert-icon-left alert-dismissible mb-2" role="alert">
             <span class="alert-icon"><i class="la la-thumbs-o-down"></i></span>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
             <strong>Oh ! </strong> <?php echo htmlentities($wrongemail); ?>
               </div>
               
-            <?php endif;?>
+            <?php endif; ?>
 
 
 
@@ -190,3 +182,6 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
   
 </body>
 </html>
+
+<?php
+  } ?>

@@ -7,17 +7,24 @@ include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
-  if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-  header('location:../index.php');
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
+
+  // if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+
+    if(!$loginFunctions->checkLoginState($session_instance)):
+    
+    header('location:../index.php');
 
   else:
-    
-    $stf_role = $_SESSION['role'];
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
     // $staf_id = 4;
-    $staf_id = $_SESSION['stf_id'];
-    // echo $_SESSION['stf_id']." ".$staf_id;exit();
-
+    $staf_id = $_SESSION['user_id'];
+    
     $organisation = new Organisation();
   // instantiate request
     $request = new Request();
@@ -108,23 +115,23 @@ div.row-flex-container{
 
 
   </style>
+
   <!-- bootstrap from jewery -->
   <link rel="stylesheet" type="text/css" href="../super-admins/css/bootstrap.min.css">
 
   <link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet">
-  <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css"
-  rel="stylesheet">
+  <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/vendors.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/app.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
-  <!-- <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css"> -->
+  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/fonts/simple-line-icons/style.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
 
 
- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css">
+ <!-- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css"> -->
  <link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css">
 
 
@@ -355,9 +362,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
         </button>
       </div>
         <div style="margin: 0px; padding: 0px;" class="modal-body" id="request_detail">
-
-             </div>
-             <div class="modal-footer">
+        </div>
+        <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
             </div>
@@ -424,6 +430,17 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <!-- BEGIN VENDOR JS-->
   <script src="../app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
 
+
+ <!-- BEGIN PAGE VENDOR JS-->
+ <script src="../app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
+  <script src="../app-assets/vendors/js/charts/raphael-min.js" type="text/javascript"></script>
+  <script src="../app-assets/vendors/js/charts/morris.min.js" type="text/javascript"></script>
+  <script src="../app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js"
+  type="text/javascript"></script>
+  <script src="../app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js"
+  type="text/javascript"></script>
+  <!-- <script src="../app-assets/data/jvector/visitor-data.js" type="text/javascript"></script> -->
+  
   <!-- END PAGE VENDOR JS-->
   <!-- BEGIN MODERN JS-->
   <script src="../app-assets/js/core/app-menu.js" type="text/javascript"></script>
@@ -432,7 +449,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <!-- END MODERN JS-->
 
 
-  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script>
+  <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script> -->
 
   <!-- js bootstrap table from jwrly template -->
     <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
@@ -476,34 +493,37 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 // staff view his/her request
 
 $('#table').on('click', '.staff-track-request', function(){
-           var reqId = $(this).attr("req-id");
-                $.ajax({  
-                url:"../scripts/track-my-request.php", 
-                method:"post",  
-                data:{req_id:reqId},
-                success:function(data){
-                  let data_formulated = JSON.parse(data);
+    var reqId = $(this).attr("req-id");
+        $.ajax({  
+        url:"../scripts/track-my-request.php", 
+        method:"post",  
+        data:{req_id:reqId},
+        success:function(data){
+          let data_formulated = JSON.parse(data);
 
-                  console.log(data_formulated.all_about_request.hod_sansation);
-                      // $('#request-progress').html(data);  
+          console.log(data_formulated.all_about_request.hod_sansation);
+
+       // $('#request-progress').html(data);
 var track_progress = '<div class="fullwidth"><div class="container  separator">'+
 '<ul class="progress-tracker progress-tracker--vertical">'+
 '<li class="progress-step';
-if(data_formulated.hod_reacted){
+if(data_formulated.hod_reacted)
+{
   track_progress += ' is-complete"><div class="progress-marker"  data-text="1"></div><div class="progress-text"><h4 class="progress-title">L1: Depertement</h4>';
   
-  if(data_formulated.all_about_request.hod_sansation == 1){
+  if(data_formulated.all_about_request.hod_sansation == 1)
+  {
     track_progress += '<h5 class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i>Approved</h5> by <h6>'+data_formulated.about_hod_reacted.fname+' '+data_formulated.about_hod_reacted.lname+ '</h6>  </div></li>';
   }
   else{
-    track_progress += '<h5 class="text-danger">Disapproved</h5></div></li>';
+    track_progress += '<h5 class="text-danger">Disapproved</h5>  by <h6>'+data_formulated.about_hod_reacted.fname+' '+data_formulated.about_hod_reacted.lname+ '</h6></div></li>';
   }
 }
 else{
   track_progress += '"><div class="progress-marker"  data-text="1"></div><div class="progress-text"><h4 class="progress-title">L1: Depertement</h4>';
   
   if(data_formulated.all_about_request.hod_sansation == 0){
-    track_progress += '<h5 class="text-info"> Sansation Waiting... </h5></div></li>';
+    track_progress += '<h5 class="text-info"> Sansation Waiting... </h5> </div></li>';
   }
 
 }
@@ -515,7 +535,7 @@ if(data_formulated.dean_reacted){
     track_progress += '<h5 class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i>Approved </h5> by <h6>'+data_formulated.about_dean_reacted.fname+' '+data_formulated.about_dean_reacted.lname+ '</h6>  </div></li>';
   }
   else{
-    track_progress += '<h5 class="text-danger">Disapproved</h5></div></li>';
+    track_progress += '<h5 class="text-danger">Disapproved</h5> by <h6>'+data_formulated.about_dean_reacted.fname+' '+data_formulated.about_dean_reacted.lname+ '</h6>  </div></li>';
   }
 }
 else{
@@ -534,11 +554,11 @@ if(data_formulated.principal_reacted){
     track_progress += '<h5 class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i>Approved</h5> by <h6>'+data_formulated.about_principal_reacted.fname+' '+data_formulated.about_principal_reacted.lname+ '</h6>  </div></li>';
   }
   else{
-    track_progress += '<h5 class="text-danger">Disapproved</h5></div></li>';
+    track_progress += '<h5 class="text-danger">Disapproved</h5>   by <h6>'+data_formulated.about_principal_reacted.fname+' '+data_formulated.about_principal_reacted.lname+ '</h6>   </div></li>';
   }
 }
 else{
-  track_progress += '"><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L1: College</h4>';
+  track_progress += '"><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L3: College</h4>';
   
   if(data_formulated.all_about_request.principal_sansation == 0){
     track_progress += '<h5 class="text-info"> Sansation Waiting... </h5></div></li>';
@@ -557,22 +577,45 @@ track_progress +='</ul></div>';
 
 $('#table').on('click', '.view-request-details', function(){
            var reqId = $(this).attr("req-id");
-           var staf_id = <?php echo $staf_id; ?>;        
+           var staf_id = <?php echo $staf_id; ?>; 
            console.log(staf_id);
-                  
                 $.ajax({  
                 url:"../scripts/staff-request-details.php", 
                 method:"post",  
                 data:{req_id:reqId, staf_id:staf_id},
                 success:function(data){
-                      $('#request_detail').html(data);  
-                      // $('#dataModal').modal("show");  
-                 }  
+                  $('#request_detail').html(data);
+                  let printButton = '<div class="mt-2 text-center"><button  id="create_pdf" type="button" onclick="PrintElem()" class="btn btn-primary">print</button></div>';     
+                  let message_if_not_GOAHEAD = '<div class="alert alert-primary mb-2" role="alert"><strong>Request In progress</strong> Waiting For Last Aprroval</div>';
+                  $.ajax(
+                    {
+                      url: '../scripts/track-my-request.php',
+                      method:"POST",
+                      data: {req_id:reqId},
+                      success:function(response)
+                      {
+                        let data_formulated = JSON.parse(response);
+                        if(data_formulated.principal_reacted) //check if principal has received the request
+                        {
+                          $('#hold-viwer-action').html(printButton);
+
+                        }
+                        else
+                        {
+                          $('#hold-viwer-action').html(message_if_not_GOAHEAD);
+                        }
+                        // console.log(data_formulated.all_about_request.hod_sansation);
+        
+                      }                      
+                    })
+
+                      // $('#dataModal').modal("show");
+               }  
            });  
 
 });
 
-     
+
 $('#table').on('click', '.give-mission-report', function(){
            var reqId = $(this).attr("req-id");
            let ThisButton = $(this);
@@ -582,7 +625,7 @@ $('#table').on('click', '.give-mission-report', function(){
                 data:{req_id:reqId},  
                 success:function(data){ 
                       $('#reporot-form-container').html(data);
-                      ThisButton.addClass('disabled')
+                      ThisButton.addClass('disabled');
                       $("#myModal").on('shown.bs.modal', function(){
                       $('document').find('#inputName').focus();
                     });
@@ -603,15 +646,15 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
   var reqId = $(this).attr("req-id");
   var newstatus = "";
   $.ajax({  
-                url:"../scripts/change-request-status.php", 
-                method:"post",  
-                data:{req_id:reqId},
-                success:function(data){
-                  data =  JSON.parse(data);
-                  let newStatus = data.status;
-                  thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
-                  thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
-                  thisButton.val(newStatus == 1 ? "ON" : "OFF");
+            url:"../scripts/change-request-status.php", 
+            method:"post",  
+            data:{req_id:reqId},
+            success:function(data){
+              data =  JSON.parse(data);
+              let newStatus = data.status;
+              thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
+              thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
+              thisButton.val(newStatus == 1 ? "ON" : "OFF");
             }  
            });
           }
@@ -677,10 +720,19 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
     $.post("../scripts/save-staff-request.php", { stf_id: stf_id, req_purpose: req_purpose, exp_result: exp_result, destination: destination, transiport: transiport, req_departure: req_departure, req_return: req_return, req_distance: req_distance, req_mission_duration: req_mission_duration, supervisor: supervisor_id},
     function(data) {
       
-      var all_callback = JSON.parse(data)
+      var all_callback = JSON.parse(data);
       var DBcallback = JSON.parse(all_callback.result);
-        // console.log(all_callback);
+      console.log(all_callback);
         // console.log(DBcallback);
+
+        Lobibox.notify('success',{
+      sound: false,
+      width: 400,
+      position: 'top right',
+      msg: '<b>Request sent, with request ID:  '+ DBcallback.req_id +'</b>'
+  });
+
+
 
       let first_columns = ['<input data-index="0" name="btSelectItem" type="checkbox">','<span class"text-success">New</span>'];
       let tableColumns = [DBcallback.req_id, DBcallback.des_name, DBcallback.req_departure, DBcallback.req_return]
@@ -690,19 +742,14 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
 
       var table_row_full = first_columns.concat(tableColumns, last_column_status, last_column_track + last_column_view);
         var t = $('#table').DataTable()
-          m = t.row.add(table_row_full).order( [ 2, 'desc' ]).draw();
+        m = t.row.add(table_row_full).order( [ 2, 'desc' ]).draw();
 
-      Lobibox.notify('success',{
-      sound: false,
-      width: 400,
-      position: 'top right',
-      msg: '<b>Request sent, with request ID:  '+ DBcallback.req_id +'</b>'
-  });
+       window.location.reload(true);
+   $('#staff-form-request')[0].reset();
 
 
       if (data != false) {
         $('#table-data-rows').prepend(data);
-        // $('#staff-form-request')[0].reset();
         // window.alert(data);
       }
     });
@@ -715,80 +762,36 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
 //     });
 // });
 
-
  // a popover form for actions on reqeust
-var do_direct_action_on_request = $('.give-sansation');
-   var retrieved = fetchDataForm();
-   do_direct_action_on_request.popover({
-   placement: 'left',
-   title : '<h4 class="text-center" ><i class="la la-arrow-right"></i><b> React to this request</b></h4>',
-   content: retrieved,
-   html: true
-   });
+// 
 
-   $('.give-sansation').on('click', function (e) {
-    $('.give-sansation').not(this).popover('hide');
-});
 
-  async function fetchDataForm(){
-    let fetch_data = '';
-    var reqId = $(this).attr("req-id");
-    var hod_id = <?php echo $staf_id; ?>
+//   async function fetchDataForm(){
+//     let fetch_data = '';
+//     var reqId = $(this).attr("req-id");
+//     var hod_id = <?php echo $staf_id; ?>
 
-    try {
-      fetch_data = await $.ajax({
-          url:"../scripts/hod-direct-action-on-request.php",
-          method:"POST",
-          async:false,
-          data:{req_id:reqId, hod_id:hod_id},
-          success:function(data){
-          fetch_data = data;
-          }
-          }); 
-      return fetch_data; 
+//     try {
+//       fetch_data = await $.ajax({
+//           url:"../scripts/hod-direct-action-on-request.php",
+//           method:"POST",
+//           async:false,
+//           data:{req_id:reqId, hod_id:hod_id},
+//           success:function(data){
+//           fetch_data = data;
+//           }
+//           }); 
+//       return fetch_data; 
       
-    } catch (error) {
-      alert(error);
-      console.error(error);
+//     } catch (error) {
+//       alert(error);
+//       console.error(error);
       
-    }
+//     }
 
- 
- } 
-
+//  } 
 
 
-
-   // take action on request. for direct action in table 
-
-    function Do_direct_ActionOnRequest(){
-
-      // getting ids from hidden input in popover  on direct action
-    
-    // errors = {"approver_id": "", "request:id": "", "comment": "", "sansation": ""};
-    errors_array = [];
-    var hod_id = $('#Req-Hod-Ids').attr("hod_id");
-    var req_id = $('#Req-Hod-Ids').attr("req_id");
-    var hod_comment=$('#action_comment').val();
-    var hod_sansation=$('#hod_sansation').children(":selected").attr("value");
-
-    if(hod_comment == null || hod_comment == ""){
-      errors_array.push("comment field can't be empty");
-    }
-    if(hod_sansation == null || hod_sansation == "")
-    {
-      errors_array.push("choose to approve or not");
-    }    
-    if(errors_array.length != 0){
-      alert(errors_array);
-    }
-    else{
-    $.post("scripts/hod-action-on-request.php",{req_id: req_id,hod_comment: hod_comment, hod_sansation: hod_sansation, hod_id:hod_id},
-    function(data) {
-    window.alert(data);
-    });
-    }
-    }
 
 
 

@@ -11,21 +11,22 @@ include('../Classes/Report_class.php');
 
 $stf_role = 3;
 // $_SESSION['role'];
-$staf_id = 2;
+$staf_id = 1;
 // $_SESSION['stf_id'];
 
 // check authentication
 $organisation = new Organisation();
-
-// instantiate request
-$request = new Request();
-$request_instance = $request->getAllRequestsByStaff($staf_id);
 // getting data to pre-fill the form
 $staff = new Staff();
 $staff_details = $staff->getStaffById($staf_id);
-$staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
-$staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
-$staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
+// instantiate request
+$report = new Report();
+// $request_instance = $request->getAllRequestsByStaff($staf_id);
+$report_instance = $report->getAllReportByCollegeId(1);
+
+// $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
+// $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
+// $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
 $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
 
 //  echo json_encode(array("staff_id" =>$staff_details[0]["stf_id"], "depertement" => $staff_details[0]["dept_id"], "college_id" => $staff_details[0]['coll_id'])  );
@@ -165,7 +166,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
         <!-- Revenue, Hit Rate & Deals -->
         <!-- all requests -->
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-xl-3 col-lg-3 col-sm-3  ">
             <div class="card pull-up">
               <div class="card-content">
@@ -173,10 +174,10 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                 <div class="card-body">
                   <div class="media d-flex">
                     <div class="media-body text-center">
-<?php 
- 
-?>
- <h2 class="success"><b><?php echo htmlentities(9);?></b></h2>
+                  <php 
+                  
+                  ?>
+                  <h2 class="success"><b><php echo htmlentities(9);?></b></h2>
                       <h4><b>All Requests</b></h4>
                     </div>
                     <div>
@@ -191,11 +192,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
               </a>
               </div>
             </div>
-          </div>
+          </div> -->
 
      <!-- Last Seven Days Complaints --->
     
-          <div class="col-xl-3 col-lg-3 col-sm-3  ">
+          <!-- <div class="col-xl-3 col-lg-3 col-sm-3  ">
             <div class="card pull-up">
               <div class="card-content">
                 <a href="hod-approved.php">
@@ -205,7 +206,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 <?php 
 
   ?>
- <h2 class="success"> <b> <?php echo htmlentities(3);?> </b></h2>
+ <h2 class="success"> <b> <?php// echo htmlentities(3);?> </b></h2>
                       <h4><b>All Reports</b></h4>
                     </div>
                     <div>
@@ -233,7 +234,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 ?>
 
-<h2 class="success"><b><?php echo htmlentities(7);?> </b></h2>
+<h2 class="success"><b><php// echo htmlentities(7);?> </b></h2>
                       <h4><b>All Staffs</b></h4>
                     </div>
                     <div>
@@ -263,7 +264,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 ?>
 
-           <h2 class="success"> <b><?php echo htmlentities(7);?></b></h2>
+           <h2 class="success"> <b><php echo htmlentities(7);?></b></h2>
                       <h4><b>Host Places</b></h4>
                     </div>
                     <div>
@@ -280,7 +281,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
             </div>
           </div>
                     
-          </div>
+          </div> -->
 
 
        <div class="content-body">
@@ -293,7 +294,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd">
                                 <div class="main-sparkline13-hd">
-                                    <h1>Products <span class="table-project-n">Data</span> Table</h1>
+                                    <h1>ALL <span class="table-project-n">COLLEGE REPORTS</span>/ <?php echo $staff_details[0]['coll_name']; ?></h1>
                                 </div>
                             </div>
                             <div class="sparkline13-graph">
@@ -308,45 +309,43 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                     <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
                                         data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
                                         <thead>
-                                            <tr>
+                                        <tr>
                                                 <th data-field="state" data-checkbox="true"></th>
-                                                <th data-field="id">ID</th>
-                                                <th data-field="name" data-editable="true">Product Title</th>
-                                                <th data-field="company" data-editable="true">Stock</th>
-                                                <th data-field="price" data-editable="true">Price</th>
-												<th data-field="date" data-editable="true">Date</th>
-												<th data-field="task" data-editable="true">Status</th>
-												<th data-field="email" data-editable="true">Total Sales</th>
-                                                <th data-field="action">Action</th>
+                                                <th data-field="count">#</th>
+                                                <th data-field="id">req_ID</th>
+                                                <th data-field="destination">Destination</th>
+                                                <th data-field="mission-outcomes" >Mission Outcomes</th>
+                                                <th data-field="report-date" >Report Date</th>
+                                                <th data-field="number-of-days" >Number of Days</th>
+                                                <th data-field="Status" data-editable="true">Received</th>
+                                                <th data-field="action" class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td>18</td>
-                                                <td>Product Title</td>
-                                                <td>In Of Stock</td>
-												<td>$5</td>
-												<td>Jul 14, 2017</td>
-                                                <td>Active</td>
-												<td>$700</td>
-                                                <td class="datatable-ct"><i class="fa fa-check"></i>
-                                                </td>
+                                        <?php if(!empty($report_instance)):
+                                          $cont_rows=1;
+                                          foreach($report_instance as $key => $value):
+                                         ?>
+                                          <tr>
+                                          <td></td>
+                                          <td scope="row"><?php echo $cont_rows;?></td>
+                                          <td><?php echo $report_instance[$key]["req_id"]; ?></td>
+                                          <td><?php echo $report_instance[$key]["des_name"]; ?></td>
+                                          <td><?php echo $report_instance[$key]["res_skills_gained"]; ?></td>
+                                          <td><?php echo $report_instance[$key]["report_date"]; ?></td>
+                                          <td><?php echo $report_instance[$key]["report_date"]; ?></td>
+                                          <td><?php echo $report_instance[$key]["statuses"] == 1 ? "Yes" : "No"  ; ?></td>
+                                          <td class="datatable-ct">
+                                          <!-- <input data-target="#staff-track-request-progress" req-id="<?php echo htmlentities($report_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" >  -->
+                                         <input data-target="#Report-view-details" req-id="<?php echo htmlentities($report_instance[$key]["req_id"]) ?>" reportId = "<?php echo htmlentities($report_instance[$key]["res_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-report-details" value="View" data-toggle="modal" > 
+
+                                          </td>
+                                          
                                             </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td>19</td>
-                                                <td>Product Title</td>
-                                                <td>In Of Stock</td>
-												<td>$5</td>
-												<td>Jul 14, 2017</td>
-                                                <td>Active</td>
-												<td>$700</td>
-                                                <td class="datatable-ct"><i class="fa fa-check"></i>
-                                                </td>
-                                            </tr>
-                                            
-                                        </tbody>
+
+                                            <?php $cont_rows++; endforeach; endif;?>
+
+                                         </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -360,7 +359,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
         <!-- table end -->
 
          <!-- bar chart strart -->
-            <div class="charts-area mg-tb-15">
+            <!-- <div class="charts-area mg-tb-15">
             <div class="container-fluid">
                 <div class="row">
                     
@@ -390,7 +389,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                 </div>
                    
             </div>
-        </div>
+        </div> -->
         <!-- bar chart end -->
 
         

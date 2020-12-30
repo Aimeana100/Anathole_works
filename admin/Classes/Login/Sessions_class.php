@@ -10,11 +10,12 @@ class Sessions {
 
     // insert_req and user_ request can be merged / call insertUserRequest
 
-    function insertSessions($sess_token, $sess_serial, $sess_date){
+    function insertSessions($user_id, $sess_token, $sess_serial, $sess_date){
 
-        $query = "INSERT INTO `sessions`(`session_tokens`, `session_serial`, `session_date`) VALUES (?,?,?)";
-        $paramType = "sss";
+        $query = "INSERT INTO `sessions`(`stf_id`,`session_tokens`, `session_serial`, `session_date`) VALUES (?,?,?,?)";
+        $paramType = "isss";
         $paramValue = array(
+            $user_id,
             $sess_token,
             $sess_serial,
             $sess_date
@@ -31,11 +32,10 @@ class Sessions {
         return $sessions;
     
     }
-    //request details by request id
 
     function getSessionByCreditials($sess_user, $sess_token, $sess_serial){
 
-    $query = "SELECT * FROM sessions WHERE stf_id = ?,session_tokens = ?, session_serial = ?;";
+    $query = "SELECT * FROM sessions WHERE stf_id = ? AND session_tokens = ? AND session_serial = ?;";
     $paramType = "iss";
     $paramValue = array(
         $sess_user,
@@ -55,7 +55,15 @@ class Sessions {
         $result = $this->db_handle->runQuery($sql_query, $paramType, $paramValue);
         return $result;
     }
-    
+
+    function deleteSessions($session_id){
+        $query = "DELETE FROM sessions WHERE stf_id = ?";
+        $paramType = "i";
+        $paramValue = array(
+            $session_id
+        );
+        $this->db_handle->update($query, $paramType, $paramValue);
+    } 
 
 
     

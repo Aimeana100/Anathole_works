@@ -191,7 +191,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd">
                                 <div class="main-sparkline13-hd">
-                                    <h1>Products <span class="table-project-n">Data</span> Table</h1>
+                                    <h1>All  <span class="table-project-n">Host </span> Places</h1>
                                 </div>
                             </div>
                             <div class="sparkline13-graph">
@@ -213,9 +213,9 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <th data-field="verfied" data-editable="true">Verfied</th>
                                                 <!-- <th data-field="price" data-editable="true">Price</th>
                                                 <th data-field="date" data-editable="true">Date</th>
-                                                <th data-field="task" data-editable="true">Status</th>
-                                                <th data-field="email" data-editable="true">Total Sales</th> -->
-                                                <th data-field="action">Action</th>
+                                                <th data-field="task" data-editable="true">Status</th>-->
+                                                <th data-field="email" data-editable="true">longitude</th> 
+                                                <th data-field="action">latitude</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -237,8 +237,14 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <td>Jul 14, 2017</td>
                                                 <td>Active</td>
                                                 <td>$700</td> -->
-                                                <td class="datatable-ct"><i class="fa fa-check"> </i> verfy
+                                                <td class="datatable-ct">
+
+                                                <!-- <i class="fa fa-check"> </i> verfy -->
                                                 </td>
+                                                <td class="datatable-ct">
+
+<!-- <i class="fa fa-check"> </i> verfy -->
+</td>
                                             </tr>
                                          
                                             <?php endforeach; endif; ?>
@@ -270,7 +276,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAKiqf-2lBSbxTv4ryjq0Un0km1SEJGb4k&q=kigali+marriot+hotel" allowfullscreen>
   </iframe>
         
-      <div class="charts-area mg-tb-15">
+      <!-- <div class="charts-area mg-tb-15">
         <div class="container-fluid">
           
             <div id="sldsucceed" class="row Testing" style="height= 900px">
@@ -279,13 +285,13 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
             </div>
 
         </div>
-    </div>
+    </div> -->
         <!-- Charts End-->
 
 
 
         
-        <div class="row">
+        <!-- <div class="row">
   
 
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -376,11 +382,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
 
-<div id="test" style="height= 600px; width= 100%; background=green"></div>
+<!-- <div id="test" style="height= 600px; width= 100%; background=green"></div> -->
         </div>
         </div>
         </div>

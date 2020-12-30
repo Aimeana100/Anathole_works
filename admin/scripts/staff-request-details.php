@@ -377,38 +377,14 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
 
   <?php
   
-    if($who_views_single_req == "hod"):
-      if($request_details[0]["hod_sansation"] == 0):     
+    // if($who_views_single_req == "hod"):
+    //   if($request_details[0]["hod_sansation"] == 0):
+  ?>
+ <div id="hold-viwer-action" class="text-center">
 
-   ?>
-<div class="text-center">
-    <!-- <button  id="create_pdf" type="button" onclick="PrintElem()" class="btn btn-primary">print</button> -->
-    <button  id="create_pdf" type="button" onclick="PrintElem()" class="btn btn-primary">print</button>
-
-
-  <a style="margin: 0px ;padding: 3px;" reqId="<?php echo $Req_id; ?>" tabindex="0" data-toggle="popover"  class="btn btn-primary view-give-sansation" role="button" data-trigger="click">
-Take action</a>
-
-<!-- <a data-toggle="popover" class="give-sansation">Toggle popover</a> -->
   </div>
 
-      <?php endif; endif; ?>
 
-  <?php  if((isset($principal_sansation)) AND $principal_sansation == 1 ): ?>
-  <div class="text-center"><button  id="create_pdf" type="button" onclick="PrintElem()" class="btn btn-primary">print</button></div> 
-
-  <?php else: 
-  ?>
-  <div class="alert alert-primary mb-2" role="alert">
-  
-  <div class="text-center"><button  id="create_pdf" type="button" onclick="PrintElem()" class="btn btn-primary">print</button></div> 
-<strong>Request In progress</strong> Waiting For Last Aprroval
-</div> 
-<a style="margin: 0px ;padding: 3px;" reqId="<?php echo $Req_id; ?>" tabindex="0" data-toggle="popover"  class="btn btn-primary view-give-sansation" role="button" data-trigger="click">
-Take action</a>
-<?php endif ?>
-
-       
 
    </section>        
     

@@ -1,6 +1,6 @@
 
   function UpdateStaffInfo() {
-    error  = [];
+    let error  = [];
     var dept = $.trim($("#update_departement").children(":selected").attr("id"));
     var staff_id = $("#update_Emp_id").val();
     var staff_username = $("update_#staff_username").val();
@@ -13,9 +13,9 @@
     var position_id = $('#update_position').val();
     console.log(dept+staff_id+staff_fname+staff_lname+staff_gender+staff_position+staff_tel+staff_email+position_id);
     
-    if(staff_id.length == 0){
+      if(staff_id.length == 0){
       error.push("<p>Staff Id not specified</p>");
-    }
+       }
       if(staff_fname.length == 0){
         error.push("<p>First name can't be empty</p>");
       }
@@ -103,7 +103,8 @@ function AddStaff(){
     }
     if (staff_gender == "") {
         error.push("<p>Select a gender</>");
-    }
+      }
+      
     if (staff_position == null) {
       error.push("<p>Position can't be empty</p>");
     }
@@ -130,11 +131,12 @@ function AddStaff(){
       msg: '<b> PLease Fill out the form propery</b>'
   });
 }
+
 else{
   $("#wait").css("display","block");
   $.post("../scripts/save-new-staff.php", { Emp_id: staff_id, first_name: staff_fname,  last_name: staff_lname, email: staff_email, telphone: staff_tel, gender: staff_gender, Position: staff_position, Department: dept, insert_staff: true},
   function(data){
-    alert(data);
+    console.log(data);
     $("#wait").css("display","none");
     Lobibox.notify('success', {
       sound: false,
@@ -142,7 +144,7 @@ else{
       position: 'top right',
       msg: data
   });
-    // $("#add-staff-form-fill")[0].reset();
+    $("#add-staff-form-fill")[0].reset();
     $(window).scrollTop(0)
   //   $("html, body").animate({
   //   scrollTop: $("#success-message").offset().top

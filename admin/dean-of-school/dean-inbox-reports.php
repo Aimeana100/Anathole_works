@@ -7,16 +7,36 @@ include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-  if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
 
-  header('location:index.php');
+
+  if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  // if(!$loginFunctions->checkLoginState($session_instance)):
+    
+
+  header('location:../index.php');
 
   else:
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
+    // $staf_id = 4;
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+    // if($staff_details[0]['scl_id'] != 6):
+  // header('location:../index.php');
+  // exit();
+    // else: 
   
+    
       // $stf_role = 6;
       // $stf_role = $_SESSION['role'];
-      $staf_id = 8;
+      // $staf_id = 8;
       // $staf_id = $_SESSION['stf_id'];
   
       // $HOD_id = $_SESSION['stf_id'];
@@ -462,4 +482,4 @@ jsonIp_data(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
 
 </body>
 </html>
-<?php endif;?> 
+<?php endif; ?> 

@@ -1,22 +1,43 @@
 <?php
 session_start();
 // error_reporting(0);
+
+
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-  if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
 
-  header('location:index.php');
+
+if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  // if(!$loginFunctions->checkLoginState($session_instance)):
+    
+
+  header('location:../index.php');
 
   else:
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
+    // $staf_id = 4;
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+  //   if($staff_details[0]['dept_id'] != 7):
+  // header('location:../index.php');
+  // exit();
+  //   else:        
  
-    $stf_role = 7;
+    // $stf_role = 7;
     // $stf_role = $_SESSION['role'];
-    $staf_id = 6;
+    // $staf_id = 6;
     // $staf_id = $_SESSION['stf_id'];
 
     $organisation = new Organisation();
@@ -206,7 +227,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list container">
                             <div class="sparkline13-hd row">
                                 <div class="main-sparkline13-hd co-6">
-                                    <h1>ALL <span class="table-project-n">REPORTS</span></h1>
+                                    <h1>MY <span class="table-project-n">REPORTS</span></h1>
                                 </div>
                                                             </div>
                             <div class="sparkline13-graph">
@@ -246,7 +267,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                           <td><?php echo $report_instance[$key]["res_skills_gained"]; ?></td>
                                           <td><?php echo $report_instance[$key]["report_date"]; ?></td>
                                           <td><?php echo $report_instance[$key]["report_date"]; ?></td>
-                                          <td><?php echo $report_instance[$key]["statuses"] == 1 ? "Yes" : "No"  ; ?></td>
+                                          <td  class="datatable-ct"><?php echo $report_instance[$key]["statuses"] == 1 ? "Yes" : "No"  ; ?></td>
                                           <td class="datatable-ct">
                                           <!-- <input data-target="#staff-track-request-progress" req-id="<?php echo htmlentities($report_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" >  -->
                                          <input data-target="#Report-view-details" req-id="<?php echo htmlentities($report_instance[$key]["req_id"]) ?>" reportId = "<?php echo htmlentities($report_instance[$key]["res_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-report-details" value="View" data-toggle="modal" > 

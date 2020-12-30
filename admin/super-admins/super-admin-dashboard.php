@@ -21,7 +21,7 @@ $organisation = new Organisation();
 
 // instantiate request
 $request = new Request();
-$request_instance = $request->getAllRequestsByStaff($staf_id);
+// $request_instance = $request->getAllRequestsByStaff($staf_id);
 // getting data to pre-fill the form
 $staff = new Staff();
 $reports = new Report();
@@ -34,7 +34,7 @@ $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
 
 $All_college_requests = $request->getAllRequestsByCollege($college_id);
 $All_college_staffs = $staff->getAllStaff_in_college($college_id);
-$All_college_reports = $reports->getAllReporsts();
+$All_college_reports = $reports->getAllReportByCollegeId($college_id);
 $All_host_Place = $request->getAllDestination();
 
 
@@ -189,7 +189,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
           <div class="col-xl-3 col-lg-3 col-sm-3  ">
             <div class="card pull-up">
               <div class="card-content">
-                   <a href="hod-disapprove.php">
+                   <a href="admin-all-requests.php">
                 <div class="card-body">
                   <div class="media d-flex">
                    <div class="media-body text-center">
@@ -228,7 +228,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
           <div class="col-xl-3 col-lg-3 col-sm-3  ">
             <div class="card pull-up">
               <div class="card-content">
-                <a href="hod-approved.php">
+                <a href="admin-all-reports.php">
                 <div class="card-body">
                   <div class="media d-flex">
                     <div class="media-body text-center">
@@ -265,7 +265,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
           <div class="col-xl-3 col-lg-3 col-sm-3  ">
             <div class="card pull-up">
               <div class="card-content">
-                 <a .php">
+                 <a href="admin-all-staffs.php">
                 <div class="card-body">
                   <div class="media d-flex">
                               <div class="media-body text-center">
@@ -301,7 +301,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
           <div class="col-xl-3 col-lg-3 col-sm-3  ">
             <div class="card pull-up">
               <div class="card-content">
-                 <a .php">
+                 <a href="admin-all-host-places.php">
                 <div class="card-body">
                   <div class="media d-flex">
                     <div class="media-body text-center">
@@ -336,12 +336,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                     
           </div>
 
-          <a data-toogle="modal" data-target="#request-form" hre="#" > test</a>
+          <!-- <a data-toogle="modal" data-target="#request-form" hre="#" > test</a> -->
        <div class="content-body">
           
 
          <!-- bar chart strart -->
-            <div class="charts-area mg-tb-15">
+            <!-- <div class="charts-area mg-tb-15">
             <div class="container-fluid">
                 <div class="row">
                     
@@ -371,14 +371,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                 </div>
                    
             </div>
-        </div>
+        </div> -->
         <!-- bar chart end -->
 
             
 
-       <div class="">
-
-            </div>
         </div>
         </div>
         </div>

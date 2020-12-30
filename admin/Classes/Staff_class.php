@@ -106,6 +106,12 @@ class Staff{
         return $updated;
     }
 
+        function getAllRegisteredStaffs(){
+        $query = "SELECT * FROM staffs_info INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON colleges.coll_id = schools.coll_id";
+        $result = $this->db_handle->runBaseQuery($query);
+        return $result;
+    }
+
 
     // update staffs password
 
@@ -168,7 +174,7 @@ class Staff{
 
     function getStaff_Principalbycollege($college_id) {
         $query_principle = "SELECT * FROM staffs_info INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN roles ON staffs_info.role_id = roles.role_id AND roles.role_id = 3 INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON colleges.coll_id = schools.coll_id AND colleges.coll_id = ?;";
-$paramType = "i";
+        $paramType = "i";
         $paramValue = array(
             $college_id
         );        

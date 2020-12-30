@@ -1,30 +1,50 @@
 <?php
 session_start();
 // error_reporting(0);
+
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-  if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
+
+
+if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  // if(!$loginFunctions->checkLoginState($session_instance)):
+    
 
   header('location:../index.php');
 
   else:
-    $stf_role = 7;
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
+    // $staf_id = 4;
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+  //   if($staff_details[0]['dept_id'] != 7):
+  // header('location:../index.php');
+  // exit();
+  //   else: 
+    // $stf_role = 7;
     // $stf_role = $_SESSION['role'];
-    $staf_id = 4;
+    // $staf_id = 6;
     // $staf_id = $_SESSION['stf_id'];
 
     $HOD_id = $_SESSION['stf_id'];
     $organisation = new Organisation();
   
     $staff = new Staff();
-    $staff_details = $staff->getStaffById($HOD_id);
+    $staff_details = $staff->getStaffById($staf_id);
 
-    $HOD_dept=$staff_details[0]['dept_id'];
+    $HOD_dept = $staff_details[0]['dept_id'];
 
     // instantiate request
   $request = new Request();
@@ -218,7 +238,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd row">
                                 <div class="main-sparkline13-hd co-6">
-                                    <h1>ALL <span class="table-project-n">Departements Request</span></h1>
+                                    <h1>ALL <span class="table-project-n">Departements Request</span>/ <?php echo $staff_details[0]['dept_name'] ?> </h1>
                                 </div>
 
                             </div>
@@ -460,49 +480,76 @@ $('#table').on('click', '.hod-view-staff-request-details', function(){
                 url:"../scripts/staff-request-details.php", 
                 method:"post",  
                 data:{req_id:reqId, staf_id:staf_id},
-                success:function(data){
-                      $('#request_detail').html(data);  
-                      // $('#dataModal').modal("show");  
-                 }  
-           });  
+                success:function(data)
+                {
+                  $('#request_detail').html(data);
+                  let takeActionOnRequest = '<a style="margin: 0px ;padding: 3px;" reqId="'+reqId+'" tabindex="0" data-toggle="popover"  class="btn btn-primary view-give-sansation" role="button" data-trigger="click">Do Reaction</a>';     
 
+                  $.ajax(
+                    {
+                      url: '../scripts/track-my-request.php',
+                      method:"POST",
+                      data: {req_id:reqId},
+                      success:function(response)
+                      {
+                        let data_formulated = JSON.parse(response);
+                        if(data_formulated.hod_reacted) //check if principal has received the request
+                        {
+                          if(data_formulated.all_about_request.hod_sansation = 1)
+                          {
+                            $('#hold-viwer-action').html('<div class="alert alert-success mb-2" role="alert"> you have <strong>Approved </strong>this request</div></>');
+                          }
+                          else
+                          {
+                            $('#hold-viwer-action').html('<div class="alert alert-success mb-2" role="alert"> you have <strong>Disapproved </strong>this request</div></>');
+                          }
+                        }
+                        else
+                        {
+                          // $('#hold-viwer-action').html(takeActionOnRequest);
+
+                        }
+                      // $('#dataModal').modal("show");
+                 }  
+           }); 
+
+          }
+          
+          
 });
+});
+                
 
 $('#table').on('click', '.do-action-button', function(){
            var reqId = $(this).attr("req-id");
-           var staf_id = <?php echo $staf_id; ?>;        
+           var staf_id = <?php echo $staf_id; ?>;      
            console.log(staf_id +" " +reqId);
-                  
                 $.ajax({  
-                url:"../scripts/track-my-request.php", 
+                url:"../scripts/track-my-request.php",
                 method:"POST",  
                 data:{req_id:reqId},
                 success:function(data){
                    let data_formulated = JSON.parse(data);
                   // console.log(data_formulated.all_about_request.hod_sansation);
 
-                  if(!data_formulated.hod_reacted){
-                  let form_hod_sansation = '<form name="remark" method="post"><div style="text-align: center;"><select id="hod_sansation" name="hod_sansation" style="color:black; display:inline-block; max-width: 200px;" class="form-control" name="status" required> <option value="">Choose your option</option> <option value="1">Approved</option> <option value="2">Not Approved</option> </select></div> <input type="hidden" id="Req-Hod-Ids" class="Req-Hod-Ids" name="Req-Hod-Ids" req_id="'+reqId+'" hod_id="'+staf_id+' "> <textarea  placeholder="leave the comment here" id="action_comment" class="form-control m-t-2" name="action_comment" rows="5" required></textarea> <div class="text-center"> <button onclick="Do_direct_ActionOnRequest()" type="button" class="btn pt-0 mt-1 btn-blue m-b-xs Do_direct_ActionOnRequest" name="submitAction" value="Send sansation">Send sansation</button> </div></form>';
-                  $('#action-on-request-form').html(form_hod_sansation);  
-                  
-                  }
-                  else  
+                  if(!data_formulated.hod_reacted)
                   {
-                    let message = '<h4 class="bg-success" > This Request '+data_formulated.all_about_request.hod_sansation == 1 || data_formulated.all_about_request.hod_sansation == true? " Approved " : " Disapproved" +'</h4>'
-                  $('#action-on-request-form').html(message);  
-
+                    let form_hod_sansation = '<form name="remark" method="post"><div style="text-align: center;"><select id="hod_sansation" name="hod_sansation" style="color:black; display:inline-block; max-width: 200px;" class="form-control" name="status" required> <option value="">Choose your option</option> <option value="1">Approved</option> <option value="2">Not Approved</option> </select></div> <input type="hidden" id="Req-Hod-Ids" class="Req-Hod-Ids" name="Req-Hod-Ids" req_id="'+reqId+'" hod_id="'+staf_id+' "> <textarea  placeholder="leave the comment here" id="action_comment" class="form-control m-t-2" name="action_comment" rows="5" required></textarea> <div class="text-center"> <button onclick="Do_direct_ActionOnRequest()" type="button" class="btn pt-0 mt-1 btn-blue m-b-xs Do_direct_ActionOnRequest" name="submitAction" value="Send sansation">Send sansation</button> </div></form>';
+                    $('#action-on-request-form').html(form_hod_sansation);  
+                  }
+                  else
+                  {
+                  let message = '<h4 class="bg-success" > This Request '+data_formulated.all_about_request.hod_sansation == 1 || data_formulated.all_about_request.hod_sansation == true? " Approved " : " Disapproved" +'</h4>'
+                  $('#action-on-request-form').html(message);
                   }
                     
-                 }  
+               }  
            });  
 
 });
 
 
-
-
-   // take action on request. for direct action in table 
-
+   // take action on request. for direct action in table
    function Do_direct_ActionOnRequest(){
       // getting ids from hidden input in popover  on direct action    
     // errors = {"approver_id": "", "request:id": "", "comment": "", "sansation": ""};
@@ -527,7 +574,6 @@ $('#table').on('click', '.do-action-button', function(){
       position: 'top right',
       msg: errors_array
   });
-      alert(errors_array);
     }
     else{
     $.post("action-on-request/hod-action-on-request.php",{req_id: req_id,hod_comment: hod_comment, hod_sansation: hod_sansation, hod_id:hod_id},
@@ -540,174 +586,85 @@ $('#table').on('click', '.do-action-button', function(){
     }
 
 
-    function SubmitFormRequest() {
-    var errors = [];
-    var stf_id = <?php echo $staf_id ?>;
-    var supervisor_id  = <?php echo  $staff_dean_details[0]['stf_id'] ?>;
-    var req_purpose=$('#req_purpose').val();
-    var exp_result=$('#exp-result').val();
-    var destination=$('#destination').children(":selected").attr("value");
-    var transiport =$("input[name='transiportation']:checked").val();
-    var req_departure=$('#departure-date').val();
-    var req_return = $('#return-date').val();
-    var req_distance=$('#distance-of-travel').val();
-    var req_mission_duration =$('#mission-duration').val();
-    // alert(departure_date);
-     
-     if (req_purpose.trim().length == 0) {
-      errors.push("request purpose can't be empty <br>");
-     }
-
-      if (exp_result.trim().length == 0) {
-      errors.push("expected result field can't be empty <br>");
-     }
-
-      if (destination == "") {
-      errors.push("select desstination");
-     }
-
-     if (transiport == null) {
-      errors.push("tick the transiportation means");
-     }
-
-     if (req_departure.trim().length == 0) {
-      errors.push("Enter a Deperture date");
-     }
-      if (req_return.trim().length == 0) {
-      errors.push("Enter a return date");
-     }
-
-       if (errors.length != 0) {
-      errorMessage = "";
-      for(var i = 0; i < errors.length; i++){
-      errorMessage += '<p class ="text-danger">'+errors[i]+'</p>';
-      }
-
-      $('#display-error').html(errorMessage);
-     }
-
-     
-   else {
-    
-    $.post("scripts/save-staff-request.php", { stf_id: stf_id, req_purpose: req_purpose, exp_result: exp_result, destination: destination, transiport: transiport, req_departure: req_departure, req_return: req_return, req_distance: req_distance, req_mission_duration: req_mission_duration, supervisor: supervisor_id},
-    function(data) {
-      alert(data);
-      if (data != false) {
-        // $('#table-data-rows').prepend(data);
-        // $('#staff-form-request')[0].reset();
-        // window.alert(data);
-
-      }
-    });
-  }
-  
-}
-
-     $('.give-report').click(function(){ 
-         var reqId = $(this).attr("reqId");
-           $('#request-id').html(reqId);
-                $.ajax({  
-                url:"scripts/save-mission-outcomes.php",  
-                method:"post",
-                data:{req_id:reqId},  
-                success:function(data){  
-                      $('#reporot-form-container').html(data);
-                      $("#myModal").on('shown.bs.modal', function(){
-                      $(this).find('#inputName').focus();
-                    });
-                      // $('#dataModal').modal("show");  
-                 }  
-           });  
-      });
-
-
-
-// $(document).ready(function(){
-//     $("#mission-report").on('shown.bs.modal', function(){
-//         $(this).find('#req-outcomes').focus();
-//     });
-// });
 
 
  // a popover form for actions on reqeust
 
-var do_direct_action_on_request = $('#table .give-sansation');
-   do_direct_action_on_request.popover({
-   placement: 'left',
-   title : '<h4 class="text-center" ><i class="la la-arrow-right"></i><b> React to this request</b></h4>',
-   content: fetchDataForm,
-   html: true
-   });
+// var do_direct_action_on_request = $('#table .give-sansation');
+//    do_direct_action_on_request.popover({
+//    placement: 'left',
+//    title : '<h4 class="text-center" ><i class="la la-arrow-right"></i><b> React to this request</b></h4>',
+//    content: fetchDataForm,
+//    html: true
+//    });
 
-   $('.give-sansation').on('click', function (e) {
-    $('.give-sansation').not(this).popover('hide');
-});
+//    $('.give-sansation').on('click', function (e) {
+//     $('.give-sansation').not(this).popover('hide');
+// });
 
-   function fetchDataForm(){
-    var fetch_data = '';
-    var reqId = $(this).attr("req-id");
-    var hod_id = <? echo $staf_id; ?>
+//    function fetchDataForm(){
+//     var fetch_data = '';
+//     var reqId = $(this).attr("req-id");
+//     var hod_id = <?// echo $staf_id; ?>
 
-      $.ajax({
-      url:"scripts/hod-direct-action-on-request.php",
-      method:"POST",
-      async:false,
-      data:{req_id:reqId, hod_id:hod_id},
-      success:function(data){
-      fetch_data = data;
-      }
-      }); 
-      return fetch_data;  
- } 
+//       $.ajax({
+//       url:"scripts/hod-direct-action-on-request.php",
+//       method:"POST",
+//       async:false,
+//       data:{req_id:reqId, hod_id:hod_id},
+//       success:function(data){
+//       fetch_data = data;
+//       }
+//       }); 
+//       return fetch_data;  
+//  } 
 
 
 
 
 
 //  track a staff request
-var mytrack  = $('.track-request');
-   mytrack.popover({
-   placement: 'left',
-   content:  'fetchData',
-   html: true
-   });
+// var mytrack  = $('.track-request');
+//    mytrack.popover({
+//    placement: 'left',
+//    content:  'fetchData',
+//    html: true
+//    });
 
-   function fetchData(){
-      var fetch_data = '';
-      var reqId = $(this).attr("reqId"); 
-      $.ajax({  
-           url:"scripts/track-my-request.php",  
-           method:"POST",  
-           async:false,
-           data:{req_id:reqId},  
-           success:function(data){  
-                fetch_data = data;  
-           }  
-      });  
-      return fetch_data;  
- } 
+//    function fetchData(){
+//       var fetch_data = '';
+//       var reqId = $(this).attr("reqId"); 
+//       $.ajax({  
+//            url:"scripts/track-my-request.php",  
+//            method:"POST",  
+//            async:false,
+//            data:{req_id:reqId},  
+//            success:function(data){  
+//                 fetch_data = data;  
+//            }  
+//       });  
+//       return fetch_data;  
+//  } 
 // });
 
 
 // check ip data/ locations ...
 
-function checkip(){
+// function checkip(){
 
-function jsonIp_data(url) {
-  return fetch(url).then(res => res.json());
-}
-let apiKey = '963f4c40c4bb0adad4fde3e00a14ee73ff587e24a5155a3956afa26d'; //secret key
-jsonIp_data(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
-  console.log(data);
-  // console.log(data.city);
-  // console.log(data.country_code);
-  // so many more properties
-});
-}
+// function jsonIp_data(url) {
+//   return fetch(url).then(res => res.json());
+// }
+// let apiKey = '963f4c40c4bb0adad4fde3e00a14ee73ff587e24a5155a3956afa26d'; //secret key
+// jsonIp_data(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
+//   console.log(data);
+
+// });
+// }
 
  </script>
 
 
 </body>
 </html>
-<?php endif;?> 
+<?php endif; ?> 

@@ -32,7 +32,7 @@
             <li id="username-profile" class="dropdown dropdown-user nav-item">
               <a style="background: white;color: black; border-top-left-radius: 5px; border-bottom-left-radius: 5px;height: 100%; border-right: 1px solid #0044cc" class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                 <span class="mr-1">
-                  <span style="font-family: Archivo Black;" class=" text-bold-900"><?php echo htmlentities(ucfirst($_SESSION['userlogin']));?></span>
+                  <span style="font-family: Archivo Black;" class=" text-bold-900"><?php echo htmlentities(ucfirst($staff_details[0]['stf_fname']));?></span>
                 </span>
                 <span class="avatar avatar-online bg-white" >
                   <img src="../app-assets/images/user-hod.png" alt="avatar"><i></i>
@@ -106,7 +106,7 @@
                         <p class="notification-text font-small-3 text-muted">
                     <a data-target="#Request-view-details" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" href="javascript:void(0)" class="btn  m-0 view-request-details" data-toggle="modal"><?php echo htmlentities($request_instance[$key]["req_id"]);?></a></p>
                         <small>
-                          <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00"><?php echo htmlentities($$request_instance[$key]["principal_action_date"]);?></time>
+                          <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00"><?php echo htmlentities($request_instance[$key]["principal_action_date"]);?></time>
                         </small>
                       </div>
                     </div>

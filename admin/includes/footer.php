@@ -11,7 +11,7 @@
  ?>
 
                          <div id="update-staff-profile-modal" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
-                              <div class="modal-dialog modal-md">
+                              <div class="modal-dialog modal-lg">
                                   <div class="modal-content">
                                       <div class="modal-close-area modal-close-df">
                                           <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
@@ -39,7 +39,7 @@
                                                                           <label class="login2" for="update_staff_username ">staff's Username</label>
                                                                       </div>
                                                                       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                          <input id="update_staff_username" name="update_staff_username" type="text" class="form-control" placeholder="first name"  value="<?php echo (empty($staff_details[0]['username'] || $staff_details[0]['username'] == "") ? $staff_details[0]['stf_email'] : $staff_details[0]['username']  ); ?>" />
+                                                                          <input id="update_staff_username" name="update_staff_username" type="text" class="form-control" placeholder="usernamename"  value="<?php echo (empty($staff_details[0]['username'] || $staff_details[0]['username'] == "") ? $staff_details[0]['stf_email'] : $staff_details[0]['username']  ); ?>" />
                                                                       </div>
                                                                   </div>
                                                               </div>
@@ -64,7 +64,7 @@
                                                                           <input id="update_last_name" name="update_last_name" type="text" class="form-control" placeholder="last name"  value="<?php echo($staff_details[0]['stf_lname']); ?>" />
                                                                       </div>
                                                                   </div>
-                                                              </div>
+                                                              </div> 
 
                                                               <div class="form-group-inner">
                                                                   <div class="row">
@@ -74,8 +74,8 @@
                                                                       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                                                                       <select  id="update_gender" name="update_gender" data-placeholder="...select gender..." class="form-control chosen-seelect" tabindex="-1">
                                                                         <option selected disabled value="">Select</option>
-                                                                        <option  <?php echo $staff_details[0]['gender']=="Male" ? "selected" : "disabled";?> value="Male">Male</option>
-                                                                        <option  <?php echo $staff_details[0]['gender']=="Female" ? "selected" : "disabled";?> value="Female">Female</option>                                                   
+                                                                        <option  <?php echo $staff_details[0]['gender'] =='male' ? "selected" : "disabled";?> value="Male">Male</option>
+                                                                        <option  <?php echo $staff_details[0]['gender']=='female' ? "selected" : "disabled";?> value="Female">Female</option>                                                   
                                                                     </select>                                                                                        </div>
                                                                   </div>
                                                               </div>

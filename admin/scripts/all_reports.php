@@ -13,7 +13,7 @@ $staff_details = $staff->getStaffById($HOD_id);
 ?>
 
 
- <!-- Revenue, Hit Rate & Deals -->
+ <!-- Revenue, Hit Rate & hod-action-on-request.phpDeals -->
 
  <div class="row">
           <div class="col-xl-4 col-lg-6 col-12">

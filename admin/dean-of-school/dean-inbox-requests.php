@@ -1,20 +1,42 @@
 <?php
 session_start();
 // error_reporting(0);
+
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
-  if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
+
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
+
+
+  if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  // if(!$loginFunctions->checkLoginState($session_instance)):
+    
 
   header('location:../index.php');
 
   else:
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
+    // $staf_id = 4;
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+    // if($staff_details[0]['scl_id'] != 6):
+  // header('location:../index.php');
+  // exit();
+    // else: 
+  
     // $stf_role = 6;
     // $stf_role = $_SESSION['role'];
-    $staf_id = 8;
+    // $staf_id = 8;
     // $staf_id = $_SESSION['stf_id'];
 
     // $HOD_id = $_SESSION['stf_id'];
@@ -278,7 +300,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                           <?php ; ?>
                                           </td>
                                           <td class="datatable-ct">
-                                          <div class="acition-btn">
+                                          <div class="acition-btn text-center w-100">
                                          <input data-target="#staff-track-request-progress" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > 
                                          <input data-target="#Request-view-details" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > 
                                          <input data-target="#mission-report" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-blue give-mission-report" value="report" data-toggle="modal" > 
@@ -438,7 +460,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <!-- END MODERN JS-->
 
 
-  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script>
+  <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script> -->
 
   <!-- js bootstrap table from jwrly template -->
     <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
@@ -493,45 +515,34 @@ $('#table').on('click', '.staff-track-request', function(){
                   console.log(data_formulated.all_about_request.hod_sansation);
                       // $('#request-progress').html(data);  
 var track_progress = '<div class="fullwidth"><div class="container  separator">'+
-'<ul class="progress-tracker progress-tracker--vertical">'+
-'<li class="progress-step';
-if(data_formulated.hod_reacted){
-  track_progress += ' is-complete"><div class="progress-marker"  data-text="1"></div><div class="progress-text"><h4 class="progress-title">L1: Depertement</h4>';
-  
-  if(data_formulated.all_about_request.hod_sansation == 1){
-    track_progress += '<h5 class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i>Approved</h5> by <h6>'+data_formulated.about_hod_reacted.fname+' '+data_formulated.about_hod_reacted.lname+ '</h6>  </div></li>';
-  }
-  else{
-    track_progress += '<h5 class="text-danger">Disapproved</h5></div></li>';
-  }
-}
-else{
-  track_progress += '"><div class="progress-marker"  data-text="1"></div><div class="progress-text"><h4 class="progress-title">L1: Depertement</h4>';
-  
-  if(data_formulated.all_about_request.hod_sansation == 0){
-    track_progress += '<h5 class="text-info"> Sansation Waiting... </h5></div></li>';
-  }
+'<ul class="progress-tracker progress-tracker--vertical">';
 
-}
+// '<li class="progress-step';
+// if(data_formulated.hod_reacted){
+//   track_progress += ' is-complete"><div class="progress-marker"  data-text="1"></div><div class="progress-text"><h4 class="progress-title">L1: Depertement</h4>';
+  
+//   if(data_formulated.all_about_request.hod_sansation == 1){
+//     track_progress += '<h5 class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i>Approved</h5> by <h6>'+data_formulated.about_hod_reacted.fname+' '+data_formulated.about_hod_reacted.lname+ '</h6>  </div></li>';
+//   }
+//   else{
+//     track_progress += '<h5 class="text-danger">Disapproved</h5></div></li>';
+//   }
+// }
+// else{
+//   track_progress += '"><div class="progress-marker"  data-text="1"></div><div class="progress-text"><h4 class="progress-title">L1: Depertement</h4>';
+  
+//   if(data_formulated.all_about_request.hod_sansation == 0){
+//     track_progress += '<h5 class="text-info"> Sansation Waiting... </h5></div></li>';
+//   }
+
+// }
 
 track_progress +='<li class="progress-step';
-if(data_formulated.dean_reacted){
-  track_progress +=' is-complete "><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L2: School</h4>';
-  if(data_formulated.all_about_request.dean_sansation == 1){
-    track_progress += '<h5 class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i>Approved </h5> by <h6>'+data_formulated.about_dean_reacted.fname+' '+data_formulated.about_dean_reacted.lname+ '</h6>  </div></li>';
-  }
-  else{
-    track_progress += '<h5 class="text-danger">Disapproved</h5></div></li>';
-  }
-}
-else{
-  track_progress += '"><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L2: School</h4>';
-  
-  if(data_formulated.all_about_request.dean_sansation == 0){
-    track_progress += '<h5 class="text-info"> Sansation Waiting... </h5></div></li>';
-  }
 
-}
+  track_progress +='"><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L1: School</h4>';
+    track_progress += '<h5 class="text-success"> Submitted On  '+ data_formulated.all_about_request.req_action_date +' </h5> </div></li>';
+  
+
 track_progress +='<li class="progress-step';
 
 if(data_formulated.principal_reacted){
@@ -544,7 +555,7 @@ if(data_formulated.principal_reacted){
   }
 }
 else{
-  track_progress += '"><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L1: College</h4>';
+  track_progress += '"><div class="progress-marker"  data-text="2"></div><div class="progress-text"><h4 class="progress-title">L2: College</h4>';
   
   if(data_formulated.all_about_request.principal_sansation == 0){
     track_progress += '<h5 class="text-info"> Sansation Waiting... </h5></div></li>';
@@ -582,13 +593,14 @@ $('#table').on('click', '.view-request-details', function(){
 $('#table').on('click', '.give-mission-report', function(){
            var reqId = $(this).attr("req-id");
            let ThisButton = $(this);
+           ThisButton.addClass('disabled');
+
                 $.ajax({  
                 url:"../report-form.php",  
                 method:"POST",
                 data:{req_id:reqId},  
                 success:function(data){ 
                       $('#reporot-form-container').html(data);
-                      ThisButton.addClass('disabled')
                       $("#myModal").on('shown.bs.modal', function(){
                       $('document').find('#inputName').focus();
                     });

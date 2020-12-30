@@ -27,9 +27,9 @@ $college_requests = $request->getAllRequestsByCollege($college_id);
 // getting data to pre-fill the form
 $staff = new Staff();
 $staff_details = $staff->getStaffById($staf_id);
-$staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
-$staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
-$staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
+// $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
+// $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
+// $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
 $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
 
 $All_college_staffs = $staff->getAllStaff_in_college($college_id);
@@ -123,7 +123,7 @@ div.row-flex-container{
  <link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css"> 
 
 
-<script src="app-assets/js/scripts/html2canvas.js" type="text/javascript"></script>
+<script src="../app-assets/js/scripts/html2canvas.js" type="text/javascript"></script>
 
  <!-- from jewery temperate -->
  <!-- boot table -->
@@ -141,6 +141,30 @@ div.row-flex-container{
     <!-- forms CSS
 		============================================ -->
     <!-- <link rel="stylesheet" href="css/form/all-type-forms.css"> -->
+
+
+<!-- forms -->
+    <!-- modals CSS
+		============================================ -->
+    <!-- <link rel="stylesheet" href="css/modals.css"> -->
+    <!-- forms CSS
+		============================================ -->
+    <link rel="stylesheet" href="css/form/all-type-forms.css">
+
+    <!-- for select chosen -->
+    <link rel="stylesheet" href="css/chosen/bootstrap-chosen.css">
+
+    <!-- date picker -->
+    <link rel="stylesheet" href="css/datapicker/datepicker3.css">
+
+     <!-- from jewery temperate -->
+ <!-- boot table -->
+  <link rel="stylesheet" type="text/css" href="css/data-table/bootstrap-table.css">
+  <!-- css -->
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+
 
 
 <!-- notifications -->
@@ -267,7 +291,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         $Disapproved_requests_number = 0;
                         if ($college_requests != null) {
                         foreach ($college_requests as $key => $value) {
-                            if ($college_requests[$key]["principal_sansation"] == 1) {
+                            if ($college_requests[$key]["principal_sansation"] == 2) {
                                 $Disapproved_requests[] = $college_requests;
                             }
                         }
@@ -309,7 +333,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                 $InExcution_requests_number = 0;
                 if ($college_requests != null) {
                 foreach ($college_requests as $key => $value) {
-                    if ($college_requests[$key]["principal_sansation"] == 1) {
+                    if ($college_requests[$key]["progress"] == 3) {
                         $InExcution_requests[] = $college_requests;
                     }
                 }
@@ -337,7 +361,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                     
           </div>
 
+          <?php if (isset($_GET['option']) AND $_GET['option'] == "change-password"):  
+        include_once('../change-password.php');
+        
 
+        else:
+          ?>
        <div class="content-body">
            <!-- table start -->
 
@@ -367,15 +396,16 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                         <thead>
 
                                             <tr>
-                                                <th data-field="state" data-checkbox = "true"></th>
-                                                <th data-field="id">Req_ID</th>
-                                                <th data-field="place" data-editable="true">Host place</th>
-                                                <th data-field="departure" data-editable="true">Departure</th>
-                                                <th data-field="return" data-editable="true">Return</th>
-                                                <th data-field="first-name" data-editable="true">First name</th>
-                                                <th data-field="staff-role" data-editable="true">Position</th>
-                                                <th data-field="status" data-editable="true">Status</th>
-                                                <th data-field="action">Action</th>
+                                            <th data-field="state" data-checkbox="true"></th>
+                                            <!-- <th data-field="counts" >#</th> -->
+                                            <th data-field="request_id" >req ID</th>
+                                            <th data-field="firstName" >First name</th>
+                                            <!-- <th data-field="lastName" >Last name</th> -->
+                                            <th data-field="position" >Position</th>
+                                            <th data-field="departure" >Deperture</th>
+                                            <th data-field="return" >Prev. Action</th>
+                                            <th data-field="status" >Status</th>
+                                            <th data-field="action"  class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -384,20 +414,38 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                           foreach($college_requests as $key => $value):
                                             ?>
                                             <tr>
-                                                <td></td>
-                                                <td><?php echo $college_requests[$key]["req_id"] ?> </td>
-                                                <td><?php echo $college_requests[$key]["des_name"] ?></td>
-                                                <td><?php echo $college_requests[$key]["req_departure"] ?></td>
-                                                <td><?php echo $college_requests[$key]["req_return"] ?></td>
-                                                <td><?php echo $college_requests[$key]["stf_fname"] ?></td>
-                                                <td><?php echo $college_requests[$key]["role_name"] ?></td>
-                                                <td><?php echo $college_requests[$key]["progress"] ?></td>
-                                                <td class="datatable-ct">
-                                                <input data-target="#Request-view-details" req-id="<?php echo htmlentities($request_dept_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow hod-view-staff-request-details" value="View" data-toggle="modal" > 
+                                            <td></td>
+                                        <!-- <td><?php// echo htmlentities($cont_rows);?></td> -->
+                                        <td><?php echo htmlentities($college_requests[$key]["req_id"]);?></td>                
+                                        <td><?php echo htmlentities($college_requests[$key]["stf_fname"]);?></td>
+                                        <!-- <td><?php// echo htmlentities($college_requests[$key]["stf_lname"]);?></td> -->
+                                        <td><?php echo htmlentities($college_requests[$key]["role_name"]);?></td>
+                                        <td><?php echo htmlentities($college_requests[$key]["req_departure"]);?></td>
+                                        <td>
+                                        <?php if($college_requests[$key]['role_id'] != 6): 
+                                          if($college_requests[$key]['Dean_id'] == null ){ echo '<span title="This Request hasn\'t reacted from previous level (departement)"=>Not reacted</span>';}
+                                          else{
+                                            if($college_requests[$key]['dean_sansation'] == 1){ echo '<span class="">approved</span>'; }
+                                            if($college_requests[$key]['dean_sansation'] == 2){ echo '<span class="">disapproved</span>'; }
+                                          }
+                                        endif; ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($college_requests[$key]["principal_sansation"] == 2){echo '<span class="bg-warning">Disapproved</span>';}
 
-                                                <a data-target="#Request-view-details" req-id="<?php echo htmlentities($college_requests[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow principal-view-staff-request-details" data-toggle="modal" > <i class="fa fa-eye" aria-hidden="true"></i></a>
-                                                  <button data-toggle="tooltip" title="" class="pd-setting-ed" data-original-title="Trash"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                                </td>
+                                        if($college_requests[$key]["principal_sansation"] == 1){echo '<span class="bg-success">Approved</span>';}
+                                        ?>
+
+                                        <?php  if($college_requests[$key]["principal_id"] == NULL) : ?> 
+                                        <input data-target="#action-on-request" req-id="<?php echo htmlentities($college_requests[$key]["req_id"]); ?>" style="margin: 0px ;padding: 8px;" type="button"   class="btn-disabled btn-sm border-0 btn-primary do-action-button <?php echo $college_requests[$key]['dean_sansation'] == 1 ? 'disabled' : '';?>" value="Do Action" data-toggle="modal"/>
+                                        <?php endif; ?>
+                                        </td>
+
+                                    <td >
+                                    <input data-target="#Request-view-details" req-id="<?php echo htmlentities($college_requests[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow principal-view-staff-request-details" value="View" data-toggle="modal" > 
+
+                                  </td>
                                             </tr>
                                           <?php  endforeach; endif;?>
                                            
@@ -413,9 +461,10 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                 </div>
             </div>
         </div>
+        <?php endif; ?>
         <!-- table end -->
      
-        <div class="row">
+        <!-- <div class="row">
   
 
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -511,7 +560,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
                                                                                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                                                                                             <label>
-																									<input type="checkbox" class="i-checks"> Remember me </label>
+                                                                                          <input type="checkbox" class="i-checks"> Remember me </label>
                                                                                         </div>
                                                                                     </div>
 
@@ -538,9 +587,9 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
 
-                </div>
+                </div>-->
 
 
         </div>
@@ -600,24 +649,27 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
 
-<!-- forms validation modal  -->
+<!-- act on request by Dean-> form modal start -->
 
-<div class="modal bg-light" id="validationModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-      
-        <!-- Modal body -->
-        <div id="validate-form-modal" class="modal-body">
-        </div>
-        
-        <!-- Modal footer -->
-         <div class="modal-header">
-          <button id="btn-hide-validation-error-modal" type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
+<div  style="z-index:9999" class="modal bd-example-modal-lg1 dean-do-action-on-request" id="action-on-request" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title center" id="exampleModalLongTitle"><b> React to this request </b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="action-on-request-form">
+
+     
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
 
 
 
@@ -635,18 +687,18 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <script src="../app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
   <!-- BEGIN VENDOR JS-->
   <!-- BEGIN PAGE VENDOR JS-->
-  <script src="../app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
-  <script src="../app-assets/vendors/js/charts/raphael-min.js" type="text/javascript"></script>
-  <script src="../app-assets/vendors/js/charts/morris.min.js" type="text/javascript"></script>
-  <script src="../app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js" type="text/javascript"></script>
-  <script src="../app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js"
-  type="text/javascript"></script>
+  <!-- <script src="../app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script> -->
+  <!-- <script src="../app-assets/vendors/js/charts/raphael-min.js" type="text/javascript"></script> -->
+  <!-- <script src="../app-assets/vendors/js/charts/morris.min.js" type="text/javascript"></script> -->
+  <!-- <script src="../app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js" type="text/javascript"></script> -->
+  <!-- <script src="../app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js" -->
+  <!-- type="text/javascript"></script> -->
 
   <!-- BEGIN MODERN JS-->
 
+
   <script src="../app-assets/js/core/app-menu.js" type="text/javascript"></script>
   <script src="../app-assets/js/core/app.js" type="text/javascript"></script>
-  <script src="../app-assets/js/scripts/customizer.js" type="text/javascript"></script>
   <!-- defined -->
   <script src="../app-assets/js/customJs.js" type="text/javascript"></script>
   
@@ -662,8 +714,19 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     <script src="js/data-table/colResizable-1.5.source.js"></script>
     <script src="js/data-table/bootstrap-table-export.js"></script>
 
-    <!-- notifications js -->
-    
+
+
+            <!-- datapicker JS
+		============================================ -->
+    <script src="js/datapicker/bootstrap-datepicker.js"></script>
+    <script src="js/datapicker/datepicker-active.js"></script>
+    <!-- input-mask JS
+		============================================ -->
+    <script src="js/input-mask/jasny-bootstrap.min.js"></script>
+    <!-- chosen JS
+		============================================ -->
+    <script src="js/chosen/chosen.jquery.js"></script>
+    <script src="js/chosen/chosen-active.js"></script>    
     <!-- notification JS
 		============================================ -->
     <script src="js/notifications/Lobibox.js"></script>
@@ -673,21 +736,148 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
  <script>
      
-$('.principal-view-staff-request-details').click(function(){  
+
+// dean view the single staff request
+
+$('#table').on('click', '.principal-view-staff-request-details', function(){
            var reqId = $(this).attr("req-id");
-           var staf_id = <? echo $staf_id; ?>;
-           var principal_view_single_req = "principal";
+           var staf_id = <?php echo $staf_id; ?>;        
+           console.log(staf_id +" " +reqId);
+                  
                 $.ajax({  
-                url:"../scripts/staff-request-details.php",  
-                method:"post",
-                data:{req_id:reqId, staf_id:staf_id, who_views_single_req : hod_view_single_req},
+                url:"../scripts/staff-request-details.php", 
+                method:"post",  
+                data:{req_id:reqId, staf_id:staf_id},
                 success:function(data){
-                      $('#request_detail').html(data);  
-                      // $('#dataModal').modal("show");  
+                  $('#request_detail').html(data);
+                  let takeActionOnRequest = '<a style="margin: 0px ;padding: 3px;" reqId="'+reqId+'" tabindex="0" data-toggle="popover"  class="btn btn-primary view-give-sansation" role="button" data-trigger="click">Do Reaction</a>';     
+
+                  $.ajax(
+                    {
+                      url: '../scripts/track-my-request.php',
+                      method:"POST",
+                      data: {req_id:reqId},
+                      success:function(response)
+                      {
+                        let data_formulated = JSON.parse(response);
+                        console.log(data_formulated);
+                        if(data_formulated.principal_reacted) //check if principal has received the request
+                        {
+                          if(data_formulated.all_about_request.principal_reacted = 1)
+                          {
+                            $('#hold-viwer-action').html('<div class="alert alert-success mb-2" role="alert"> you have <strong>Approved </strong>this request</div></>');
+                          }
+                          else
+                          {
+                            $('#hold-viwer-action').html('<div class="alert alert-success mb-2" role="alert"> you have <strong>Disapproved </strong>this request</div></>');
+                          }
+                        }
+                        else
+                        {
+                          
+                          // $('#hold-viwer-action').html(takeActionOnRequest);
+
+                        }
+                      // $('#dataModal').modal("show");
+                 }  
+           }); 
+
+          } 
+           });  
+
+});
+
+// priincipal reaction on request
+
+$('#table').on('click', '.do-action-button', function(){
+           var reqId = $(this).attr("req-id");
+           var staf_id = <?php echo $staf_id; ?>;        
+          //  console.log(staf_id +" " +reqId);
+                  
+                $.ajax({
+                url:"../scripts/track-my-request.php", 
+                method:"POST",  
+                data:{req_id:reqId},
+                success:function(data){
+                   let data_formulated = JSON.parse(data);
+                  //  console.log(data_formulated);
+                  // console.log(data_formulated.all_about_request.dean_sansation);
+
+                  if(!data_formulated.principal_reacted){
+                  let form_dean_sansation = '<form name="remark" method="post"><div style="text-align: center;"><select id="principal_sansation" name="principal_sansation" style="color:black; display:inline-block; max-width: 200px;" class="form-control" name="status" required> <option value="">Choose your option</option> <option value="1">Approved</option> <option value="2">Not Approved</option> </select></div> <input type="hidden" id="Req-Dean-Ids" class="Req-Dean-Ids" name="Req-Dean-Ids" req_id="'+reqId+'" principal_id="'+staf_id+' "> <textarea  placeholder="leave the comment here" id="action_comment" class="form-control m-t-2" name="action_comment" rows="5" required></textarea> <div class="text-center"> <button onclick="Principal_Do_direct_ActionOnRequest()" type="button" class="btn pt-0 mt-1 btn-blue m-b-xs Do_direct_ActionOnRequest" name="submitAction" value="Send sansation">Send sansation</button> </div></form>';
+                  $('#action-on-request-form').html(form_dean_sansation);  
+                  
+                  }
+                  else  
+                  {
+                    let message = '<h4 class="bg-success" > This Request '+data_formulated.all_about_request.principal_sansation == 1 || data_formulated.all_about_request.principal_sansation == true? " Approved " : " Disapproved" +'</h4>'
+                  $('#action-on-request-form').html(message);
+
+                  }
+                    
                  }  
            });  
-      });
-	
+
+});
+
+
+
+   // take action on request. for direct action in table 
+
+   function Principal_Do_direct_ActionOnRequest(){
+    errors_array = [];
+    var principal_id = $('#Req-Dean-Ids').attr("principal_id");
+    var req_id = $('#Req-Dean-Ids').attr("req_id");
+    var principal_comment=$('#action_comment').val();
+    var principal_sansation=$('#principal_sansation').children(":selected").attr("value");
+
+    if(principal_comment == null || principal_comment == ""){
+      errors_array.push("comment field can't be empty");
+    }
+    if(principal_sansation == null || principal_sansation == "")
+    {
+      errors_array.push("choose to approve or not");
+    }    
+    if(errors_array.length != 0){
+
+      Lobibox.notify('warning',{
+      sound: false,
+      width: 400,
+      position: 'top right',
+      msg: errors_array
+  });
+    }
+    else{
+    $.post("action-on-request/principal-action-on-request.php",{req_id: req_id,principal_comment: principal_comment, principal_sansation: principal_sansation, principal_id:principal_id},
+    function(data) {
+      console.log(data);
+      let actionFedback = JSON.parse(data);
+      console.log(actionFedback);
+      if(actionFedback)
+      {
+        Lobibox.notify('success',{
+        sound: false,
+        width: 400,
+        position: 'top right',
+        msg: 'Thank you sansation sent/ we will Notify a requestor'
+  });
+
+      }
+      else{
+        Lobibox.notify('error',{
+        sound: false,
+        width: 400,
+        position: 'top right',
+        msg: 'Thank you sansation not set / server error'
+       });
+      }
+
+    });
+    }
+    }
+
+
+
  </script>
 
 

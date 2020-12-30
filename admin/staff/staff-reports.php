@@ -7,15 +7,24 @@ include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-  if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
 
-  header('location:index.php');
 
-  else:
- 
-    $stf_role = $_SESSION['role'];
-    $staf_id = $_SESSION['stf_id'];
+  // if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+
+    if(!$loginFunctions->checkLoginState($session_instance)):
+    
+      header('location:../index.php');
+  
+    else:
+      // $_SESSION['userlogin'] = $_SESSION['user_username'];
+      $stf_role = $_SESSION['role_id'];
+      // $staf_id = 4;
+      $staf_id = $_SESSION['user_id'];
 
     $organisation = new Organisation();
 

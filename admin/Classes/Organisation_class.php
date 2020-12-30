@@ -2,7 +2,6 @@
 
 class Organisation {    
     private $db_handle;
-    // private $userData = array();
     
     function Organisation(){
         $this->db_handle = new DBController();

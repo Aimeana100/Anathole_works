@@ -1,19 +1,50 @@
 <?php
 session_start();
 // error_reporting(0);
+
+
+
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-$stf_role = 3;
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
+
+
+  // if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+  if(!$loginFunctions->checkLoginState($session_instance)):
+    
+
+  header('location:../index.php');
+
+  else:
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
+    // $staf_id = 4;
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+    if($staff_details[0]['role_id'] != 3):
+
+  header('location:../index.php');
+  exit();
+    else: 
+
+
+
+// $stf_role = 3;
 // $_SESSION['role'];
-$staf_id = 2;
+
 // $_SESSION['stf_id'];
 
-$college_id = 1;
+// $college_id = 1;
 
 // check authentication
 $organisation = new Organisation();
@@ -24,11 +55,11 @@ $request_instance = $request->getAllRequestsByStaff($staf_id);
 // getting data to pre-fill the form
 $staff = new Staff();
 $staff_details = $staff->getStaffById($staf_id);
-$staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
-$staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
-$staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
+// $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
+// $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
+// $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
 $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
-$All_college_staffs = $staff->getAllStaff_in_college($college_id);
+$All_college_staffs = $staff->getAllStaff_in_college($staff_details[0]['coll_id']);
 
 //  echo json_encode(array("staff_id" =>$staff_details[0]["stf_id"], "depertement" => $staff_details[0]["dept_id"], "college_id" => $staff_details[0]['coll_id'])  );
 $_SESSION['userlogin'] = isset($staff_details[0]['username']) ? $staff_details[0]['username'] : $staff_details[0]['stf_email'];
@@ -168,16 +199,27 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
   <div class="app-content content">
     <div sty class="content-wrapper">
+    
+
+    <?php if (isset($_GET['option']) AND $_GET['option'] == "change-password"):  
+        include_once('../change-password.php');      
+
+        else:
+          ?>
+
     <div class="content-body">
            <!-- table start -->
+
        <div class="data-table-area mg-tb-15">
             <div class="container-fluid">
                 <div class="row">
+
+
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd row">
                                 <div class="main-sparkline13-hd co-6">
-                                    <h1>ALL <span class="table-project-n">STAFFS</span> Records</h1>
+                                    <h1>ALL <span class="table-project-n">COLLEGES STAFFS</span> /<?php echo $staff_details[0]['coll_name']; ?></h1>
                                 </div>
                                 <div class="main-sparkline13-hd col-6 text-right ">
                                     <button class="btn-md m-b-r-0 b-0 add-staff float-right">
@@ -221,9 +263,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <td><?php echo $All_college_staffs[$key]["role_name"]; ?></td>
                                                 <td><?php echo $All_college_staffs[$key]["dept_name"]; ?></td>
                                                 <td><?php echo $All_college_staffs[$key]["statuses"]; ?></td>
-                                                <td class="datatable-ct">
-
-                                                <button data-toggle="tooltip" title="" class="pd-setting-ed" data-original-title="Trash"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                <td class="datatable-ct" >
+                                                <input staff-id="<?php echo htmlentities($All_college_staffs[$key]["stf_id"]);  ?>" type="button" class="btn-sm border-0 current-staff-status <?php echo $All_college_staffs[$key]['statuses'] == 1 ? 'btn-success': 'btn-warning'; ?>" value="<?php echo $All_college_staffs[$key]['statuses'] == 1 ? 'Active': 'Disactive'; ?>" />
                                                 </td>
                                             </tr>
                                             <?php endforeach; endif;?>
@@ -236,6 +277,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -359,7 +401,9 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                                                             <label for="email" class="login2">Staff's Email</label>
                                                                                         </div>
                                                                                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                                            <input type="text" name="email" id="email" class="form-control" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" title="NB. registered staff will find login creditial via this email 💯" placeholder="Staff Email" />
+                                                                                            <input onblur ="ValidateEmail(this)" type="text" name="email" id="email" class="form-control" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" title="NB. registered staff will find login creditial via this email 💯" placeholder="Staff Email" />
+                                                                                            <span id="emailError" class="bg-red"></span>
+
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -404,6 +448,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                     </div>
                                 </div>
                             </div>
+                  <?php endif; ?>
                        
                         
                     
@@ -429,13 +474,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
           </div>
       </div>
 
-
-
-
-
 <!-- request form modal start -->
-
-
 
 <div class="modal fade bd-example-modal-lg" id="request-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -544,8 +583,83 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
  <script>
 
+
+ // hod view the single staff request
+
+ 
+$('#table tbody').on( 'click', 'td input.current-staff-status', function () {
+  if(confirm('you are about to change staff status')){
+  var thisButton = $(this);
+  // var this_table_data = $(this).closest()
+  // var name = $(this).closest('td');
+  // console.log(name);
+  var current_status = $(this).attr("value");
+  var staffId = $(this).attr("staff-id");
+  var newstatus = "";
+  $.ajax({  
+                url:"../scripts/change-staff-status.php", 
+                method:"post",  
+                data:{staff_id:staffId},
+                success:function(data){
+                  console.log(data);
+                  data =  JSON.parse(data);
+                  let newStatus = data.status;
+                  thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
+                  thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
+                  thisButton.val(newStatus == 1 ? "Active" : "Deactive");
+            }  
+           });
+          }
+} );
+
+
+
+
+
+function ValidateEmail(obj){
+  // let Obj = obj;
+  var emailValue = obj.value;
+  
+  var atpos = emailValue.indexOf("@");
+  var dotpos = emailValue.lastIndexOf(".");
+  var emailError = document.getElementById("emailError"); 
+
+  if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailValue.length) {
+    emailError.innerHTML = "Enter valid email Address";
+  }
+  else
+  {
+    verfyEmailDB(emailValue).then((data)=>{
+      let mycalback = JSON.parse(data);
+      if(mycalback.success){
+      emailError.innerHTML = 'email has been already';
+    }})
+
+  }
+}
+
+
+async function verfyEmailDB(email)
+{
+  let Email = email;
+  let result;
+  try {
+    result = await $.ajax({
+    url: '../scripts/validate-email-DB-live.php',
+    type: 'GET',
+    data: {staff_email: Email}
+  })
+  return result;
+
+  } catch (error) {
+    console.log(error);    
+  }  
+}
+
+
+
    
  </script>
 </body>
 </html>
-<!-- <?php// endif;?>  -->
+<?php endif; endif;?> 

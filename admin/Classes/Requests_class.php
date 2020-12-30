@@ -192,7 +192,7 @@ function Dean_takeActionOnRequest($dean_id, $dean_comment, $dean_sansation, $dea
 
 function Principal_takeActionOnRequest($principal_id, $principal_comment, $principal_sansation, $principal_action_date, $req_id)
 {
-    $query = "UPDATE `urstms`.`user_request`  SET principal_id = ?, principal_sansation = ?, principal_comment = ?, principal_action_date = ? WHERE req_id = ?";
+    $query = "UPDATE `urstms`.`user_request`  SET principal_id = ?, principal_comment = ?, principal_sansation = ?, principal_action_date = ? WHERE req_id = ?";
     $paramType = "isisi";
     $paramValue = array(
         $principal_id,

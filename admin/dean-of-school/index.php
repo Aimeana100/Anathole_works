@@ -1,35 +1,55 @@
 <?php
 session_start();
 // error_reporting(0);
+
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-  if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
+
+
+  if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  // if(!$loginFunctions->checkLoginState($session_instance)):
+    
 
   header('location:../index.php');
 
   else:
-    $stf_role = 6;
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
+    // $staf_id = 4;
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+    // if($staff_details[0]['scl_id'] != 6):
+  // header('location:../index.php');
+  // exit();
+    // else: 
+  
+    
+
+    // $stf_role = 6;
     // $stf_role = $_SESSION['role'];
-    $staf_id = 8;
+    // $staf_id = 8;
     // $staf_id = $_SESSION['stf_id'];
 
     // $HOD_id = $_SESSION['stf_id'];
     $organisation = new Organisation();
   
-    $staff = new Staff();
-    $staff_details = $staff->getStaffById($staf_id);
-
-    $schl_id=$staff_details[0]['scl_id'];
+    $schl_id = $staff_details[0]['scl_id'];
 
     // instantiate request
   $request = new Request();
   $request_dept_instance = $request->getAllRequestsBySchoolId($schl_id);
-  
+ 
      // instantiate reports
     $report = new Report();
 
@@ -159,7 +179,7 @@ div.row-flex-container{
     <link rel="stylesheet" href="../super-admins/css/notifications/notifications.css">
 
 
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.css"/> -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.css"/>
  
  <!-- progress tracker -->
  <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/site.css">
@@ -193,6 +213,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
  <div class="">
   
         <!-- Data Tables of staff request start  -->
+
+      
         <div class="row">
           <div class="col-12">
             <div class="card">
@@ -454,7 +476,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
  <script>
 
 
-// hod view the single staff request
+// dean view the single staff request
 
 $('#table').on('click', '.dean-view-staff-request-details', function(){
            var reqId = $(this).attr("req-id");
@@ -466,9 +488,39 @@ $('#table').on('click', '.dean-view-staff-request-details', function(){
                 method:"post",  
                 data:{req_id:reqId, staf_id:staf_id},
                 success:function(data){
-                      $('#request_detail').html(data);  
-                      // $('#dataModal').modal("show");  
+                  $('#request_detail').html(data);
+                  let takeActionOnRequest = '<a style="margin: 0px ;padding: 3px;" reqId="'+reqId+'" tabindex="0" data-toggle="popover"  class="btn btn-primary view-give-sansation" role="button" data-trigger="click">Do Reaction</a>';     
+
+                  $.ajax(
+                    {
+                      url: '../scripts/track-my-request.php',
+                      method:"POST",
+                      data: {req_id:reqId},
+                      success:function(response)
+                      {
+                        let data_formulated = JSON.parse(response);
+                        console.log(data_formulated);
+                        if(data_formulated.dean_reacted) //check if principal has received the request
+                        {
+                          if(data_formulated.all_about_request.dean_sansation = 1)
+                          {
+                            $('#hold-viwer-action').html('<div class="alert alert-success mb-2" role="alert"> you have <strong>Approved </strong>this request</div></>');
+                          }
+                          else
+                          {
+                            $('#hold-viwer-action').html('<div class="alert alert-success mb-2" role="alert"> you have <strong>Disapproved </strong>this request</div></>');
+                          }
+                        }
+                        else
+                        {
+                          // $('#hold-viwer-action').html(takeActionOnRequest);
+
+                        }
+                      // $('#dataModal').modal("show");
                  }  
+           }); 
+
+          } 
            });  
 
 });
@@ -488,7 +540,7 @@ $('#table').on('click', '.do-action-button', function(){
                   // console.log(data_formulated.all_about_request.dean_sansation);
 
                   if(!data_formulated.dean_reacted){
-                  let form_dean_sansation = '<form name="remark" method="post"><div style="text-align: center;"><select id="dean_sansation" name="dean_sansation" style="color:black; display:inline-block; max-width: 200px;" class="form-control" name="status" required> <option value="">Choose your option</option> <option value="1">Approved</option> <option value="2">Not Approved</option> </select></div> <input type="hidden" id="Req-Hod-Ids" class="Req-Hod-Ids" name="Req-Hod-Ids" req_id="'+reqId+'" dean_id="'+staf_id+' "> <textarea  placeholder="leave the comment here" id="action_comment" class="form-control m-t-2" name="action_comment" rows="5" required></textarea> <div class="text-center"> <button onclick="Dean_Do_direct_ActionOnRequest()" type="button" class="btn pt-0 mt-1 btn-blue m-b-xs Do_direct_ActionOnRequest" name="submitAction" value="Send sansation">Send sansation</button> </div></form>';
+                  let form_dean_sansation = '<form name="remark" method="post"><div style="text-align: center;"><select id="dean_sansation" name="dean_sansation" style="color:black; display:inline-block; max-width: 200px;" class="form-control" name="status" required> <option value="">Choose your option</option> <option value="1">Approved</option> <option value="2">Not Approved</option> </select></div> <input type="hidden" id="Req-Dean-Ids" class="Req-Dean-Ids" name="Req-Dean-Ids" req_id="'+reqId+'" dean_id="'+staf_id+' "> <textarea  placeholder="leave the comment here" id="action_comment" class="form-control m-t-2" name="action_comment" rows="5" required></textarea> <div class="text-center"> <button onclick="Dean_Do_direct_ActionOnRequest()" type="button" class="btn pt-0 mt-1 btn-blue m-b-xs Do_direct_ActionOnRequest" name="submitAction" value="Send sansation">Send sansation</button> </div></form>';
                   $('#action-on-request-form').html(form_dean_sansation);  
                   
                   }
@@ -513,8 +565,8 @@ $('#table').on('click', '.do-action-button', function(){
       // getting ids from hidden input in popover  on direct action    
     // errors = {"approver_id": "", "request:id": "", "comment": "", "sansation": ""};
     errors_array = [];
-    var dean_id = $('#Req-Hod-Ids').attr("dean_id");
-    var req_id = $('#Req-Hod-Ids').attr("req_id");
+    var dean_id = $('#Req-Dean-Ids').attr("dean_id");
+    var req_id = $('#Req-Dean-Ids').attr("req_id");
     var dean_comment=$('#action_comment').val();
     var dean_sansation=$('#dean_sansation').children(":selected").attr("value");
 
@@ -734,4 +786,4 @@ jsonIp_data(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
 
 </body>
 </html>
-<?php endif;?> 
+<?php endif; ?> 

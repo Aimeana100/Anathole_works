@@ -33,6 +33,7 @@ function getAllReporsts(){
     return $All_mission_reports;
 }
 
+// currently not being invoked
 function Is_mission_reported($Allrequsts_set){
     $mission_array_objected = array();
     $mission_reports_array = $this->getAllReporsts();
@@ -72,6 +73,20 @@ function getAllReportBySchool($school_id)
     $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
     return $result;
 }
+
+// get all reports by college ID
+function getAllReportByCollegeId($college_id)
+{
+    $query = "SELECT * FROM travel_result INNER JOIN requests ON requests.req_id = travel_result.req_id INNER JOIN user_request ON user_request.req_id = requests.req_id INNER JOIN action_notifications ON user_request.req_id = action_notifications.req_id INNER JOIN staffs_info ON staffs_info.stf_id = user_request.stf_id INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN schools ON departements.scl_id = schools.scl_id INNER JOIN colleges ON schools.coll_id = colleges.coll_id AND colleges.coll_id = ? INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN destination ON requests.dest_id = destination.des_id INNER JOIN transiport ON transiport.trans_id = requests.trans_id ORDER BY requests.req_id DESC;";
+    $paramType = "i";
+    $paramValue = array(
+        $college_id
+    );
+    
+    $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
+    return $result;
+}
+
 
 function getAllReportByStfId($stf_id)
 {
