@@ -33,7 +33,7 @@
 
 
         <li style="padding-bottom: 3px;" class=" depertment-inbox depertment-name nav-item">
-        <a href="hod-inbox.php"><i class="la la-home"></i>
+        <a href="#"><i class="la la-home"></i>
         <span class="menu-title" data-i18n="nav.dash.main">My Inbox </span></a>
         </li>
 

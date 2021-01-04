@@ -16,10 +16,10 @@ $loginFunctions = new Functions();
   // if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
 
     if(!$loginFunctions->checkLoginState($session_instance)):
-    
+
     header('location:../index.php');
 
-  else:
+    else:
     // $_SESSION['userlogin'] = $_SESSION['user_username'];
     $stf_role = $_SESSION['role_id'];
     // $staf_id = 4;
@@ -30,12 +30,16 @@ $loginFunctions = new Functions();
     $request = new Request();
     $request_instance = $request->getAllRequestsByStaff($staf_id);
 
-   // getting data to pre-fill the form
-    $staff = new Staff();
-     // instantiate reports
+     $staff = new Staff();
      $report = new Report();
 
     $staff_details = $staff->getStaffById($staf_id);
+
+    if ($staff_details[0]['role_id'] == 3 || $staff_details[0]['role_id'] == 7 || $staff_details[0]['role_id'] == 4 || $staff_details[0]['role_id'] == 6) {
+        header('location:../index.php');
+        exit();
+    }
+
     $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
     $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
     $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
@@ -59,7 +63,7 @@ $loginFunctions = new Functions();
 }
 
 /* hide bootstrap data table buttons and fields */
-/* .dataTables_filter, .dataTables_info { display: none; } */
+.dataTables_filter,.dataTables_length, .dataTables_info { display: none; }
 .bs-bars.pull-left, .pull-right.search, .fixed-table-pagination>div {
   display:block;
 }
@@ -125,8 +129,8 @@ div.row-flex-container{
   <link rel="stylesheet" type="text/css" href="../app-assets/css/app.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css">
+  <!-- <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css"> -->
   <link rel="stylesheet" type="text/css" href="../app-assets/fonts/simple-line-icons/style.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
 
@@ -170,12 +174,14 @@ div.row-flex-container{
 
 
     <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.css"/> -->
- 
+    <!-- <link href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css" rel="stylesheet"> -->
+
+
  <!-- progress tracker -->
  <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/site.css">
   <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/progress-tracker.css">
-  <link rel="stylesheet" href="  https://use.fontawesome.com/releases/v5.7.2/css/all.css
-">
+  <link rel="stylesheet" href="  https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+  
 </head>
 
 <body style="color: #000000" class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar"
@@ -196,12 +202,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
       </div>
   <div class="content-body">
 
- <?php if (isset($_GET['option']) AND $_GET['option'] == "change-password"):  
- include_once('../change-password.php');
+    <?php if (isset($_GET['option']) AND $_GET['option'] == "change-password"):  
+    include_once('../change-password.php');
  
 
- else:
-  ?>
+    else:
+      ?>
 
  
         <?php basic_staff_request: ?>
@@ -247,7 +253,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                         <option value="selected">Export Selected</option>
                                       </select>
                                     </div>
-                                    <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
+                                    <table id="table" data-show-export="true" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
                                         data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
                                         <thead>
                                             <tr>
@@ -257,7 +263,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <th data-field="destination" data-editable="true">Destination</th>
                                                 <th data-field="departure" data-editable="true">Deperture</th>
                                                 <th data-field="return" data-editable="true">Return</th>
-                                                <th data-field="Status" data-editable="true">Status</th>
+                                                <th data-field="status" data-editable="true">Status</th>
                                                 <th data-field="action" class="text-center">Action</th>
                                             </tr>
                                         </thead>
@@ -275,11 +281,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                           <td><?php echo $request_instance[$key]["req_departure"]; ?></td>
                                           <td><?php echo $request_instance[$key]["req_return"]; ?></td>
                                           <td>
-                                          <input req-id="<?php echo htmlentities($request_instance[$key]["req_id"]);  ?>" type="button" class="btn-sm border-0 my-request-status <?php echo $request_instance[$key]['req_status'] == 1 ? 'btn-success': 'btn-warning'; ?>" value="<?php echo $request_instance[$key]['req_status'] == 1 ? 'ON': 'OFF'; ?>" />
+                                          <input req-id="<?php echo htmlentities($request_instance[$key]["req_id"]);  ?>" type="button" class="btn-sm border-0 my-request-status <?php echo $request_instance[$key]['req_status'] == 1 ? 'btn-success': 'btn-warning'; ?>" value="<?php echo $request_instance[$key]['req_status'] == 1 ? 'Activated': 'Cancelled'; ?>" />
                                           <?php ; ?>
                                           </td>
                                           <td class="datatable-ct">
-                                          <div class="acition-btn">
+                                          <div class="acition-btn text-center">
                                          <input data-target="#staff-track-request-progress" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > 
                                          <input data-target="#Request-view-details" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > 
                                          <input data-target="#mission-report" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-blue give-mission-report" value="report" data-toggle="modal" > 
@@ -309,7 +315,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
                 <?php endif; ?>
               </div>
-        
+      
 
                                <!-- Basic Tables end -->
 
@@ -372,7 +378,6 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
 <!-- request form modal start -->
-
 <div class="modal fade bd-example-modal-lg" id="staff-request-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -432,7 +437,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
  <!-- BEGIN PAGE VENDOR JS-->
- <script src="../app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
+  <script src="../app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
   <script src="../app-assets/vendors/js/charts/raphael-min.js" type="text/javascript"></script>
   <script src="../app-assets/vendors/js/charts/morris.min.js" type="text/javascript"></script>
   <script src="../app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js"
@@ -440,7 +445,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <script src="../app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js"
   type="text/javascript"></script>
   <!-- <script src="../app-assets/data/jvector/visitor-data.js" type="text/javascript"></script> -->
-  
+
   <!-- END PAGE VENDOR JS-->
   <!-- BEGIN MODERN JS-->
   <script src="../app-assets/js/core/app-menu.js" type="text/javascript"></script>
@@ -449,21 +454,24 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <!-- END MODERN JS-->
 
 
-  <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script> -->
+   <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script> -->
+
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
 
   <!-- js bootstrap table from jwrly template -->
-    <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
+     <!-- <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
     <script src="../super-admins/js/data-table/tableExport.js"></script>
     <script src="../super-admins/js/data-table/data-table-active.js"></script>
-    <!-- <script src="../js/data-table/bootstrap-table-editable.js"></script> -->
+    <script src="../js/data-table/bootstrap-table-editable.js"></script> 
     <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
     <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script>
-    <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
+     <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
     <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>
-    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script>
+    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script> -->
+
 
             <!-- datapicker JS
 		============================================ -->
@@ -484,12 +492,13 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     <script src="../super-admins/js/notifications/notification-active.js"></script>
 
     <!-- progress tracker -->
-    <!-- <script src="../super-admins/js/progress-tracker/scripts/site.js"></script> -->
+    <script src="../super-admins/js/progress-tracker/scripts/site.js"></script>
      
 
  <script>
 
 // $('#table').DataTable({sDom: 'lrtip'});
+
 // staff view his/her request
 
 $('#table').on('click', '.staff-track-request', function(){
@@ -623,8 +632,41 @@ $('#table').on('click', '.give-mission-report', function(){
                 url:"../report-form.php",  
                 method:"POST",
                 data:{req_id:reqId},  
-                success:function(data){ 
-                      $('#reporot-form-container').html(data);
+                success:function(result){
+                  let message_if_not_GOAHEAD = '<div class="alert alert-primary mb-2" role="alert"><strong>Request In progress</strong> Waiting For Last Aprroval</div>';
+                  let message_if_not_disaproved = '<div class="alert alert-warning mb-2" role="alert"><strong>Request In progress</strong> Request has been Disapproved </div>';
+
+                  $.ajax(
+                    {
+                      url: '../scripts/track-my-request.php',
+                      method:"POST",
+                      data: {req_id:reqId},
+                      success:function(response)
+                      {
+
+                  let data_formulated = JSON.parse(response);
+                  if(!data_formulated.principal_reacted) //check if principal has received the request
+                  {
+                    if(data_formulated.all_about_request.principal_sansation != 1)
+                    {
+                      $('#reporot-form-container').html(result);
+                    }
+                    else
+                    {
+                      $('#reporot-form-container').html(message_if_not_disaproved);
+                      
+                    }
+                    
+
+                  }
+                  else
+                  {
+                    $('#reporot-form-container').html(message_if_not_GOAHEAD);
+
+                  }
+                      }
+                    })
+                  // console.log(data_formulated.all_about_request.hod_sansation);
                       ThisButton.addClass('disabled');
                       $("#myModal").on('shown.bs.modal', function(){
                       $('document').find('#inputName').focus();
@@ -654,7 +696,7 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
               let newStatus = data.status;
               thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
               thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
-              thisButton.val(newStatus == 1 ? "ON" : "OFF");
+              thisButton.val(newStatus == 1 ? "Activated" : "Canceled");
             }  
            });
           }
@@ -725,8 +767,43 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
       console.log(all_callback);
         // console.log(DBcallback);
 
-        Lobibox.notify('success',{
+
+
+
+      // let first_columns = ['<input data-index="0" name="btSelectItem" type="checkbox">','<span class"text-success">New</span>'];
+      // let tableColumns = [DBcallback.req_id, DBcallback.des_name, DBcallback.req_departure, DBcallback.req_return]
+      // let last_column_status = ['<input req-id="'+ DBcallback.req_id +'" type="button" class="btn-sm border-0 btn-success" value="ON" />'];
+      // let last_column_track = ['<input data-target="#staff-track-request-progress" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > '];
+      // let last_column_view = ['<input data-target="#Request-view-details" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > '];
+
+      // var table_row_full = first_columns.concat(tableColumns, last_column_status, last_column_track + last_column_view);
+      //   var t = $('#table').DataTable()
+      //   m = t.row.add(table_row_full).order( [ 2, 'desc' ]).draw();
+
+  $('#staff-request-form').modal('hide');
+
+      let row = 
+      {
+        count: '<span class"text-success">New</span>',
+        id: DBcallback.req_id,
+        destination: DBcallback.des_name,
+        departure: DBcallback.req_departure,
+        return: DBcallback.req_return,
+        status: '<input req-id="'+ DBcallback.req_id +'" type="button" class="btn-sm border-0 btn-success" value="Activated" />',
+        action: '<input data-target="#staff-track-request-progress" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > '+" " +'<input data-target="#Request-view-details" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > '
+
+       };
+
+       var $table = $('#table');
+        $table.bootstrapTable('insertRow', {
+        index: 0,
+        row: row
+      });
+
+
+      Lobibox.notify('success',{
       sound: false,
+      size: 'large',
       width: 400,
       position: 'top right',
       msg: '<b>Request sent, with request ID:  '+ DBcallback.req_id +'</b>'
@@ -734,24 +811,10 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
 
 
 
-      let first_columns = ['<input data-index="0" name="btSelectItem" type="checkbox">','<span class"text-success">New</span>'];
-      let tableColumns = [DBcallback.req_id, DBcallback.des_name, DBcallback.req_departure, DBcallback.req_return]
-      let last_column_status = ['<input req-id="'+ DBcallback.req_id +'" type="button" class="btn-sm border-0 btn-success" value="ON" />'];
-      let last_column_track = ['<input data-target="#staff-track-request-progress" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > '];
-      let last_column_view = ['<input data-target="#Request-view-details" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > '];
-
-      var table_row_full = first_columns.concat(tableColumns, last_column_status, last_column_track + last_column_view);
-        var t = $('#table').DataTable()
-        m = t.row.add(table_row_full).order( [ 2, 'desc' ]).draw();
-
-       window.location.reload(true);
-   $('#staff-form-request')[0].reset();
+    //  window.location.reload(true);
+   $(document).find('#staff-form-request')[0].reset();
 
 
-      if (data != false) {
-        $('#table-data-rows').prepend(data);
-        // window.alert(data);
-      }
     });
   }  
 }
@@ -764,12 +827,10 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
 
  // a popover form for actions on reqeust
 // 
-
-
 //   async function fetchDataForm(){
 //     let fetch_data = '';
 //     var reqId = $(this).attr("req-id");
-//     var hod_id = <?php echo $staf_id; ?>
+//     var hod_id = < ?php// echo $staf_id; ?>
 
 //     try {
 //       fetch_data = await $.ajax({
@@ -791,9 +852,13 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
 
 //  } 
 
-
-
-
+$(document).find(".btn.give-mission-report").on("click", function (event) {
+            if ($(this).hasClass("disabled")) {
+                event.stopPropagation()
+            } else {
+                $('#applyRemoveDialog').modal("show");
+            }
+        });
 
 // check ip data/ locations ...
 

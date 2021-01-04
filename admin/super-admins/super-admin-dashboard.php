@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 // error_reporting(0);
 include('../Classes/DBController.php');
@@ -181,6 +180,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
   <div class="app-content content">
     <div sty class="content-wrapper">
+
+    
     <div class="content-body">
 
         <!-- Revenue, Hit Rate & Deals -->
@@ -237,7 +238,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                    $All_college_reports_number = 0;
                    if ($All_college_reports != null) {
                    foreach ($All_college_reports as $key => $value) {
-                           $college_requests[] = $$All_college_reports;                        
+                           $college_requests[] = $All_college_reports;                        
                    }
                    $All_college_reports_number =  count($college_reports);
                    
@@ -318,7 +319,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                       ?>
 
            <h2 class="success"> <b><?php echo htmlentities($All_host_number);?></b></h2>
-                      <h4><b>Host Places</b></h4>
+                      <h4><b>Destination Places</b></h4>
                     </div>
                     <div>
                       <i class="icon-direction info font-large-2 float-right"></i>
@@ -616,34 +617,34 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
 
-var ctx = document.getElementById("barchart1").getContext('2d');
-	var barchart1 = new Chart(ctx, {
-        type: 'bar',
-		data: {
-			labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-			datasets: [{
-				label: 'Bar Chart',
-				data: [12, 19, 3, 5, 2, 3],
-				backgroundColor: [
-					'rgba(255, 99, 132, 0.2)',
-					'rgba(54, 162, 235, 0.2)',
-					'rgba(255, 206, 86, 0.2)',
-					'rgba(75, 192, 192, 0.2)',
-					'rgba(153, 102, 255, 0.2)',
-					'rgba(255, 159, 64, 0.2)'
-				],
-				borderColor: [
-					'rgba(255,99,132,1)',
-					'rgba(54, 162, 235, 1)',
-					'rgba(255, 206, 86, 1)',
-					'rgba(75, 192, 192, 1)',
-					'rgba(153, 102, 255, 1)',
-					'rgba(255, 159, 64, 1)'
-				],
-				borderWidth: 1
-			}]
-		},
-		options: {
+// var ctx = document.getElementById("barchart1").getContext('2d');
+// 	var barchart1 = new Chart(ctx, {
+//         type: 'bar',
+// 		data: {
+// 			labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+// 			datasets: [{
+// 				label: 'Bar Chart',
+// 				data: [12, 19, 3, 5, 2, 3],
+// 				backgroundColor: [
+// 					'rgba(255, 99, 132, 0.2)',
+// 					'rgba(54, 162, 235, 0.2)',
+// 					'rgba(255, 206, 86, 0.2)',
+// 					'rgba(75, 192, 192, 0.2)',
+// 					'rgba(153, 102, 255, 0.2)',
+// 					'rgba(255, 159, 64, 0.2)'
+// 				],
+// 				borderColor: [
+// 					'rgba(255,99,132,1)',
+// 					'rgba(54, 162, 235, 1)',
+// 					'rgba(255, 206, 86, 1)',
+// 					'rgba(75, 192, 192, 1)',
+// 					'rgba(153, 102, 255, 1)',
+// 					'rgba(255, 159, 64, 1)'
+// 				],
+// 				borderWidth: 1
+// 			}]
+// 		},
+// 		options: {
 			// scales: {
 			// 	xAxes: [{
 			// 		ticks: {
@@ -664,8 +665,8 @@ var ctx = document.getElementById("barchart1").getContext('2d');
 			// 		}
 			// 	}]
 			// }
-		}
-    });
+		// }
+    // });
     
 
 
@@ -676,48 +677,57 @@ var ctx = document.getElementById("barchart1").getContext('2d');
      /*----------------------------------------*/
 	/*  3.  Line Chart stepped
 	/*----------------------------------------*/
-	var ctx = document.getElementById("linechartstepped");
-	var linechartstepped = new Chart(ctx, {
-		type: 'line',
-		data: {
-			labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
-			datasets: [{
-				label: "steppedLine",
-				fill: false,
-                backgroundColor: '#303030',
-				borderColor: '#303030',
-				data: [3, -5, -2, 3, 9, 12, 19]
-            }]
-		},
-		options: {
-			responsive: true,
-			title: {
-				display: true,
-				text:'Line Chart stepped',
-			},
-			scales: {
-				xAxes: [{
-					ticks: {
-						autoSkip: false,
-						maxRotation: 0
-					},
-					ticks: {
-					  fontColor: "#fff", // this here
-					}
-				}],
-				yAxes: [{
-					ticks: {
-						autoSkip: false,
-						maxRotation: 0
-					},
-					ticks: {
-					  fontColor: "#fff", // this here
-					}
-				}]
-			}
-		}
-	});
-	
+	// var ctx = document.getElementById("linechartstepped");
+	// var linechartstepped = new Chart(ctx, {
+	// 	type: 'line',
+	// 	data: {
+	// 		labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
+	// 		datasets: [{
+	// 			label: "steppedLine",
+	// 			fill: false,
+  //               backgroundColor: '#303030',
+	// 			borderColor: '#303030',
+	// 			data: [3, -5, -2, 3, 9, 12, 19]
+  //           }]
+	// 	},
+	// 	options: {
+	// 		responsive: true,
+	// 		title: {
+	// 			display: true,
+	// 			text:'Line Chart stepped',
+	// 		},
+	// 		scales: {
+	// 			xAxes: [{
+	// 				ticks: {
+	// 					autoSkip: false,
+	// 					maxRotation: 0
+	// 				},
+	// 				ticks: {
+	// 				  fontColor: "#fff", // this here
+	// 				}
+	// 			}],
+	// 			yAxes: [{
+	// 				ticks: {
+	// 					autoSkip: false,
+	// 					maxRotation: 0
+	// 				},
+	// 				ticks: {
+	// 				  fontColor: "#fff", // this here
+	// 				}
+	// 			}]
+	// 		}
+	// 	}
+	// });
+  
+  
+  $(document).ready(function() {
+    $('#table').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );
  </script>
 
 

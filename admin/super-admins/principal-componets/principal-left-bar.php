@@ -25,7 +25,7 @@
    
        <li style="padding-bottom: 3px;" class="nav-item">
         <a href="admin-all-host-places.php"><i class="icon-direction"></i>
-        <span class="menu-title" data-i18n="nav.dash.main">Host places </span></a>
+        <span class="menu-title" data-i18n="nav.dash.main">Destiantions places </span></a>
         </li>
 
         <li class=" nav-item">

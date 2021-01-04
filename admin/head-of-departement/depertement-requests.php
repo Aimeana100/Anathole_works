@@ -29,7 +29,7 @@ $loginFunctions = new Functions();
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-    if($staff_details[0]['dept_id'] != 7):
+    if($staff_details[0]['role_id'] != 7):
   header('location:../index.php');
   exit();
     else: 

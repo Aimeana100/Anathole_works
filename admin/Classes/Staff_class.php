@@ -124,7 +124,6 @@ class Staff{
         );
         
         $this->db_handle->update($query, $paramType, $paramValue);
-        
     }
 
     
@@ -194,10 +193,9 @@ class Staff{
         return $result;
     }
 
-
             
     function getAllStaff_in_dept($dept_id){
-        $query = "SELECT staffs_info.* ,departements.*, roles.*, schools.*, colleges.*, COUNT(user_request.stf_id) as nb_of_request_per_staff FROM staffs_info INNER JOIN departements ON departements.dept_id = staffs_info.dept_id AND departements.dept_id = ? INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON colleges.coll_id = schools.coll_id INNER JOIN user_request ON user_request.stf_id = staffs_info.stf_id GROUP BY user_request.stf_id;";
+        $query = "SELECT staffs_info.* ,departements.*, roles.*, schools.*, colleges.*, COUNT(user_request.stf_id) as nb_of_request_per_staff FROM staffs_info INNER JOIN departements ON departements.dept_id = staffs_info.dept_id AND departements.dept_id = ? INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON colleges.coll_id = schools.coll_id LEFT JOIN user_request ON user_request.stf_id = staffs_info.stf_id GROUP BY user_request.stf_id;";
         $paramType = "i";
         $paramValue = array(
             $dept_id
@@ -207,8 +205,19 @@ class Staff{
         return $result;
     }
 
+    // function getAllStaff_in_dept($dept_id){
+    //     $query = "SELECT staffs_info.* ,departements.*, roles.*, schools.*, colleges.* FROM staffs_info INNER JOIN departements ON departements.dept_id = staffs_info.dept_id AND departements.dept_id = ? INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON colleges.coll_id = schools.coll_id ;";
+    //     $paramType = "i";
+    //     $paramValue = array(
+    //         $dept_id
+    //     );
+        
+    //     $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
+    //     return $result;
+    // }
+
     function getAllStaff_in_school($school_id){
-        $query = "SELECT staffs_info.* ,departements.*, roles.*, schools.*, colleges.*, COUNT(user_request.stf_id) as nb_of_request_per_staff FROM staffs_info INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN schools ON schools.scl_id = departements.scl_id AND schools.scl_id = ? INNER JOIN colleges ON colleges.coll_id = schools.coll_id INNER JOIN user_request ON user_request.stf_id = staffs_info.stf_id GROUP BY user_request.stf_id;";
+        $query = "SELECT staffs_info.* ,departements.*, roles.*, schools.*, colleges.*, COUNT(user_request.stf_id) as nb_of_request_per_staff FROM staffs_info INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN schools ON schools.scl_id = departements.scl_id AND schools.scl_id = ? INNER JOIN colleges ON colleges.coll_id = schools.coll_id LEFT JOIN user_request ON user_request.stf_id = staffs_info.stf_id GROUP BY user_request.stf_id;";
         $paramType = "i";
         $paramValue = array(
             $school_id

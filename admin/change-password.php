@@ -23,11 +23,10 @@ if(isset($_POST['update-password']))
     $logged_in_user_role = $staff_details[0]['role_id'];
 
 
-    $username = $_SESSION['userlogin'];
+    $username = $_SESSION['user_username'];
     // $stf_role = $_SESSION['role'];
     // $staf_id = $_SESSION['stf_id'];
        
-
     $currentpassword = $_POST['password'];
     $new_pass = $_POST['newpassword'];
     $confirm_password = $_POST['confirmpassword'];
@@ -35,7 +34,7 @@ if(isset($_POST['update-password']))
     //hahing for new password
     $newpassword_hashed = password_hash($new_pass, PASSWORD_DEFAULT);
 
-    if($staff->VerfyPassword($username, $currentpassword)) {
+    if(password_verify($currentpassword, $staff_details[0]['password'])) {
                 
       $res = $staff->Update_staff_Password($newpassword_hashed, $staf_id);      
       $msg = $res ." Your Password succesfully changed ";

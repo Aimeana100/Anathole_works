@@ -54,7 +54,7 @@ $loginFunctions = new Functions();
 
     $staff_details = $staff->getStaffById($staf_id);
     // $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
-    // $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
+    $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
     $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
     $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
     $logged_in_user_role = $staff_details[0]['role_id'];

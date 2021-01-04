@@ -15,8 +15,8 @@ $session_instance = new Sessions();
 $loginFunctions = new Functions();
 
 
-if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
-  // if(!$loginFunctions->checkLoginState($session_instance)):
+// if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  if(!$loginFunctions->checkLoginState($session_instance)):
     
 
   header('location:../index.php');
@@ -28,18 +28,19 @@ if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) O
     $staf_id = $_SESSION['user_id'];
 
     $staff = new Staff();
-    $staff_details = $staff->getStaffById($_SESSION['user_id']);
-    // if($staff_details[0]['dept_id'] != 7):
-  // header('location:../index.php');
-  // exit();
-  //   else: 
+    $staff_details = $staff->getStaffById($staf_id);
+      if($staff_details[0]['role_id'] != 7):
+
+    header('location:../index.php');
+    exit();
+      else: 
         
     // $stf_role = 7;
     // $stf_role = $_SESSION['role'];
     // $staf_id = 6;
     // $staf_id = $_SESSION['stf_id'];
 
-    $HOD_id = $_SESSION['stf_id'];
+    $HOD_id = $_SESSION['user_id'];
 
     $staff = new Staff();     
     // instantiate reports
@@ -703,4 +704,4 @@ jsonIp_data(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
 
 </body>
 </html>
-<?php endif;?> 
+<?php endif; endif;?> 

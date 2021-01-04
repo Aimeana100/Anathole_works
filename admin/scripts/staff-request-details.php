@@ -18,21 +18,18 @@ if(isset($_POST['who_views_single_req'])){
 // }
 
 
-
-
 $staff = new Staff();
-
-$statt_details = $staff->getStaffById($staf_id);
-$staff_hod_details = $staff->getStaff_HODbyDept($statt_details[0]['dept_id']);
-$staff_dean_details = $staff->getStaff_DeanbySchool($statt_details[0]['scl_id']);
-$staff_principal_details = $staff->getStaff_Principalbycollege($statt_details[0]['coll_id']);
-$staff_HR_details = $staff->getStaff_HRbycollege($statt_details[0]['coll_id']);
-
-
 $request = new Request();
 
 $request_details = $request->getRequestDeatailsByReq_id($Req_id);
 
+
+
+$statt_details = $staff->getStaffById($request_details[0]['stf_id']);
+$staff_hod_details = $staff->getStaff_HODbyDept($statt_details[0]['dept_id']);
+$staff_dean_details = $staff->getStaff_DeanbySchool($statt_details[0]['scl_id']);
+$staff_principal_details = $staff->getStaff_Principalbycollege($statt_details[0]['coll_id']);
+$staff_HR_details = $staff->getStaff_HRbycollege($statt_details[0]['coll_id']);
 
 
 // $sql_update_notification = "UPDATE action_notifications SET hod_sansation_notification = 1, dean_sansation_notification = 1, principal_sansation_notification = 1  WHERE action_notifications.req_id= :req_id";
@@ -222,7 +219,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
       <b>07. </b> Distance in KM (to and from):
       </div>
       <div  class="colomn-flex-middle">
-        <?php echo $request_details[0]["req_purpose"];  ?>
+        <?php echo isset($request_details[0]["mission_n_days"]) ? $request_details[0]["mission_n_days"] : "Unknown";  ?>
       </div>
       </div>
 

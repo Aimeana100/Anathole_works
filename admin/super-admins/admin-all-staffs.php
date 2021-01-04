@@ -582,7 +582,6 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
  // hod view the single staff request
-
  
 $('#table tbody').on( 'click', 'td input.current-staff-status', function () {
   if(confirm('you are about to change staff status')){
@@ -604,7 +603,7 @@ $('#table tbody').on( 'click', 'td input.current-staff-status', function () {
                   thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
                   thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
                   thisButton.val(newStatus == 1 ? "Active" : "Deactive");
-            }  
+            } 
            });
           }
 } );
@@ -650,7 +649,7 @@ async function verfyEmailDB(email)
 
   } catch (error) {
     console.log(error);    
-  }  
+  }
 }
 
 

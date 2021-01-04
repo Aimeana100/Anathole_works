@@ -16,8 +16,8 @@ $session_instance = new Sessions();
 $loginFunctions = new Functions();
 
 
-if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
-  // if(!$loginFunctions->checkLoginState($session_instance)):
+// if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  if(!$loginFunctions->checkLoginState($session_instance)):
     
 
   header('location:../index.php');
@@ -30,30 +30,29 @@ if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) O
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-  //   if($staff_details[0]['dept_id'] != 7):
-  // header('location:../index.php');
-  // exit();
-  //   else: 
-        
+    if($staff_details[0]['role_id'] != 7):
+    header('location:../index.php');
+    exit();
+      else: 
+          
     // $stf_role = 7;
     // $stf_role = $_SESSION['role'];
     // $staf_id = 4;
     // $staf_id = $_SESSION['stf_id'];
 
-    $HOD_id = $_SESSION['stf_id'];
+    $HOD_id = $_SESSION['user_id'];
     $organisation = new Organisation();
   
     $staff = new Staff();
     $staff_details = $staff->getStaffById($HOD_id);
 
-    $HOD_dept=$staff_details[0]['dept_id'];
+    $HOD_dept = $staff_details[0]['dept_id'];
 
     // instantiate request
   $request = new Request();
   $request_dept_instance = $request->getAllRequestsByDept($HOD_dept);
   $staffs_in_dept = $staff->getAllStaff_in_dept($HOD_dept);
 
-  
      // instantiate reports
      $report = new Report();
 
@@ -148,7 +147,7 @@ div.row-flex-container{
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
 
 
- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css">
+ <!-- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css"> -->
  <link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css">
 
 
@@ -192,6 +191,21 @@ div.row-flex-container{
   <link rel="stylesheet" href="../super-admins/css/progree-tracker/styles/progress-tracker.css">
   <link rel="stylesheet" href="  https://use.fontawesome.com/releases/v5.7.2/css/all.css
 ">
+
+
+<!-- forms -->
+    <!-- modals CSS
+		============================================ -->
+    <!-- <link rel="stylesheet" href="css/modals.css"> -->
+    <!-- forms CSS
+		============================================ -->
+    <!-- <link rel="stylesheet" href="../super-admins/css/form/all-type-forms.css"> -->
+
+    <!-- for select chosen -->
+    <link rel="stylesheet" href="../super-admins/css/chosen/bootstrap-chosen.css">
+
+    <!-- date picker -->
+    <link rel="stylesheet" href="../super-admins/css/datapicker/datepicker3.css">
 </head>
 
 <body style="color: #000000" class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar"
@@ -244,6 +258,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                 <div class="main-sparkline13-hd co-6">
                                     <h1>ALL <span class="table-project-n">Departements Staffs</span></h1>
                                 </div>
+                                <div class="main-sparkline13-hd col-6 text-right ">
+                                    <button class="btn-md m-b-r-0 b-0 add-staff float-right">
+                                    <a class="zoomInDown mg-t secondary p-2" href="#" data-toggle="modal" data-target="#admin-add-staff">Add Staff</a>
+                                    </button>
+                                </div>
 
                             </div>
                             <div class="sparkline13-graph">
@@ -277,7 +296,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                 $cnt=1;
                 if(!empty($staffs_in_dept)):
                 foreach($staffs_in_dept as $key => $value):
-                   ?>
+                  ?>
 
                 <tr>
                 <td></td>
@@ -315,6 +334,174 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
         </div>
 
         <!-- Basic Tables end -->
+
+
+
+        <div class="sparkline11-graph">
+                                <div class="basic-login-form-ad">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                              <div id="admin-add-staff" class="modal modal-adminpro-general modal-zoomInDown fade" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-close-area modal-close-df">
+                                                            <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="modal-login-form-inner">
+                                                                                                                             
+                                                                        <div class="basic-login-inner modal-basic-inner">
+                                                                            <h3>Add New Staff </h3>
+                                                                            
+                                                                            <form name="add-staff-form-fill" id="add-staff-form-fill" action="#">
+                                                                                <div class="form-group-inner">
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                                            <label for="Emp_id" class="login2">Staff Id | code</label>
+                                                                                        </div>
+                                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                                            <input type="text" type="text" name="Emp_id" class="Emp_id form-control" id="Emp_id" placeholder="Employee id" required />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group-inner">
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                                            <label class="login2" for="first_name ">First name</label>
+                                                                                        </div>
+                                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                                            <input id="first_name" name="first_name" type="text" class="form-control" placeholder="first name" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group-inner">
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                                            <label class="login2" for="last_name ">Lastrst name</label>
+                                                                                        </div>
+                                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                                            <input id="last_name" name="last_name" type="text" class="form-control" placeholder="last name" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group-inner">
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                                        <label for="gender" class="login2">Gender</label>
+                                                                                        </div>
+                                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                                        <select  id="gender" name="gender" data-placeholder="...select gender..." class="form-control chosen-seelect" tabindex="-1">
+                                                                                          <option selected disabled value="">Select</option>
+                                                                                          <option value="Male">Male</option>
+                                                                                          <option value="Female">Female</option>                                                   
+                                                                                      </select>                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group-inner">
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                                        <label for="Position" class="login2">Position</label>
+                                                                                        </div>
+                                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                                        <select id="position" name="Position"   data-placeholder="Choose a Position ..." class="chosen-select" tabindex="-1">
+                                                                                          <option value="">Select</option>
+                                                                                          <?php
+
+                                                                                              $positions = $organisation->getAllPositions();
+                                                                                              
+                                                                                              if(!empty($positions)):
+                                                                                              foreach($positions as $key => $value):
+                                                                                           ?>
+                                                                                                            
+                                                                                            <option id="<?php  echo $positions[$key]['role_id']; ?>" <?php echo $positions[$key]['role_id'] == 3 || $positions[$key]['role_id'] == 4 || $positions[$key]['role_id'] == 6 ? "disabled" : ""; ?> > <?php echo $positions[$key]['role_name']; ?> </option>
+                                                                                              
+                                                                                            <?php  endforeach; endif; ?>
+                                                                                              
+                                                                                      </select>
+                                                                                      </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group-inner">
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                                        <label for="Department" class="login2">Departement</label>
+                                                                                        </div>
+                                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                                        <select id="departement" name="Department"   data-placeholder="Choose a deptmnt ..." class="chosen-select" tabindex="-1">
+                                                                                          <option value="">Select</option>
+                                                                                          <?php
+                                                                                            $departments = $organisation->getAllDepartments();
+                                                                                            
+                                                                                            if(!empty($departments)):
+                                                                                            foreach($departments as $key => $value):
+                                                                                                          ?>
+                                                                                                            
+                                                                                                            <option  id="<?php echo $departments[$key]['dept_id'];?>" <?php echo $departments[$key]['dept_id'] == $staff_details[0]['dept_id'] ? "selected" : ""; ?> > <?php echo $departments[$key]['dept_name']; ?> </option>
+
+                                                                                              <?php  endforeach; endif; ?>							  
+                                                                                      </select>
+                                                                                      </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group-inner">
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                                            <label for="email" class="login2">Staff's Email</label>
+                                                                                        </div>
+                                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                                            <input onblur ="ValidateEmail(this)" type="text" name="email" id="email" class="form-control" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" title="NB. registered staff will find login creditial via this email 💯" placeholder="Staff Email" />
+                                                                                            <span id="emailError" class="bg-red"></span>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group-inner">
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                                            <label for="telphone" class="login2">Staff telphone</label>
+                                                                                        </div>
+                                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                                            <input type="text" name="telphone" id="telphone"  class="form-control" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" data-mask="(999) 999-9999" title="" placeholder="Staff phone" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                                                
+                                                                                </div>
+
+
+
+                                                                                <div class="login-btn-inner">
+                                                                               <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                                            <div class="login-horizental">
+                                                                                                <input id="add-staff" type="button" onclick="AddStaff()" name="register"  class="btn btn-sm btn-primary login-submit-cs" value="Add Staff now" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </form>
+                                                                   
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
 
           </div>
         </div>
@@ -420,19 +607,32 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <script src="../app-assets/js/core/app-menu.js" type="text/javascript"></script>
   <script src="../app-assets/js/core/app.js" type="text/javascript"></script>
   <script src="../app-assets/js/scripts/customizer.js" type="text/javascript"></script>
+  <!-- <script src="../app-assets/js/customJs.js" type="text/javascript"></script> -->
+
+
   <!-- END MODERN JS-->
 
-
+  <!-- bootrstrap table from CDN -->
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+  
 
   <!-- js bootstrap table from jwrly template -->
-    <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
+    <!-- <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
     <script src="../super-admins/js/data-table/tableExport.js"></script>
-    <script src="../super-admins/js/data-table/data-table-active.js"></script>
+    <script src="../super-admins/js/data-table/data-table-active.js"></script> -->
     <!-- <script src="js/data-table/bootstrap-table-editable.js"></script> -->
-    <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
-    <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
-    <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>
-    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script>
+    <!-- <script src="../super-admins/js/data-table/bootstrap-editable.js"></script> -->
+    <!-- <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script> -->
+    <!-- <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script> -->
+    <!-- <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script> -->
+
+
+    <!-- notifications -->
+    <!-- notification JS
+		============================================ -->
+    <script src="../super-admins/js/notifications/Lobibox.js"></script>
+    <!-- <script src="../super-admins/js/notifications/notification-active.js"></script> -->
+
 
             <!-- datapicker JS
 		============================================ -->
@@ -445,19 +645,10 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 		============================================ -->
     <script src="../super-admins/js/chosen/chosen.jquery.js"></script>
     <script src="../super-admins/js/chosen/chosen-active.js"></script>
-
-    <!-- notifications -->
-    <!-- notification JS
-		============================================ -->
-    <script src="../super-admins/js/notifications/Lobibox.js"></script>
-    <script src="../super-admins/js/notifications/notification-active.js"></script>
-
-
  <script>
 
 
 // hod view the single staff request
-
  
 $('#table tbody').on( 'click', 'td input.current-staff-status', function () {
   if(confirm('you are about to change staff status')){
@@ -558,85 +749,129 @@ $('#table').on('click', '.do-action-button', function(){
     }
 
 
-    function SubmitFormRequest() {
-    var errors = [];
-    var stf_id = <?php echo $staf_id ?>;
-    var supervisor_id  = <?php echo  $staff_dean_details[0]['stf_id'] ?>;
-    var req_purpose=$('#req_purpose').val();
-    var exp_result=$('#exp-result').val();
-    var destination=$('#destination').children(":selected").attr("value");
-    var transiport =$("input[name='transiportation']:checked").val();
-    var req_departure=$('#departure-date').val();
-    var req_return = $('#return-date').val();
-    var req_distance=$('#distance-of-travel').val();
-    var req_mission_duration =$('#mission-duration').val();
-    // alert(departure_date);
-     
-     if (req_purpose.trim().length == 0) {
-      errors.push("request purpose can't be empty <br>");
-     }
+  function AddStaff(){
+  let error = [];
+  var dept = $("#departement").children(":selected").attr("id");
+  var staff_id = $("#Emp_id").val();
+  var staff_fname = $("#first_name").val();
+  var staff_lname = $("#last_name").val();
+  var staff_gender = $("#gender").children(":selected").attr("value");
+  var staff_position = $("#position").children(":selected").attr("id");
+  var staff_tel = $("#telphone").val();
+  var staff_email = $("#email").val();
+  var position_id = $('#position').val();
 
-      if (exp_result.trim().length == 0) {
-      errors.push("expected result field can't be empty <br>");
-     }
-
-      if (destination == "") {
-      errors.push("select desstination");
-     }
-
-     if (transiport == null) {
-      errors.push("tick the transiportation means");
-     }
-
-     if (req_departure.trim().length == 0) {
-      errors.push("Enter a Deperture date");
-     }
-      if (req_return.trim().length == 0) {
-      errors.push("Enter a return date");
-     }
-
-       if (errors.length != 0) {
-      errorMessage = "";
-      for(var i = 0; i < errors.length; i++){
-      errorMessage += '<p class ="text-danger">'+errors[i]+'</p>';
-      }
-
-      $('#display-error').html(errorMessage);
-     }
-
-     
-   else {
-    
-    $.post("scripts/save-staff-request.php", { stf_id: stf_id, req_purpose: req_purpose, exp_result: exp_result, destination: destination, transiport: transiport, req_departure: req_departure, req_return: req_return, req_distance: req_distance, req_mission_duration: req_mission_duration, supervisor: supervisor_id},
-    function(data) {
-      alert(data);
-      if (data != false) {
-        // $('#table-data-rows').prepend(data);
-        // $('#staff-form-request')[0].reset();
-        // window.alert(data);
-
-      }
-    });
+  if(staff_id.length == 0){
+    error.push("<p>Staff Id not specified</p>");
   }
-  
+    if(staff_fname.length == 0){
+      error.push("<p>First name can't be empty</p>");
+    }
+    if (staff_lname.length == 0) 
+    {
+        error.push("<p>Last name can't be empty</p>");
+    }
+    if (staff_gender == "") {
+        error.push("<p>Select a gender</>");
+      }
+      
+    if (staff_position == null) {
+      error.push("<p>Position can't be empty</p>");
+    }
+    if(dept == null){
+      error.push("<p>select departement</p>");
+    }
+    if( staff_tel == ""){
+      error.push("<p>telphone can't be empty</p>");
+    }
+    if(staff_email ==0 ){
+      error.push("<p>Email can't be empty</p>");
+    }
+    
+    if(error.length !=0 )  {
+    errorMessage = "";
+    for(var i = 0; i < error.length; i++){
+    errorMessage += error[i];
+    }
+    Lobibox.notify('error', {
+      sound: false,
+      size: 'large',
+      width: 500,
+      position: 'top right',
+      msg: '<b> PLease Fill out the form propery</b>'
+  });
 }
 
-     $('.give-report').click(function(){ 
-         var reqId = $(this).attr("reqId");
-           $('#request-id').html(reqId);
-                $.ajax({  
-                url:"scripts/save-mission-outcomes.php",  
-                method:"post",
-                data:{req_id:reqId},  
-                success:function(data){  
-                      $('#reporot-form-container').html(data);
-                      $("#myModal").on('shown.bs.modal', function(){
-                      $(this).find('#inputName').focus();
-                    });
-                      // $('#dataModal').modal("show");  
-                 }  
-           });  
-      });
+else{
+  $("#wait").css("display","block");
+  $.post("../scripts/save-new-staff.php", { Emp_id: staff_id, first_name: staff_fname,  last_name: staff_lname, email: staff_email, telphone: staff_tel, gender: staff_gender, Position: staff_position, Department: dept, insert_staff: true},
+  function(data){
+    console.log(data);
+    // console.log(data.new_user);
+    // $("#add-staff-form-fill")[0].reset();
+    $('#admin-add-staff').modal('hide');
+    $("#wait").css("display","none");
+     
+    Lobibox.notify('success', {
+      sound: false,
+      width: 500,
+      position: 'top right',
+      msg: data
+    });
+    $(window).scrollTop(0);
+  //   $("html, body").animate({
+  //   scrollTop: $("#success-message").offset().top
+  // }, 1000);
+  });
+}
+      
+}
+
+
+
+
+function ValidateEmail(obj){
+  // let Obj = obj;
+  var emailValue = obj.value;
+  
+  var atpos = emailValue.indexOf("@");
+  var dotpos = emailValue.lastIndexOf(".");
+  var emailError = document.getElementById("emailError"); 
+
+  if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailValue.length) {
+    emailError.innerHTML = "Enter valid email Address";
+  }
+  else
+  {
+    verfyEmailDB(emailValue).then((data)=>{
+      let mycalback = JSON.parse(data);
+      if(mycalback.success){
+      emailError.innerHTML = 'email has been already';
+    }})
+
+  }
+}
+
+
+async function verfyEmailDB(email)
+{
+  let Email = email;
+  let result;
+  try {
+    result = await $.ajax({
+    url: '../scripts/validate-email-DB-live.php',
+    type: 'GET',
+    data: {staff_email: Email}
+  })
+  return result;
+
+  } catch (error) {
+    console.log(error);    
+  }
+}
+
+
+
 
 
 
@@ -647,63 +882,31 @@ $('#table').on('click', '.do-action-button', function(){
 // });
 
 
- // a popover form for actions on reqeust
-
-var do_direct_action_on_request = $('#table .give-sansation');
-   do_direct_action_on_request.popover({
-   placement: 'left',
-   title : '<h4 class="text-center" ><i class="la la-arrow-right"></i><b> React to this request</b></h4>',
-   content: fetchDataForm,
-   html: true
-   });
-
-   $('.give-sansation').on('click', function (e) {
-    $('.give-sansation').not(this).popover('hide');
-});
-
-   function fetchDataForm(){
-    var fetch_data = '';
-    var reqId = $(this).attr("req-id");
-    var hod_id = <? echo $staf_id; ?>
-
-      $.ajax({
-      url:"scripts/hod-direct-action-on-request.php",
-      method:"POST",
-      async:false,
-      data:{req_id:reqId, hod_id:hod_id},
-      success:function(data){
-      fetch_data = data;
-      }
-      }); 
-      return fetch_data;  
- } 
-
-
 
 
 
 //  track a staff request
-var mytrack  = $('.track-request');
-   mytrack.popover({
-   placement: 'left',
-   content:  'fetchData',
-   html: true
-   });
+// var mytrack  = $('.track-request');
+//    mytrack.popover({
+//    placement: 'left',
+//    content:  'fetchData',
+//    html: true
+//    });
 
-   function fetchData(){
-      var fetch_data = '';
-      var reqId = $(this).attr("reqId"); 
-      $.ajax({  
-           url:"scripts/track-my-request.php",  
-           method:"POST",  
-           async:false,
-           data:{req_id:reqId},  
-           success:function(data){  
-                fetch_data = data;  
-           }  
-      });  
-      return fetch_data;  
- } 
+//    function fetchData(){
+//       var fetch_data = '';
+//       var reqId = $(this).attr("reqId"); 
+//       $.ajax({  
+//            url:"scripts/track-my-request.php",  
+//            method:"POST",  
+//            async:false,
+//            data:{req_id:reqId},  
+//            success:function(data){  
+//                 fetch_data = data;  
+//            }  
+//       });  
+//       return fetch_data;  
+//  } 
 // });
 
 
@@ -728,4 +931,4 @@ jsonIp_data(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
 
 </body>
 </html>
-<?php endif;?> 
+<?php endif; endif;?> 

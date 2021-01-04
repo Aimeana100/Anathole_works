@@ -178,6 +178,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
   <div class="app-content content">
     <div sty class="content-wrapper">
+
+    <?php if (isset($_GET['option']) AND $_GET['option'] == "change-password"):  
+        include_once('../change-password.php');      
+
+        else:
+          ?>
     <div class="content-body">
 
 
@@ -191,7 +197,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd">
                                 <div class="main-sparkline13-hd">
-                                    <h1>All  <span class="table-project-n">Host </span> Places</h1>
+                                    <h1>All  <span class="table-project-n">Destination </span> Places</h1>
                                 </div>
                             </div>
                             <div class="sparkline13-graph">
@@ -211,9 +217,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <th data-field="id">Place_ID</th>
                                                 <th data-field="location" data-editable="true">Location</th>
                                                 <th data-field="verfied" data-editable="true">Verfied</th>
-                                                <!-- <th data-field="price" data-editable="true">Price</th>
-                                                <th data-field="date" data-editable="true">Date</th>
-                                                <th data-field="task" data-editable="true">Status</th>-->
+                                                <th data-field="task" data-editable="true">Status</th>
                                                 <th data-field="email" data-editable="true">longitude</th> 
                                                 <th data-field="action">latitude</th>
                                             </tr>
@@ -233,10 +237,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <td><?php echo $destination[$key]['des_id'] ?></td>
                                                 <td><?php echo $destination[$key]['des_name'] ?></td>
                                                 <td>No</td>
-                                                <!-- <td>$5</td>
-                                                <td>Jul 14, 2017</td>
-                                                <td>Active</td>
-                                                <td>$700</td> -->
+                                             
                                                 <td class="datatable-ct">
 
                                                 <!-- <i class="fa fa-check"> </i> verfy -->
@@ -385,6 +386,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                     </div> -->
 
                 </div>
+                <?php endif; ?>
 
 <!-- <div id="test" style="height= 600px; width= 100%; background=green"></div> -->
         </div>
@@ -419,7 +421,6 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
 <!-- request form modal start -->
-
 
 
 <div class="modal fade bd-example-modal-lg" id="request-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">

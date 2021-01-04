@@ -14,7 +14,7 @@
           <li class="nav-item d-none d-md-block float-right"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse">
           <i class="toggle-icon ft-toggle-right font-medium-3 white" data-ticon="ft-toggle-right"></i></a></li>
           <li class="nav-item d-md-none">
-            <a  class="nav-link open-navbar-container text-white " data-toggle="collapse" data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i></a>
+            <a  class="nav-link open-navbar-container text-white " data-toggle="collapse" data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i>  </a>
           </li>
         </ul>
       </div>
@@ -22,11 +22,10 @@
 
         <div class="collapse navbar-collapse" id="navbar-mobile">
           <ul class="nav navbar-nav mr-auto float-left">
-            <li class="nav-item d-none d-md-block">
-              <a class="nav-link nav-link-expand text-white " href="#">
-              <i class="ficon ft-maximize"></i></a></li>
+            <li class="nav-item d-none d-md-block"> 
+              <a class="nav-link nav-link-expand text-white text-bold-700 display-1 " href="#">
+              Logged In As: <span style=" font-size: 24px"> <?php echo $staff_details[0]['role_name']; ?> </span> </a></li>
 
-           
           </ul>
           <ul style="margin-right: 0px"  class="nav navbar-nav mr-0 float-right">
             <li id="username-profile" class="dropdown dropdown-user nav-item">
@@ -193,6 +192,7 @@
      
           </ul>
         </div>
+        
       </div>
     </div>
   </nav>

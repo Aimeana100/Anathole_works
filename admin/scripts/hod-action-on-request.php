@@ -5,6 +5,8 @@ include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../../mailer.php');
+echo json_encode( array("success" => false, "message" => "sansansion not well set, something went wrong"));
+exit();
 
 if (isset($_POST['req_id'])){
 
@@ -47,20 +49,20 @@ $request->HOD_takeActionOnRequest($HOD_id, $hod_comment, $sensation, $actiondate
 
 if ((true) AND send_email($requestor_email,$pmsg,$requestor_first_name,$subject))
 {
-echo "Request ".$Req_id." ".$sansation_in_word." successfully";
+// echo "Request ".$Req_id." ".$sansation_in_word." successfully";
 $connection->commitTransaction();
-echo json_encode( array("success" => 1, "message" => "done"));
+echo json_encode( array("success" => true, "message" => "done"));
 
 }
 else{
 	$connection->rollBackTransaction();
-	echo json_encode( array("success" => 0, "message" => "sansansion not well set, something went wrong"));
+	echo json_encode( array("success" => false, "message" => "sansansion not well set, something went wrong"));
 	
 }
 
 }
  catch (Exception $e) {
-	echo json_encode( array("success" => 0, "message" => "sansansion not well set, something went wrong", "error"=>$e->getMessage()));
+	echo json_encode(array("success" => false, "message" => "sansansion not well set, something went wrong", "error"=>$e->getMessage()));
 
    }
 

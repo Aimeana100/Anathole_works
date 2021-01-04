@@ -15,8 +15,8 @@ $session_instance = new Sessions();
 $loginFunctions = new Functions();
 
 
-if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
-  // if(!$loginFunctions->checkLoginState($session_instance)):
+// if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  if(!$loginFunctions->checkLoginState($session_instance)):
     
 
   header('location:../index.php');
@@ -29,10 +29,10 @@ if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) O
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-  //   if($staff_details[0]['dept_id'] != 7):
-  // header('location:../index.php');
-  // exit();
-  //   else: 
+    if($staff_details[0]['role_id'] != 7):
+    header('location:../index.php');
+    exit();
+      else: 
     
     // $stf_role = 7;
     // $stf_role = $_SESSION['role'];
@@ -715,38 +715,74 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
         // console.log(all_callback);
         // console.log(DBcallback);
 
-      let first_columns = ['<input data-index="0" name="btSelectItem" type="checkbox">','<span class"text-success">New</span>'];
-      let tableColumns = [DBcallback.req_id, DBcallback.des_name, DBcallback.req_departure, DBcallback.req_return]
-      let last_column_status = ['<input req-id="'+ DBcallback.req_id +'" type="button" class="btn-sm border-0 btn-success" value="ON" />'];
-      let last_column_track = ['<input data-target="#staff-track-request-progress" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > '];
-      let last_column_view = ['<input data-target="#Request-view-details" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > '];
+      // let first_columns = ['<input data-index="0" name="btSelectItem" type="checkbox">','<span class"text-success">New</span>'];
+      // let tableColumns = [DBcallback.req_id, DBcallback.des_name, DBcallback.req_departure, DBcallback.req_return]
+      // let last_column_status = ['<input req-id="'+ DBcallback.req_id +'" type="button" class="btn-sm border-0 btn-success" value="ON" />'];
+      // let last_column_track = ['<input data-target="#staff-track-request-progress" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > '];
+      // let last_column_view = ['<input data-target="#Request-view-details" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > '];
 
-      var table_row_full = first_columns.concat(tableColumns, last_column_status, last_column_track + last_column_view);
-        var t = $('#table').DataTable()
-          m = t.row.add(table_row_full).order( [ 2, 'desc' ]).draw();
+      // var table_row_full = first_columns.concat(tableColumns, last_column_status, last_column_track + last_column_view);
+      //   var t = $('#table').DataTable()
+      //     m = t.row.add(table_row_full).order( [ 2, 'desc' ]).draw();
 
-      Lobibox.notify('success',{
-      sound: false,
-      width: 400,
-      position: 'top right',
-      msg: '<b>Request sent, with request ID:  '+ DBcallback.req_id +'</b>'
-  });
+//       Lobibox.notify('success',{
+//       sound: false,
+//       width: 400,
+//       position: 'top right',
+//       msg: '<b>Request sent, with request ID:  '+ DBcallback.req_id +'</b>'
+//   });
 
 
-      if (data != false) {
-        $('#table-data-rows').prepend(data);
-        // $('#staff-form-request')[0].reset();
-        // window.alert(data);
-      }
-    });
-  }  
-}
-
-// $(document).ready(function(){
-//     $(".give-mission-report").on('shown.bs.modal', function(){
-//         $(this).find('#req-outcomes').focus();
+//       if (data != false) {
+//         $('#table-data-rows').prepend(data);
+//         // $('#staff-form-request')[0].reset();
+//         // window.alert(data);
+//       }
 //     });
-// });
+//   }  
+// }
+
+
+
+  
+$('#staff-request-form').modal('hide');
+
+let row = 
+{
+  count: '<span class"text-success">New</span>',
+  id: DBcallback.req_id,
+  destination: DBcallback.des_name,
+  departure: DBcallback.req_departure,
+  return: DBcallback.req_return,
+  status: '<input req-id="'+ DBcallback.req_id +'" type="button" class="btn-sm border-0 btn-success" value="Activated" />',
+  action: '<input data-target="#staff-track-request-progress" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > '+" " +'<input data-target="#Request-view-details" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > '
+
+ };
+
+ var $table = $('#table');
+  $table.bootstrapTable('insertRow', {
+  index: 0,
+  row: row
+});
+
+
+Lobibox.notify('success',{
+sound: false,
+size: 'large',
+width: 400,
+position: 'top right',
+msg: '<b>Request sent, with request ID:  '+ DBcallback.req_id +'</b>'
+});
+
+
+
+//  window.location.reload(true);
+$(document).find('#staff-form-request')[0].reset();
+
+
+});
+}  
+}
 
 
  // a popover form for actions on reqeust
@@ -846,4 +882,4 @@ jsonIp_data(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
 
 </body>
 </html>
-<?php endif;?> 
+<?php endif; endif;?> 

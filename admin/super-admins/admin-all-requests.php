@@ -3,30 +3,52 @@
 
 session_start();
 // error_reporting(0);
+
+
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-$stf_role = 3;
-// $_SESSION['role'];
-$staf_id = 2;
-// $_SESSION['stf_id'];
-$college_id = 1;
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
+
+  // if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+  if(!$loginFunctions->checkLoginState($session_instance)):
+    
+
+  header('location:../index.php');
+
+  else:
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
+    // $staf_id = 4;
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+    if($staff_details[0]['role_id'] != 3):
+
+  header('location:../index.php');
+  exit();
+    else: 
+
 
 // check authentication
 $organisation = new Organisation();
-
+$staff = new Staff();
+$staff_details = $staff->getStaffById($staf_id);
 // instantiate request
+$college_id = $staff_details[0]['coll_id'];
 
 $request = new Request();
 $request_instance = $request->getAllRequestsByStaff($staf_id);
 $college_requests = $request->getAllRequestsByCollege($college_id);
-// getting data to pre-fill the form
-$staff = new Staff();
-$staff_details = $staff->getStaffById($staf_id);
+
 // $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
 // $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
 // $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
@@ -882,4 +904,4 @@ $('#table').on('click', '.do-action-button', function(){
 
 </body>
 </html>
-<!-- <?php// endif;?>  -->
+<?php endif;  endif;?> 

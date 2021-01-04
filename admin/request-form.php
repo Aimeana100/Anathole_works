@@ -265,7 +265,6 @@
         </div>
         </div>
 
-
         <div class="row pl-4">
           <div class="col-lg-6 col-md-4 col-sm-2 col-xs-12"></div>
           <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">

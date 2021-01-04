@@ -134,11 +134,11 @@ if(isset($request_details)){
       <div class="row pl-4 data-custon-pick data-custom-mg" id="data_5">
               
               <div class="input-daterange input-group" id="datepicker">
-                  <input id="arrival-date" type="text" class="" name="start" value="05/14/2020" />
+                  <input id="arrival-date" type="text" class="" name="start" value="01/01/202" />
                   <span class="input-group-addon ml-0 mr-0">to</span>
-                  <input id="departure-date" type="text" class="" name="end" value="05/14/2020" />
+                  <input id="departure-date" type="text" class="" name="end" value="01/01/2021" />
               </div>
-          </div>
+        </div>
 
 
 
@@ -188,6 +188,7 @@ if(isset($request_details)){
 
    // submitt a request form
      function SubmitMissionOutcomes(){ 
+
     var req_id = <?php echo $Req_id; ?>;
     var current_date_time = getDateTime();
     var mission_out_comes = $('#req-outcomes').val();
@@ -195,29 +196,44 @@ if(isset($request_details)){
         arrival_date = arrival_date.getFullYear()+'-'+(arrival_date.getMonth()+1)+'-'+arrival_date.getDate();
     var departure_date = new Date($('#datepicker #departure-date').val());
         departure_date = departure_date.getFullYear()+'-'+(departure_date.getMonth()+1)+'-'+departure_date.getDate();
-        console.log(typeof(mission_out_comes));
-        console.log(typeof(arrival_date));
-        console.log(typeof(departure_date));
-      if(mission_out_comes.length == 0) {
+        // console.log(typeof(mission_out_comes));
+        // console.log(typeof(arrival_date));
+        // console.log((mission_out_comes.length));
+      if(mission_out_comes.length < 5) {
+
       Lobibox.notify('error', {
       sound: false,
       size: 'large',
       width: 500,
       position: 'top right',
-      msg: '<b>Fill the form before submit</b>'
+      msg: '<b>Fill the form before submit</b></br> outcomes fields should be meaningful'
   });
       }
-
+      else
+      {
     $.post("../scripts/save-staff-mission-report.php",{req_id: req_id,current_date_time: current_date_time, mission_out_comes: mission_out_comes, arrival_date: arrival_date,departure_date: departure_date},
     function(data) {
+
+      ('#mission-report').modal('hide');
       JsonData = JSON.parse(data);
       console.log(JsonData);
+
       if(JsonData.success)
       {
         // hide the button clicked report to avoid re submut
-      }
+    
 
+      Lobibox.notify('success', {
+      sound: false,
+      size: 'large',
+      width: 500,
+      position: 'top right',
+      msg: '<b>Successfully </b></br> Report sent'
+      });
+      }
+      
     });
+}
 }
 
 

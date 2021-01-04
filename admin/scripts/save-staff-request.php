@@ -15,7 +15,7 @@
       $req_return = $_POST['req_return'];
       $req_distance = $_POST['req_distance'];
       $req_mission_duration = $_POST['req_mission_duration'];
-
+      
       $progress = 0;
       $request_status = 1;
       $currdate=date("y-m-d mm:ss");

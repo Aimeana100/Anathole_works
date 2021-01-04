@@ -8,11 +8,30 @@ include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-$stf_role = 3;
-// $_SESSION['role'];
-$staf_id = 1;
-// $_SESSION['stf_id'];
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
+
+  // if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+  if(!$loginFunctions->checkLoginState($session_instance)):
+    
+
+  header('location:../index.php');
+
+  else:
+    $stf_role = $_SESSION['role_id'];
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+    if($staff_details[0]['role_id'] != 3):
+
+    header('location:../index.php');
+    exit();
+    else: 
+
 
 // check authentication
 $organisation = new Organisation();
@@ -162,127 +181,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
   <div class="app-content content">
     <div sty class="content-wrapper">
-    <div class="content-body">
 
-        <!-- Revenue, Hit Rate & Deals -->
-        <!-- all requests -->
-        <!-- <div class="row">
-          <div class="col-xl-3 col-lg-3 col-sm-3  ">
-            <div class="card pull-up">
-              <div class="card-content">
-                   <a href="hod-disapprove.php">
-                <div class="card-body">
-                  <div class="media d-flex">
-                    <div class="media-body text-center">
-                  <php 
-                  
-                  ?>
-                  <h2 class="success"><b><php echo htmlentities(9);?></b></h2>
-                      <h4><b>All Requests</b></h4>
-                    </div>
-                    <div>
-                 <i class="icon-book-open info font-large-2 float-right"></i>
-                    </div>
-                  </div>
-                  <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                    <div class="progress-bar bg-gradient-x-secondary" role="progressbar" style="width: 100%"
-                    aria-valuenow="100" aria-valuemin="0" aria-valuemax="90"></div>
-                  </div>
-                </div>
-              </a>
-              </div>
-            </div>
-          </div> -->
+          <?php if (isset($_GET['option']) AND $_GET['option'] == "change-password"):  
+        include_once('../change-password.php');      
 
-     <!-- Last Seven Days Complaints --->
-    
-          <!-- <div class="col-xl-3 col-lg-3 col-sm-3  ">
-            <div class="card pull-up">
-              <div class="card-content">
-                <a href="hod-approved.php">
-                <div class="card-body">
-                  <div class="media d-flex">
-                    <div class="media-body text-center">
-<?php 
-
-  ?>
- <h2 class="success"> <b> <?php// echo htmlentities(3);?> </b></h2>
-                      <h4><b>All Reports</b></h4>
-                    </div>
-                    <div>
-    <i class="icon-notebook info font-large-2 float-right"></i>
-                    </div>
-                  </div>
-                  <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                    <div class="progress-bar sm-gradient-x-secondary" role="progressbar" style="width: 100%"
-                    aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-3 col-lg-3 col-sm-3  ">
-            <div class="card pull-up">
-              <div class="card-content">
-                 <a .php">
-                <div class="card-body">
-                  <div class="media d-flex">
-                    <div class="media-body text-center">
-<?php 
-
-?>
-
-<h2 class="success"><b><php// echo htmlentities(7);?> </b></h2>
-                      <h4><b>All Staffs</b></h4>
-                    </div>
-                    <div>
-                      <i class="icon-user-follow info font-large-2 float-right"></i>
-                    </div>
-                  </div>
-                  <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                    <div class="progress-bar bg-gradient-x-secondary" role="progressbar" style="width: 100%"
-                    aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </a>
-              </div>
-            </div>
-          </div>
-
-
-
-          <div class="col-xl-3 col-lg-3 col-sm-3  ">
-            <div class="card pull-up">
-              <div class="card-content">
-                 <a .php">
-                <div class="card-body">
-                  <div class="media d-flex">
-                    <div class="media-body text-center">
-<?php 
-
-?>
-
-           <h2 class="success"> <b><php echo htmlentities(7);?></b></h2>
-                      <h4><b>Host Places</b></h4>
-                    </div>
-                    <div>
-                      <i class="icon-direction info font-large-2 float-right"></i>
-                    </div>
-                  </div>
-                  <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                    <div class="progress-bar bg-gradient-x-secondary" role="progressbar" style="width: 100%"
-                    aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </a>
-              </div>
-            </div>
-          </div>
-                    
-          </div> -->
-
+        else:
+          ?>
 
        <div class="content-body">
            <!-- table start -->
@@ -392,14 +296,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
         </div> -->
         <!-- bar chart end -->
 
+       
         
-
-
-       <div class="">
-
-            </div>
         </div>
-        </div>
+
+        <?php endif; ?>
         </div>
   
 
@@ -819,4 +720,4 @@ var ctx = document.getElementById("barchart1").getContext('2d');
 
 </body>
 </html>
-<!-- <?php// endif;?>  -->
+<?php endif; endif;?> 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+// error_reporting(0);
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
@@ -23,17 +23,24 @@ $loginFunctions = new Functions();
     else:
       // $_SESSION['userlogin'] = $_SESSION['user_username'];
       $stf_role = $_SESSION['role_id'];
-      // $staf_id = 4;
+
+   // getting data to pre-fill the form
+      $staff = new Staff();
       $staf_id = $_SESSION['user_id'];
+
+      $staff_details = $staff->getStaffById($staf_id);
+
+      if($staff_details[0]['role_id'] == 3 || $staff_details[0]['role_id'] == 7 || $staff_details[0]['role_id'] == 4 || $staff_details[0]['role_id'] == 6)
+      {     
+        header('location:../index.php');
+        //  exit();      
+      }
 
     $organisation = new Organisation();
 
-   // getting data to pre-fill the form
-    $staff = new Staff();
      // instantiate reports
      $report = new Report();
      $report_instance = $report->getAllReportByStfId($staf_id);
-    $staff_details = $staff->getStaffById($staf_id);
     $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
     $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
     $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);

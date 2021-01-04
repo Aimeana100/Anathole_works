@@ -15,9 +15,8 @@ $session_instance = new Sessions();
 $loginFunctions = new Functions();
 
 
-if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
-  // if(!$loginFunctions->checkLoginState($session_instance)):
-    
+// if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) OR  (strlen($_SESSION['user_id'])==0))):
+  if(!$loginFunctions->checkLoginState($session_instance)):   
 
   header('location:../index.php');
 
@@ -29,16 +28,17 @@ if(((strlen($_SESSION['user_username'])==0) OR (!isset($_SESSION['user_id']) ) O
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-  //   if($staff_details[0]['dept_id'] != 7):
-  // header('location:../index.php');
-  // exit();
-  //   else: 
+    if($staff_details[0]['role_id'] != 7):
+    header('location:../index.php');
+    exit();
+    else: 
+      
     // $stf_role = 7;
     // $stf_role = $_SESSION['role'];
     // $staf_id = 6;
     // $staf_id = $_SESSION['stf_id'];
 
-    $HOD_id = $_SESSION['stf_id'];
+    $HOD_id = $_SESSION['user_id'];
     $organisation = new Organisation();
   
     $staff = new Staff();
@@ -139,12 +139,12 @@ div.row-flex-container{
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
   <!-- <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css"> -->
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css">
+  <!-- <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css"> -->
   <link rel="stylesheet" type="text/css" href="../app-assets/fonts/simple-line-icons/style.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
 
 
- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css">
+ <!-- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css"> -->
  <link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css">
 
 
@@ -421,7 +421,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 <!-- pre-loader for waiting  -->
 
-<div id="wait" style="z-index:100;display:none;width:80px;height:80px;border:none;position:fixed;top:45%;left:45%; background-color: #3f6ff0;"><img class="preLoader" src='ajax-loader.gif' width="80" height="80" /><br>wait..</div>
+<div id="wait" style="z-index:100;display:none;width:80px;height:80px;border:none;position:fixed;top:45%;left:45%; background-color: #3f6ff0;"><img class="preLoader" src='../ajax-loader.gif' width="80" height="80" /><br>wait..</div>
 
 <!-- End of Report Form -->       
 <?php include('../includes/footer.php');?>
@@ -435,17 +435,19 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <script src="../app-assets/js/scripts/customizer.js" type="text/javascript"></script>
   <!-- END MODERN JS-->
 
+<!-- bootstrap table -->
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
 
 
   <!-- js bootstrap table from jwrly template -->
-    <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
+    <!-- <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
     <script src="../super-admins/js/data-table/tableExport.js"></script>
-    <script src="../super-admins/js/data-table/data-table-active.js"></script>
+    <script src="../super-admins/js/data-table/data-table-active.js"></script> -->
     <!-- <script src="js/data-table/bootstrap-table-editable.js"></script> -->
-    <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
+    <!-- <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
     <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>
-    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script>
+    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script> -->
 
             <!-- datapicker JS
 		============================================ -->
@@ -495,7 +497,7 @@ $('#table').on('click', '.hod-view-staff-request-details', function(){
                         let data_formulated = JSON.parse(response);
                         if(data_formulated.hod_reacted) //check if principal has received the request
                         {
-                          if(data_formulated.all_about_request.hod_sansation = 1)
+                          if(data_formulated.all_about_request.hod_sansation == 1)
                           {
                             $('#hold-viwer-action').html('<div class="alert alert-success mb-2" role="alert"> you have <strong>Approved </strong>this request</div></>');
                           }
@@ -539,7 +541,7 @@ $('#table').on('click', '.do-action-button', function(){
                   }
                   else
                   {
-                  let message = '<h4 class="bg-success" > This Request '+data_formulated.all_about_request.hod_sansation == 1 || data_formulated.all_about_request.hod_sansation == true? " Approved " : " Disapproved" +'</h4>'
+                  let message = '<h4 class="bg-success" > This Request '+data_formulated.all_about_request.hod_sansation == 1 || data_formulated.all_about_request.hod_sansation == true ? " Approved " : " Disapproved" +'</h4>'
                   $('#action-on-request-form').html(message);
                   }
                     
@@ -550,6 +552,7 @@ $('#table').on('click', '.do-action-button', function(){
 
 
    // take action on request. for direct action in table
+
    function Do_direct_ActionOnRequest(){
       // getting ids from hidden input in popover  on direct action    
     // errors = {"approver_id": "", "request:id": "", "comment": "", "sansation": ""};
@@ -567,7 +570,7 @@ $('#table').on('click', '.do-action-button', function(){
       errors_array.push("choose to approve or not");
     }    
     if(errors_array.length != 0){
-
+      
       Lobibox.notify('warning',{
       sound: false,
       width: 400,
@@ -580,6 +583,14 @@ $('#table').on('click', '.do-action-button', function(){
     function(data) {
       console.log(data);
       let actionFedback = JSON.parse(data);
+      if(actionFedback.success)
+      {
+        $('#action-on-request-form').html('<b> Successfully Approved </b>');
+      }
+      else{
+        $('#action-on-request-form').html('<b> error, something went wrong we failed to send your sansation </b>');
+
+      }
       console.log(actionFedback);
     });
     }
@@ -667,4 +678,4 @@ $('#table').on('click', '.do-action-button', function(){
 
 </body>
 </html>
-<?php endif; ?> 
+<?php endif;  endif;?> 
