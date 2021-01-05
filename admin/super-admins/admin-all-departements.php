@@ -217,7 +217,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd row">
                                 <div class="main-sparkline13-hd co-6">
-                                    <h1>ALL <span class="table-project-n"> SCHOOLS </span></h1>
+                                    <h1>ALL <span class="table-project-n"> Depertements</span></h1>
+                                </div>
+                                <div class="main-sparkline13-hd col-10 text-right ">
+                                    <button class="btn-md m-b-r-0 b-0 add-staff float-right">
+                                    <a class="zoomInDown mg-t secondary p-2" href="#" data-toggle="modal" data-target="#admin-add-dept">Add Departement</a>
+                                    </button>
                                 </div>
                             </div>
                             <div class="sparkline13-graph">
@@ -235,9 +240,9 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                             <tr>
                                                 <th data-field="state" data-checkbox="true"></th>
                                                 <th data-field="id">school_ID</th>
-                                                <th data-field="dept-name" data-editable="true">departement name</th>
-                                                <th data-field="scl-name" data-editable="true">school name</th>
-                                                <th data-field="coll-name" data-editable="true">college name</th>
+                                                <th data-field="dept_name" data-editable="true">departement name</th>
+                                                <th data-field="scl_name" data-editable="true">school name</th>
+                                                <th data-field="coll_name" data-editable="true">college name</th>
                                                 <!-- <th data-field="principal-name" data-editable="true">Principal name</th> -->
                                                 <th data-field="action">Action</th>
                                             </tr>
@@ -254,7 +259,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <td><?php echo $All_departements[$key]["scl_name"]; ?></td>
                                                 <td><?php echo $All_departements[$key]["coll_name"]; ?></td>
                                                 <!-- <td>< ?php// echo $$All_departements[$key]["stf_lname"]; ?></td> -->
-                                               
+
                                                 <td class="datatable-ct" >
                                                 <input data-target="#mdl-edit-dept" data-toggle="modal"  dept-id="<?php echo htmlentities($All_departements[$key]["dept_id"]);  ?>" type="button" class="btn-sm btn-primary border-0 class-departement " value="edit"/>
                                                 </td>
@@ -285,7 +290,78 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
         </div>
         </div>
   
- 
+
+
+
+
+ <div class="modal fade bd-example-modal-lg1 add-college" id="admin-add-dept" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-md" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><b>Add Detartement</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="add-dept-container">
+
+      <form id="form-add-dept">
+      <div class="form-group-inner">
+          <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+              <label for="school" class="login2">School</label>
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+              <select id="school" name="school"   data-placeholder="Choose a deptmnt ..." class="chosen-select" tabindex="-1">
+                <option value="">Select</option>
+                <?php
+                  $school = $organisation->getAllSchools();
+                  
+                  if(!empty($school)):
+                  foreach($school as $key => $value):
+                                ?>
+                                  
+                    <option id="<?php echo $school[$key]['scl_id'];?>"> <?php echo $school[$key]['scl_name']; ?> </option>
+
+                    <?php  endforeach; endif; ?>							  
+            </select>
+            </div>
+          </div>
+      </div>
+
+      <div class="form-group-inner">
+      <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+              <label class="login2" for="departement ">departement name</label>
+          </div>
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+              <input id="departement" name="departement" type="text" class="form-control" placeholder="school title" />
+          </div>
+      </div>
+  </div>
+
+  <div class="login-btn-inner">
+ <div class="row">
+     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+         <div class="login-horizental">
+             <input id="add-staff" type="button" onclick="AddDept()" name="register"  class="btn btn-sm btn-primary login-submit-cs" value="Add College now" />
+         </div>
+     </div>
+ </div>
+ </div>
+
+      </form>
+
+     
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- edit college -->
@@ -371,6 +447,60 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
  <script>
+
+
+function AddDept()
+{
+  var dept_name = $("#departement").val();
+  var scl_id = $('#school').children(":selected").attr("id"); 
+  if((dept_name.length == 0) || (scl_id == null)) {
+    $("#departement").focus();
+    Lobibox.notify('error', {
+        sound: false,
+        width: 300,
+        position: 'top right',
+        msg: '<b> PLease Fill the form propery</b>'
+    });
+
+  } 
+  else
+  {
+    $.post("../scripts/add-departement.php",
+    {dept_name:dept_name, scl_id: scl_id},
+    function(response){
+      console.log(response);
+      let dept = JSON.parse(response);
+      console.log(dept);
+      if(dept.success){
+        let row = 
+        {
+          state: '<b>New</b>',
+          id: dept.result.dept_id,
+          dept_name: dept.result.dept_name,
+          scl_name: dept.result.scl_name,
+          coll_name: dept.result.coll_name,
+          action: '<input data-target="#mdl-edit-school" data-toggle="modal" dept-id="' + dept.result.dept_id +'" type="button" class="btn-sm btn-primary border-0 class-dept" value="edit"/>'
+        };
+        $('#form-add-dept')[0].reset();
+
+        var $table = $('#table');
+        var rowId = $("#table >tbody >tr").length;
+        $table.bootstrapTable('insertRow', {
+        index: rowId,
+        row: row
+      });
+      Lobibox.notify('success', {
+        sound: false,
+        width: 300,
+        position: 'top right',
+        msg: '<b> College Added</b>'
+    });
+      }
+
+    }); 
+  }
+}
+
 
 
  // hod view the single staff request

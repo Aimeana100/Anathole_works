@@ -8,10 +8,9 @@ class Organisation {
     }
 
     function InsertDepartement($departement_name, $school_id){
-        $query = "INSERT INTO `urstms`.`departements` (dept_id,dept_name, scl_id) VALUES (?,?,?);";
+        $query = "INSERT INTO `urstms`.`departements` (dept_name, scl_id) VALUES (?,?);";
         $paramType = "si";
         $paramValue = array(
-            $departement_id,
             $departement_name,
             $school_id,
         );
@@ -66,10 +65,37 @@ class Organisation {
         function getAllPositions(){
             $query = "SELECT * FROM roles;";
             $all_roles = $this->db_handle->runBaseQuery($query);
-            return $all_roles;
+            return $all_roles;        }
+
+            
+    
+
+        // get dept by school id    
+        function getDeptByDeptId($dept_id)
+        {
+            $query = "SELECT * FROM departements INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON schools.coll_id = colleges.coll_id AND  = departements.dept_id = ?";
+            $paramType = "i";
+            $paramValue = array(
+                $dept_id
+            );
+            
+            $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
+            return $result;
         }
 
-    
+        // get school by school id    
+        function getSchoolByScllId($scl_id)
+        {
+            $query = "SELECT * FROM schools INNER JOIN colleges ON schools.coll_id = colleges.coll_id  WHERE  scl_id = ?";
+            $paramType = "i";
+            $paramValue = array(
+                $scl_id
+            );
+            
+            $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
+            return $result;
+        }
+
             // get colleg by colllege id    
             function getCollegeByCollId($coll_id)
             {

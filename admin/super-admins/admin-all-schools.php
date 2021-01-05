@@ -183,7 +183,6 @@ div.row-flex-container{
 
 
 </head>
-
 <body style="color: #000000" class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar"
 data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
@@ -241,8 +240,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                             <tr>
                                                 <th data-field="state" data-checkbox="true"></th>
                                                 <th data-field="id">school_ID</th>
-                                                <th data-field="school-name" data-editable="true">school name</th>
-                                                <th data-field="college-name" data-editable="true">college name</th>
+                                                <th data-field="school_name" data-editable="true">school name</th>
+                                                <th data-field="college_name" data-editable="true">college name</th>
                                                 <!-- <th data-field="principal-name" data-editable="true">Principal name</th> -->
                                                 <th data-field="action">Action</th>
                                             </tr>
@@ -311,10 +310,10 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
       <div class="form-group-inner">
           <div class="row">
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-              <label for="Department" class="login2">College</label>
+              <label for="college" class="login2">College</label>
               </div>
               <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-              <select id="departement" name="Department"   data-placeholder="Choose a deptmnt ..." class="chosen-select" tabindex="-1">
+              <select id="colleges" name="colleges"   data-placeholder="Choose a deptmnt ..." class="chosen-select" tabindex="-1">
                 <option value="">Select</option>
                 <?php
                   $college = $organisation->getAllColleges();
@@ -334,10 +333,10 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
       <div class="form-group-inner">
       <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-              <label class="login2" for="first_name ">school name</label>
+              <label class="login2" for="school_name ">school name</label>
           </div>
           <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-              <input id="college_name" name="college_name" type="text" class="form-control" placeholder="college title" />
+              <input id="school_name" name="school_name" type="text" class="form-control" placeholder="school title" />
           </div>
       </div>
   </div>
@@ -448,6 +447,56 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
  <script>
 
+function Addschool()
+{
+  var school_name = $("#school_name").val();
+  var college_id = $('#colleges').children(":selected").attr("id"); 
+  if((school_name.length == 0) || (college_id == null)) {
+    $("#school_name").focus();
+    Lobibox.notify('error', {
+        sound: false,
+        width: 300,
+        position: 'top right',
+        msg: '<b> PLease Fill the form propery</b>'
+    });
+
+  } 
+  else
+  {
+    $.post("../scripts/add-school.php",
+    {school_name:school_name, college_id: college_id},
+    function(response){
+      let school = JSON.parse(response);
+      console.log(school);
+      if(school.success){
+        let row = 
+        {
+          state: '<b>New</b>',
+          id: school.result.scl_id,
+          school_name: school.result.scl_name,
+          college_name: school.result.coll_name,
+          action: '<input data-target="#mdl-edit-school" data-toggle="modal" school-id="' + school.result.scl_id +'" type="button" class="btn-sm btn-primary border-0 class-college " value="edit"/>'
+        };
+        $('#form-add-college')[0].reset();
+
+        var $table = $('#table');
+        var rowId = $("#table >tbody >tr").length;
+        $table.bootstrapTable('insertRow', {
+        index: rowId,
+        row: row
+      });
+      Lobibox.notify('success', {
+        sound: false,
+        width: 300,
+        position: 'top right',
+        msg: '<b> College Added</b>'
+    });
+      }
+
+    }); 
+  }
+}
+
 
  // hod view the single staff request
  
@@ -519,6 +568,7 @@ async function verfyEmailDB(email)
     console.log(error);    
   }
 }
+
 
 
 
