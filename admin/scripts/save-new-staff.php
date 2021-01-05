@@ -32,9 +32,8 @@
 			if($send_email){
 				$save_staff = $staff->addStaff($emp_id,$first_name,$last_name,$gender,$telphone, $email,$currdate,$email, $password_hashed, $depertment,$position,0);
 				$inserted_staff = $staff->getStaffById($save_staff);
-				echo json_encode(array("success" => true, "new_user_info" => $inserted_staff[0]));
-				// echo $last_name." ".$first_name."  registered successfully ".$password ;
 			   $connection->commitTransaction();
+			echo json_encode(array("success" => true, "new_user_info" => $inserted_staff[0]));
 		
 			}
 			else{

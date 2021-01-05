@@ -74,8 +74,8 @@
                                                                       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                                                                       <select  id="update_gender" name="update_gender" data-placeholder="...select gender..." class="form-control chosen-seelect" tabindex="-1">
                                                                         <option selected disabled value="">Select</option>
-                                                                        <option  <?php echo $staff_details[0]['gender'] =='male' ? "selected" : "disabled";?> value="Male">Male</option>
-                                                                        <option  <?php echo $staff_details[0]['gender']=='female' ? "selected" : "disabled";?> value="Female">Female</option>                                                   
+                                                                        <option  <?php echo $staff_details[0]['gender'] =='male' || $staff_details[0]['gender'] =='Male' ? "selected" : "disabled";?> value="Male">Male</option>
+                                                                        <option  <?php echo $staff_details[0]['gender']=='female' || $staff_details[0]['gender']=='Female'  ? "selected" : "disabled";?> value="Female">Female</option>                                                   
                                                                     </select>                                                                                        </div>
                                                                   </div>
                                                               </div>

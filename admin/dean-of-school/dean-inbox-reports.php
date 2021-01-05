@@ -27,7 +27,7 @@ $loginFunctions = new Functions();
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-    if($staff_details[0]['scl_id'] != 6):
+    if($staff_details[0]['role_id'] != 6):
     header('location:../index.php');
     exit();
       else: 
@@ -44,7 +44,7 @@ $loginFunctions = new Functions();
       $staff_details = $staff->getStaffById($staf_id);
   
       $schl_id=$staff_details[0]['scl_id'];
-      $HOD_id = $_SESSION['stf_id'];
+      // $HOD_id = $_SESSION['stf_id'];
   
       $request = new Request();
     //   $request_instance = $request->getAllRequestsByStaff($staf_id);

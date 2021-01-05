@@ -644,26 +644,26 @@ $('#table').on('click', '.give-mission-report', function(){
                       success:function(response)
                       {
 
-                  let data_formulated = JSON.parse(response);
-                  if(!data_formulated.principal_reacted) //check if principal has received the request
-                  {
-                    if(data_formulated.all_about_request.principal_sansation != 1)
-                    {
-                      $('#reporot-form-container').html(result);
-                    }
-                    else
-                    {
-                      $('#reporot-form-container').html(message_if_not_disaproved);
-                      
-                    }
-                    
+                        let data_formulated = JSON.parse(response);
+                        if(data_formulated.principal_reacted) //check if principal has received the request
+                        {
+                          if(data_formulated.all_about_request.principal_sansation == 1)
+                          {
+                            $('#reporot-form-container').html(result);
+                          }
+                          else
+                          {
+                            $('#reporot-form-container').html(message_if_not_disaproved);
+                            
+                          }
+                          
 
-                  }
-                  else
-                  {
-                    $('#reporot-form-container').html(message_if_not_GOAHEAD);
+                        }
+                        else
+                        {
+                          $('#reporot-form-container').html(message_if_not_GOAHEAD);
 
-                  }
+                        }
                       }
                     })
                   // console.log(data_formulated.all_about_request.hod_sansation);
@@ -791,7 +791,6 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
         return: DBcallback.req_return,
         status: '<input req-id="'+ DBcallback.req_id +'" type="button" class="btn-sm border-0 btn-success" value="Activated" />',
         action: '<input data-target="#staff-track-request-progress" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > '+" " +'<input data-target="#Request-view-details" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > '
-
        };
 
        var $table = $('#table');
@@ -852,7 +851,7 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
 
 //  } 
 
-$(document).find(".btn.give-mission-report").on("click", function (event) {
+$('document').find(".btn.give-mission-report").on("click", function (event) {
             if ($(this).hasClass("disabled")) {
                 event.stopPropagation()
             } else {

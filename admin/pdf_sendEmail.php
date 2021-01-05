@@ -1,4 +1,5 @@
 <?php 
+include('pdf.php');
 if(isset($_POST['sendEmail']))
 {
     $filename = md5(rand()) .'pdf';
@@ -14,5 +15,20 @@ if(isset($_POST['sendEmail']))
     $mail = new PHPMailer;
     $mail-IsSMTP();
     
+}
+
+if(isset($_POST['generate'])){
+    $css = '../download.css';
+
+    $filename = md5($_POST['req_id']) .'pdf';
+    $html_code =$css . $_POST['html_code'];
+    $pdf = new pdf();
+    $pdf->load_html($html_code);
+    // (Optional) Setup the paper size and orientation 
+   $pdf->setPaper('A4', 'landscape'); 
+    $pdf->render();
+    $pdf->stream($filename, array("Attachment" => 0));
+    echo $pdf->output();
+
 }
 ?>

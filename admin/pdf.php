@@ -1,6 +1,6 @@
 <?php 
 // pdf.php
-require_once 'dompdf/autoloaad.inc.php';
+require_once '../dompdf/';
 use Dompdf\Dompdf;
 class pdf extends Dompdf
 {

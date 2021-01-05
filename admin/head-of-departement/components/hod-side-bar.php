@@ -44,7 +44,7 @@
         <li class=" nav-item"><a href="?option=change-password"><i class="la la-envelope"></i><span class="menu-title" data-i18n="nav.dash.main">Change password</span></a>
         </li>
 
-    <li class=" nav-item"><a href="../../logout.php"><i class="la la-envelope"></i><span class="menu-title" data-i18n="nav.dash.main">logout</span></a>
+    <li class=" nav-item"><a href="../logout.php"><i class="la la-envelope"></i><span class="menu-title" data-i18n="nav.dash.main">logout</span></a>
     </li>
 
    

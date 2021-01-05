@@ -145,7 +145,7 @@ div.row-flex-container{
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
 
 
- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css">
+ <!-- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css"> -->
  <link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css">
 
 
@@ -173,7 +173,7 @@ div.row-flex-container{
 <!-- css -->
 <link rel="stylesheet" type="text/css" href="../super-admins/css/style.css">
 
-<link rel="stylesheet" href="../super-admins/css/font-awesome.min.css">
+<!-- <link rel="stylesheet" href="../super-admins/css/font-awesome.min.css"> -->
 
 
 
@@ -271,7 +271,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <th data-field="destination" data-editable="true">Destination</th>
                                                 <th data-field="departure" data-editable="true">Deperture</th>
                                                 <th data-field="return" data-editable="true">Return</th>
-                                                <th data-field="Status" data-editable="true">Status</th>
+                                                <th data-field="status" data-editable="true">Status</th>
                                                 <th data-field="action" class="text-center">Action</th>
                                             </tr>
                                         </thead>
@@ -289,7 +289,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                           <td><?php echo $request_instance[$key]["req_departure"]; ?></td>
                                           <td><?php echo $request_instance[$key]["req_return"]; ?></td>
                                           <td>
-                                          <input req-id="<?php echo htmlentities($request_instance[$key]["req_id"]);  ?>" type="button" class="btn-sm border-0 my-request-status <?php echo $request_instance[$key]['req_status'] == 1 ? 'btn-success': 'btn-warning'; ?>" value="<?php echo $request_instance[$key]['req_status'] == 1 ? 'ON': 'OFF'; ?>" />
+                                          <input req-id="<?php echo htmlentities($request_instance[$key]["req_id"]);  ?>" type="button" class="btn-sm border-0 my-request-status <?php echo $request_instance[$key]['req_status'] == 1 ? 'btn-success': 'btn-warning'; ?>" value="<?php echo $request_instance[$key]['req_status'] == 1 ? 'Activated': 'Canceled'; ?>" />
                                           <?php ; ?>
                                           </td>
                                           <td class="datatable-ct">
@@ -453,21 +453,23 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <!-- END MODERN JS-->
 
 
-  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+
+  <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script> -->
 
   <!-- js bootstrap table from jwrly template -->
-    <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
+    <!-- <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
     <script src="../super-admins/js/data-table/tableExport.js"></script>
-    <script src="../super-admins/js/data-table/data-table-active.js"></script>
+    <script src="../super-admins/js/data-table/data-table-active.js"></script> -->
     <!-- <script src="../js/data-table/bootstrap-table-editable.js"></script> -->
-    <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
+    <!-- <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
     <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
     <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>
-    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script>
+    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script> -->
 
             <!-- datapicker JS
 		============================================ -->
@@ -606,6 +608,7 @@ $('#table').on('click', '.view-request-details', function(){
 });
 
      
+
 $('#table').on('click', '.give-mission-report', function(){
            var reqId = $(this).attr("req-id");
            let ThisButton = $(this);
@@ -613,9 +616,42 @@ $('#table').on('click', '.give-mission-report', function(){
                 url:"../report-form.php",  
                 method:"POST",
                 data:{req_id:reqId},  
-                success:function(data){ 
-                      $('#reporot-form-container').html(data);
-                      ThisButton.addClass('disabled')
+                success:function(result){
+                  let message_if_not_GOAHEAD = '<div class="alert alert-primary mb-2" role="alert"><strong>Request In progress</strong> Waiting For Last Aprroval</div>';
+                  let message_if_not_disaproved = '<div class="alert alert-warning mb-2" role="alert"><strong>Request In progress</strong> Request has been Disapproved </div>';
+
+                  $.ajax(
+                    {
+                      url: '../scripts/track-my-request.php',
+                      method:"POST",
+                      data: {req_id:reqId},
+                      success:function(response)
+                      {
+
+                  let data_formulated = JSON.parse(response);
+                  if(data_formulated.principal_reacted) //check if principal has received the request
+                  {
+                    if(data_formulated.all_about_request.principal_sansation == 1)
+                    {
+                      $('#reporot-form-container').html(result);
+                    }
+                    else
+                    {
+                      $('#reporot-form-container').html(message_if_not_disaproved);
+                      
+                    }
+                    
+
+                  }
+                  else
+                  {
+                    $('#reporot-form-container').html(message_if_not_GOAHEAD);
+
+                  }
+                      }
+                    })
+                  // console.log(data_formulated.all_about_request.hod_sansation);
+                      ThisButton.addClass('disabled');
                       $("#myModal").on('shown.bs.modal', function(){
                       $('document').find('#inputName').focus();
                     });
@@ -624,6 +660,7 @@ $('#table').on('click', '.give-mission-report', function(){
            }); 
 
 });
+
 
  
 $('#table tbody').on( 'click', 'td input.my-request-status', function () {
@@ -636,21 +673,21 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
   var reqId = $(this).attr("req-id");
   var newstatus = "";
   $.ajax({  
-                url:"../scripts/change-request-status.php", 
-                method:"post",  
-                data:{req_id:reqId},
-                success:function(data){
-                  data =  JSON.parse(data);
-                  let newStatus = data.status;
-                  thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
-                  thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
-                  thisButton.val(newStatus == 1 ? "ON" : "OFF");
+            url:"../scripts/change-request-status.php", 
+            method:"post",  
+            data:{req_id:reqId},
+            success:function(data){
+              data =  JSON.parse(data);
+              let newStatus = data.status;
+              thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
+              thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
+              thisButton.val(newStatus == 1 ? "Activated" : "Canceled");
             }  
            });
           }
 } );
 
-    function SubmitFormRequest() {
+function SubmitFormRequest() {
     var errors = [];
     var stf_id = <?php echo $staf_id ?>;
     var supervisor_id  = <?php echo isset($staff_hod_details[0]['stf_id']) ? $staff_hod_details[0]['stf_id'] : isset($staff_dean_details[0]['stf_id']) ? $staff_dean_details[0]['stf_id'] : $staff_principal_details[0]['stf_id'] ?>;
@@ -710,10 +747,13 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
     $.post("../scripts/save-staff-request.php", { stf_id: stf_id, req_purpose: req_purpose, exp_result: exp_result, destination: destination, transiport: transiport, req_departure: req_departure, req_return: req_return, req_distance: req_distance, req_mission_duration: req_mission_duration, supervisor: supervisor_id},
     function(data) {
       
-      var all_callback = JSON.parse(data)
+      var all_callback = JSON.parse(data);
       var DBcallback = JSON.parse(all_callback.result);
-        // console.log(all_callback);
+      console.log(all_callback);
         // console.log(DBcallback);
+
+
+
 
       // let first_columns = ['<input data-index="0" name="btSelectItem" type="checkbox">','<span class"text-success">New</span>'];
       // let tableColumns = [DBcallback.req_id, DBcallback.des_name, DBcallback.req_departure, DBcallback.req_return]
@@ -723,141 +763,46 @@ $('#table tbody').on( 'click', 'td input.my-request-status', function () {
 
       // var table_row_full = first_columns.concat(tableColumns, last_column_status, last_column_track + last_column_view);
       //   var t = $('#table').DataTable()
-      //     m = t.row.add(table_row_full).order( [ 2, 'desc' ]).draw();
+      //   m = t.row.add(table_row_full).order( [ 2, 'desc' ]).draw();
 
-//       Lobibox.notify('success',{
-//       sound: false,
-//       width: 400,
-//       position: 'top right',
-//       msg: '<b>Request sent, with request ID:  '+ DBcallback.req_id +'</b>'
-//   });
+  $('#staff-request-form').modal('hide');
 
+      let row = 
+      {
+        count: '<span class"text-success">New</span>',
+        id: DBcallback.req_id,
+        destination: DBcallback.des_name,
+        departure: DBcallback.req_departure,
+        return: DBcallback.req_return,
+        status: '<input req-id="'+ DBcallback.req_id +'" type="button" class="btn-sm border-0 btn-success" value="Activated" />',
+        action: '<input data-target="#staff-track-request-progress" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > '+" " +'<input data-target="#Request-view-details" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > '
+       };
 
-//       if (data != false) {
-//         $('#table-data-rows').prepend(data);
-//         // $('#staff-form-request')[0].reset();
-//         // window.alert(data);
-//       }
-//     });
-//   }  
-// }
-
-
-
-  
-$('#staff-request-form').modal('hide');
-
-let row = 
-{
-  count: '<span class"text-success">New</span>',
-  id: DBcallback.req_id,
-  destination: DBcallback.des_name,
-  departure: DBcallback.req_departure,
-  return: DBcallback.req_return,
-  status: '<input req-id="'+ DBcallback.req_id +'" type="button" class="btn-sm border-0 btn-success" value="Activated" />',
-  action: '<input data-target="#staff-track-request-progress" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > '+" " +'<input data-target="#Request-view-details" req-id="'+ DBcallback.req_id +'" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > '
-
- };
-
- var $table = $('#table');
-  $table.bootstrapTable('insertRow', {
-  index: 0,
-  row: row
-});
+       var $table = $('#table');
+        $table.bootstrapTable('insertRow', {
+        index: 0,
+        row: row
+      });
 
 
-Lobibox.notify('success',{
-sound: false,
-size: 'large',
-width: 400,
-position: 'top right',
-msg: '<b>Request sent, with request ID:  '+ DBcallback.req_id +'</b>'
-});
+      Lobibox.notify('success',{
+      sound: false,
+      size: 'large',
+      width: 400,
+      position: 'top right',
+      msg: '<b>Request sent, with request ID:  '+ DBcallback.req_id +'</b>'
+  });
 
 
 
-//  window.location.reload(true);
-$(document).find('#staff-form-request')[0].reset();
+    //  window.location.reload(true);
+   $(document).find('#staff-form-request')[0].reset();
 
 
-});
-}  
-}
-
-
- // a popover form for actions on reqeust
-var do_direct_action_on_request = $('.give-sansation');
-   var retrieved = fetchDataForm();
-   do_direct_action_on_request.popover({
-   placement: 'left',
-   title : '<h4 class="text-center" ><i class="la la-arrow-right"></i><b> React to this request</b></h4>',
-   content: retrieved,
-   html: true
-   });
-
-   $('.give-sansation').on('click', function (e) {
-    $('.give-sansation').not(this).popover('hide');
-});
-
-  async function fetchDataForm(){
-    let fetch_data = '';
-    var reqId = $(this).attr("req-id");
-    var hod_id = <?php echo $staf_id; ?>
-
-    try {
-      fetch_data = await $.ajax({
-          url:"../scripts/hod-direct-action-on-request.php",
-          method:"POST",
-          async:false,
-          data:{req_id:reqId, hod_id:hod_id},
-          success:function(data){
-          fetch_data = data;
-          }
-          }); 
-      return fetch_data; 
-      
-    } catch (error) {
-      alert(error);
-      console.error(error);
-      
-    }
-
- 
- } 
-
-
-
-
-   // take action on request. for direct action in table 
-
-    function Do_direct_ActionOnRequest(){
-
-      // getting ids from hidden input in popover  on direct action
-    
-    // errors = {"approver_id": "", "request:id": "", "comment": "", "sansation": ""};
-    errors_array = [];
-    var hod_id = $('#Req-Hod-Ids').attr("hod_id");
-    var req_id = $('#Req-Hod-Ids').attr("req_id");
-    var hod_comment=$('#action_comment').val();
-    var hod_sansation=$('#hod_sansation').children(":selected").attr("value");
-
-    if(hod_comment == null || hod_comment == ""){
-      errors_array.push("comment field can't be empty");
-    }
-    if(hod_sansation == null || hod_sansation == "")
-    {
-      errors_array.push("choose to approve or not");
-    }    
-    if(errors_array.length != 0){
-      alert(errors_array);
-    }
-    else{
-    $.post("scripts/hod-action-on-request.php",{req_id: req_id,hod_comment: hod_comment, hod_sansation: hod_sansation, hod_id:hod_id},
-    function(data) {
-    window.alert(data);
     });
-    }
-    }
+  }  
+}
+ 
 
 
 

@@ -24,9 +24,21 @@
    
    
        <li style="padding-bottom: 3px;" class="nav-item">
-        <a href="admin-all-host-places.php"><i class="icon-direction"></i>
-        <span class="menu-title" data-i18n="nav.dash.main">Destiantions places </span></a>
+        <a href="admin-all-colleges.php"><i class="icon-direction"></i>
+        <span class="menu-title" data-i18n="nav.dash.main">Manage Colleges</span></a>
         </li>
+   
+   
+   <li style="padding-bottom: 3px;" class="nav-item">
+    <a href="admin-all-schools.php"><i class="icon-direction"></i>
+    <span class="menu-title" data-i18n="nav.dash.main">Manage Schools </span></a>
+    </li>
+   
+   
+   <li style="padding-bottom: 3px;" class="nav-item">
+    <a href="admin-all-departements.php"><i class="icon-direction"></i>
+    <span class="menu-title" data-i18n="nav.dash.main">Manage Departements</span></a>
+    </li>
 
         <li class=" nav-item">
         <a href="?option=change-password"><i class="la la-envelope"></i><span class="menu-title" data-i18n="nav.dash.main">Change password</span></a>

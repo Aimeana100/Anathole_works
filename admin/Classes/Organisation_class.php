@@ -46,13 +46,13 @@ class Organisation {
 
 
     function getAllDepartments(){
-            $query = "SELECT * FROM departements;";
+            $query = "SELECT * FROM departements INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON colleges.coll_id = schools.coll_id;";
             $All_departments = $this->db_handle->runBaseQuery($query);
             return $All_departments;
         }
 
         function getAllSchools(){
-            $query = "SELECT * FROM schools;";
+            $query = "SELECT * FROM schools INNER JOIN colleges ON schools.coll_id = colleges.coll_id;";
             $all_schools = $this->db_handle->runBaseQuery($query);
             return $all_schools;
         }
@@ -70,19 +70,30 @@ class Organisation {
         }
 
     
-// get all requests on a single staff
-    
-// function getAllRequestsByStaff($staff_id)
-// {
-//     $query = "SELECT * FROM user_request INNER JOIN requests ON user_request.req_id = requests.req_id INNER JOIN action_notifications ON user_request.req_id = action_notifications.req_id INNER JOIN staffs_info ON staffs_info.stf_id = user_request.stf_id AND staffs_info.stf_id = ? INNER JOIN departements ON departements.dept_id = staffs_info.dept_id INNER JOIN roles ON staffs_info.role_id = roles.role_id INNER JOIN destination ON requests.dest_id = destination.des_id INNER JOIN transiport ON transiport.trans_id = requests.trans_id ORDER BY requests.req_id DESC;";
-//     $paramType = "i";
-//     $paramValue = array(
-//         $staff_id
-//     );
-    
-//     $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
-//     return $result;
-// }
+            // get colleg by colllege id    
+            function getCollegeByCollId($coll_id)
+            {
+                $query = "SELECT * FROM colleges WHERE  coll_id = ?";
+                $paramType = "i";
+                $paramValue = array(
+                    $coll_id
+                );
+                
+                $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
+                return $result;
+            }
+
+            function UpdateCollege($coll_id, $coll_name)
+            {
+                $query = "UPDATE `urstms`.`colleges` SET coll_name = ? WHERE coll_id = ?";
+                $paramType = "isisi";
+                $paramValue = array(
+                    $coll_name,
+                    $coll_id
+                );
+                $this->db_handle->update($query, $paramType, $paramValue);        
+        }
+                
 
 // // get all request by dept ID
 
@@ -131,23 +142,7 @@ class Organisation {
 // }
 
 
-// function getAllReporsts(){
-//     $query = "SELECT * FROM travel_result;";
-//     $All_mission_reports = $this->db_handle->runBaseQuery($query);
-//     return $All_mission_reports;
-// }
 
-// function Is_mission_reported($Allrequsts_set){
-//     $mission_array_objected = array();
-//     $mission_reports_array = $this->getAllReporsts();
-
-//     foreach ($mission_reports_array as $key => $value);{
-//         $mission_array_objected = $mission_reports_array[$key];
-//     }
-//     return (in_array($Allrequsts_set, array_column($mission_array_objected, "req_id"),true)) ? true : false;
-
-
-// }
 
 function getAllDestination(){
     $query = "SELECT * FROM destination;";

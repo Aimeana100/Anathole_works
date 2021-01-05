@@ -138,9 +138,14 @@ class Functions{
             // $_SESSION['scl_id'] = $direct_page_id;
             header('Location: dean-of-school/index.php');
           break;
+        //   case '3':
+        //     // $_SESSION['coll_id'] = $direct_page_id;     
+        //     header('Location: principal-of-college/college-all-requests.php');
+        //   break;
+
           case '3':
-            // $_SESSION['coll_id'] = $direct_page_id;        
-            header('Location: super-admins/super-admin-dashboard.php');
+            // $_SESSION['coll_id'] = $direct_page_id;     
+            header('Location: super-admins/admin-all-requests.php');
           break;
 
           case '4':

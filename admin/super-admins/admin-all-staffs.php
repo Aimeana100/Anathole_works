@@ -216,7 +216,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd row">
                                 <div class="main-sparkline13-hd co-6">
-                                    <h1>ALL <span class="table-project-n">COLLEGES STAFFS</span> /<?php echo $staff_details[0]['coll_name']; ?></h1>
+                                    <h1>ALL <span class="table-project-n"> STAFFS</span> </h1>
                                 </div>
                                 <div class="main-sparkline13-hd col-6 text-right ">
                                     <button class="btn-md m-b-r-0 b-0 add-staff float-right">
@@ -453,75 +453,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
         </div>
         </div>
   
-    <!-- request details preview start -->
-
-       <div  style="" id="Request-view-details" class="container-fluid modal modal-adminpro-general fullwidth-popup-InformationproModal fadeIn " role="dialog">
-       <div class="modal-dialog modal-lg " role="document" >
-          <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><b>REQUEST DETAILS</b></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-        <div style="margin: 0px; padding: 0px;" class="modal-body" id="request_detail">
-
-             </div>
-            </div>
-          </div>
-      </div>
-
-<!-- request form modal start -->
-
-<div class="modal fade bd-example-modal-lg" id="request-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><b>REQUEST FORM</b></h5>
-        <button typls -a
-        e="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-     <?php// include_once("request-form.php"); ?>  
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-
-
+    
   
-
-<!-- Report form modal start -->
-
-<div class="modal fade bd-example-modal-lg1 add-report" id="mission-report" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><b> FILL A REPORT FORM</b></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="reporot-form-container">
-
-     
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-</div>
 
 <!-- pre-loader for waiting  -->
 
@@ -547,14 +480,16 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <script src="../app-assets/js/scripts/customizer.js" type="text/javascript"></script>
   <!-- END MODERN JS-->
 
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+
   <!-- js bootstrap table from jwrly template -->
-  <script src="js/data-table/bootstrap-table.js"></script>
+  <!-- <script src="js/data-table/bootstrap-table.js"></script>
     <script src="js/data-table/tableExport.js"></script>
     <script src="js/data-table/data-table-active.js"></script>
     <script src="js/data-table/bootstrap-editable.js"></script>
     <script src="js/data-table/bootstrap-table-resizable.js"></script>
     <script src="js/data-table/colResizable-1.5.source.js"></script>
-    <script src="js/data-table/bootstrap-table-export.js"></script>
+    <script src="js/data-table/bootstrap-table-export.js"></script> -->
 
 
         <!-- datapicker JS

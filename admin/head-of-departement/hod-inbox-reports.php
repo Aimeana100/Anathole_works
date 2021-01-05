@@ -137,13 +137,13 @@ div.row-flex-container{
   <link rel="stylesheet" type="text/css" href="../app-assets/css/app.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css">
+  <!-- <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/charts/morris.css"> -->
   <link rel="stylesheet" type="text/css" href="../app-assets/fonts/simple-line-icons/style.css">
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
 
 
- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css">
+ <!-- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css"> -->
  <link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css">
 
  <!-- boot table -->
@@ -156,24 +156,13 @@ div.row-flex-container{
 
 <script src="../app-assets/js/scripts/html2canvas.js" type="text/javascript"></script>
  
-<!-- forms -->
-    <!-- modals CSS
-		============================================ -->
-    <!-- <link rel="stylesheet" href="css/modals.css"> -->
-    <!-- forms CSS
-		============================================ -->
-    <link rel="stylesheet" href="../super-admins/css/form/all-type-forms.css">
-
-    <!-- for select chosen -->
-    <link rel="stylesheet" href="../super-admins/css/chosen/bootstrap-chosen.css">
-
-    <!-- date picker -->
-    <link rel="stylesheet" href="../super-admins/css/datapicker/datepicker3.css">
 
     <!-- notifications CSS
 		============================================ -->
     <link rel="stylesheet" href="../super-admins/css/notifications/Lobibox.min.css">
     <link rel="stylesheet" href="../super-admins/css/notifications/notifications.css">
+
+    <!-- <link href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css" rel="stylesheet"> -->
 
 
 
@@ -294,7 +283,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
               </div>
             </div>
 
-                                          <?php endif; ?>
+         <?php endif; ?>
               </div>
        
 
@@ -370,17 +359,20 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <!-- END MODERN JS-->
 
 
-  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+
+
+  <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script> -->
 
   <!-- js bootstrap table from jwrly template -->
-    <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
+    <!-- <script src="../super-admins/js/data-table/bootstrap-table.js"></script>
     <script src="../super-admins/js/data-table/tableExport.js"></script>
     <script src="../super-admins/js/data-table/data-table-active.js"></script>
-    <!-- <script src="js/data-table/bootstrap-table-editable.js"></script> -->
+    <script src="js/data-table/bootstrap-table-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-editable.js"></script>
     <script src="../super-admins/js/data-table/bootstrap-table-resizable.js"></script>
     <script src="../super-admins/js/data-table/colResizable-1.5.source.js"></script>
-    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script>
+    <script src="../super-admins/js/data-table/bootstrap-table-export.js"></script> -->
 
             <!-- datapicker JS
 		============================================ -->

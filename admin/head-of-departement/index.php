@@ -72,12 +72,12 @@ $loginFunctions = new Functions();
 
 
 
-.preLoader{
+/* .preLoader{
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
-}
+} */
 
 div.row-flex-container{
      display: flex;
@@ -277,7 +277,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                 $cont_rows=1;
 
                 foreach($request_dept_instance as $key => $value):
-                  if($request_dept_instance[$key]["req_status"] != 0):
+                  if($request_dept_instance[$key]["req_status"] != 0 && $request_dept_instance[$key]["role_id"] != 7 && $request_dept_instance[$key]["role_id"] != 3 && $request_dept_instance[$key]["role_id"] != 4 && $request_dept_instance[$key]["role_id"] != 6) :
                    ?>
 
                 <tr>
@@ -616,7 +616,7 @@ $('#table').on('click', '.do-action-button', function(){
 //    function fetchDataForm(){
 //     var fetch_data = '';
 //     var reqId = $(this).attr("req-id");
-//     var hod_id = <?// echo $staf_id; ?>
+//     var hod_id = < ?// echo $staf_id; ?>
 
 //       $.ajax({
 //       url:"scripts/hod-direct-action-on-request.php",
@@ -631,47 +631,6 @@ $('#table').on('click', '.do-action-button', function(){
 //  } 
 
 
-
-
-
-//  track a staff request
-// var mytrack  = $('.track-request');
-//    mytrack.popover({
-//    placement: 'left',
-//    content:  'fetchData',
-//    html: true
-//    });
-
-//    function fetchData(){
-//       var fetch_data = '';
-//       var reqId = $(this).attr("reqId"); 
-//       $.ajax({  
-//            url:"scripts/track-my-request.php",  
-//            method:"POST",  
-//            async:false,
-//            data:{req_id:reqId},  
-//            success:function(data){  
-//                 fetch_data = data;  
-//            }  
-//       });  
-//       return fetch_data;  
-//  } 
-// });
-
-
-// check ip data/ locations ...
-
-// function checkip(){
-
-// function jsonIp_data(url) {
-//   return fetch(url).then(res => res.json());
-// }
-// let apiKey = '963f4c40c4bb0adad4fde3e00a14ee73ff587e24a5155a3956afa26d'; //secret key
-// jsonIp_data(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
-//   console.log(data);
-
-// });
-// }
 
  </script>
 

@@ -9,8 +9,9 @@ include('../Classes/Notification_class.php');
 $staf_id = $_POST['staf_id'];
 $Req_id = $_POST['req_id'];
 $who_views_single_req = "";
-if(isset($_POST['who_views_single_req'])){
-  $who_views_single_req = $_POST["who_views_single_req"];
+if(isset($_POST['download'])){
+  echo "done"; exit();
+
 }
 
 // if(isset($_POST['dean_view_single_req'])){
@@ -382,6 +383,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
   </div>
 
 
+  <form method="POST" action="">
+  <input class="downloadPdf btn btn-sm" type="submit" value="download PDF" name ="download" />
+  </form>
+
+  <button class="download" >downLoad</button>
 
    </section>        
     
@@ -398,6 +404,28 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
 
 
   <script type="text/javascript">
+   $('button.download').click(function(){
+   var html_code = $('#staff-form-request').html();
+   $.ajax(
+    {
+      url: '../pdf_sendEmail.php',
+      method:"POST",
+      data: {req_id: 1, html_code: html_code, generate: true},
+      success:function(response)
+      {
+        console.log(response);
+
+      }
+    });
+
+  //  window.alert(htmle);
+
+
+   });
+
+  // $('document').on('click', 'button.download', function(){
+  // window.alert('');
+  // });
 
   function getThisIP(){
     let ip = "";
@@ -455,7 +483,7 @@ $(document).ready(function(){
    // take action on request.  in request details
 
 // function DoActionOnRequest(){
-// var hod_id = <?php echo $staf_id;?>;
+// var hod_id = < ?php echo $staf_id;?>;
 // var req_id = $('.mission-serial-number').attr("req_identification_number");
 // console.log(req_id);
 // window.alert(hod_id+ ' '+ req_id);
@@ -488,7 +516,6 @@ $(document).ready(function(){
 
     mywindow.document.write('</head><body >');
     // mywindow.document.write('<h1>' + document.title  + '</h1>');
-
     mywindow.document.write(document.getElementById("staff-form-request").innerHTML);
     mywindow.document.write('</body></html>');
     mywindow.document.close(); // necessary for IE >= 10

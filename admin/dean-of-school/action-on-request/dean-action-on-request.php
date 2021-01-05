@@ -18,7 +18,7 @@ $sansation_in_word = $sensation == 1 ? "Approved" : "Disapproved";
 if(empty($Req_id) OR $Req_id == "" OR empty($DEAN_id) OR 
 empty($sensation) OR $sensation == null OR empty($dean_comment) OR $dean_comment == "" )
  {
-	  echo json_encode( array("success" => 0, "message" => "data sent not valid"));
+	  echo json_encode( array("success" => false, "message" => "data sent not valid"));
  }
 
  else{

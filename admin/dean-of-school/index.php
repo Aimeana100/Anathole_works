@@ -28,7 +28,7 @@ $loginFunctions = new Functions();
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-    if($staff_details[0]['scl_id'] != 6):
+    if($staff_details[0]['role_id'] != 6):
   header('location:../index.php');
   exit();
     else: 
@@ -275,7 +275,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                 $cont_rows=1;
 
                 foreach($request_dept_instance as $key => $value):
-                  if($request_dept_instance[$key]["req_status"] != 0):
+                  if($request_dept_instance[$key]["req_status"] != 0 && $request_dept_instance[$key]["role_id"] != 6):
+                    
                    ?>
 
                 <tr>
@@ -591,8 +592,10 @@ $('#table').on('click', '.do-action-button', function(){
       console.log(data);
       let actionFedback = JSON.parse(data);
       // console.log(actionFedback);
-      if(actionFedback)
+      if(actionFedback.success)
       {
+        $('#action-on-request-form').html('<b> Successfully Approved </b>');
+
         Lobibox.notify('success',{
         sound: false,
         width: 400,
@@ -737,31 +740,6 @@ var do_direct_action_on_request = $('#table .give-sansation');
 
 
 
-
-
-//  track a staff request
-var mytrack  = $('.track-request');
-   mytrack.popover({
-   placement: 'left',
-   content:  'fetchData',
-   html: true
-   });
-
-   function fetchData(){
-      var fetch_data = '';
-      var reqId = $(this).attr("reqId"); 
-      $.ajax({  
-           url:"scripts/track-my-request.php",  
-           method:"POST",  
-           async:false,
-           data:{req_id:reqId},  
-           success:function(data){  
-                fetch_data = data;  
-           }  
-      });  
-      return fetch_data;  
- } 
-// });
 
 
 // check ip data/ locations ...

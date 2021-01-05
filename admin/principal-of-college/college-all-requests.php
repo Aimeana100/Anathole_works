@@ -4,6 +4,7 @@
 session_start();
 // error_reporting(0);
 
+
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
@@ -125,7 +126,7 @@ div.row-flex-container{
 
 
   </style>
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../super-admins/css/bootstrap.min.css">
 
   <!-- from jewerly -->
   <link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet">
@@ -147,11 +148,11 @@ div.row-flex-container{
 
  <!-- from jewery temperate -->
  <!-- boot table -->
- <link rel="stylesheet" type="text/css" href="css/data-table/bootstrap-table.css">
+ <link rel="stylesheet" type="text/css" href="../super-admins/css/data-table/bootstrap-table.css">
 <!-- css -->
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="../super-admins/css/style.css">
 
-<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="../super-admins/css/font-awesome.min.css">
 
 
 <!-- forms -->
@@ -169,21 +170,21 @@ div.row-flex-container{
     <!-- <link rel="stylesheet" href="css/modals.css"> -->
     <!-- forms CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/form/all-type-forms.css">
+    <link rel="stylesheet" href="../super-admins/css/form/all-type-forms.css">
 
     <!-- for select chosen -->
-    <link rel="stylesheet" href="css/chosen/bootstrap-chosen.css">
+    <link rel="stylesheet" href="../super-admins/css/chosen/bootstrap-chosen.css">
 
     <!-- date picker -->
-    <link rel="stylesheet" href="css/datapicker/datepicker3.css">
+    <link rel="stylesheet" href="../super-admins/css/datapicker/datepicker3.css">
 
      <!-- from jewery temperate -->
  <!-- boot table -->
-  <link rel="stylesheet" type="text/css" href="css/data-table/bootstrap-table.css">
+  <link rel="stylesheet" type="text/css" href="../super-admins/css/data-table/bootstrap-table.css">
   <!-- css -->
-  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="../super-admins/css/style.css">
 
-  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="../super-admins/css/font-awesome.min.css">
 
 
 
@@ -191,8 +192,8 @@ div.row-flex-container{
 
    <!-- notifications CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/notifications/Lobibox.min.css">
-    <link rel="stylesheet" href="css/notifications/notifications.css">
+    <link rel="stylesheet" href="../super-admins/css/notifications/Lobibox.min.css">
+    <link rel="stylesheet" href="../super-admins/css/notifications/notifications.css">
    
 
 
@@ -215,171 +216,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     <div sty class="content-wrapper">
     <div class="content-body">
 
-        <!-- Revenue, Hit Rate & Deals -->
-        <!-- all requests -->
-        <div class="row">
-          <div class="col-xl-3 col-lg-3 col-sm-3  ">
-            <div class="card pull-up">
-              <div class="card-content">
-                   <a href="hod-disapprove.php">
-                <div class="card-body">
-                  <div class="media d-flex">
-                    <div class="media-body text-center">
-                <?php 
-                $Pending_requests = [];
-                $Pending_requests_number = 0;
-               if ($college_requests != null) {
-                   foreach ($college_requests as $key => $value) {
-                       if ($college_requests[$key]["principal_sansation"] == 0) {
-                           $Pending_requests[] = $college_requests;
-                       }
-                   }
-                $Pending_requests_number =  count($Pending_requests);
-
-               }
-
-
-                
-                ?>
-                    <h2 class="success"><b><?php echo htmlentities($Pending_requests_number);?></b></h2>
-                      <h4><b>Pending</b></h4>
-                    </div>
-                    <div>
-                 <i class="icon-book-open info font-large-2 float-right"></i>
-                    </div>
-                  </div>
-                  <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                    <div class="progress-bar bg-gradient-x-secondary" role="progressbar" style="width: 100%"
-                    aria-valuenow="100" aria-valuemin="0" aria-valuemax="90"></div>
-                  </div>
-                </div>
-              </a>
-              </div>
-            </div>
-          </div>
-
-     <!-- Approved --->
-    
-          <div class="col-xl-3 col-lg-3 col-sm-3  ">
-            <div class="card pull-up">
-              <div class="card-content">
-                <a href="hod-approved.php">
-                <div class="card-body">
-                  <div class="media d-flex">
-                    <div class="media-body text-center">
-                    <?php 
-
-                        $Approved_requests = [];
-                        $Approved_requests_number = 0;
-                        if ($college_requests != null) {
-                        foreach ($college_requests as $key => $value) {
-                            if ($college_requests[$key]["principal_sansation"] == 1) {
-                                $Approved_requests[] = $college_requests;
-                            }
-                        }
-                        $Approved_requests_number =  count($Approved_requests);
-                        
-                        }
-                    ?>
-                   <h2 class="success approved-number"> <b> <?php echo htmlentities($Approved_requests_number);?> </b></h2>
-                      <h4><b>Approved</b></h4>
-                    </div>
-                    <div>
-                  <i class="icon-notebook info font-large-2 float-right"></i>
-                    </div>
-                  </div>
-                  <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                    <div class="progress-bar sm-gradient-x-secondary" role="progressbar" style="width: 100%"
-                    aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-3 col-lg-3 col-sm-3  ">
-            <div class="card pull-up">
-              <div class="card-content">
-                 <a>
-                <div class="card-body">
-                  <div class="media d-flex">
-                    <div class="media-body text-center">
-                    <?php 
-
-                        $Disapproved_requests = [];
-                        $Disapproved_requests_number = 0;
-                        if ($college_requests != null) {
-                        foreach ($college_requests as $key => $value) {
-                            if ($college_requests[$key]["principal_sansation"] == 2) {
-                                $Disapproved_requests[] = $college_requests;
-                            }
-                        }
-                        $Disapproved_requests_number =  count($Disapproved_requests);
-
-                        }
-                    ?>
-
-                    <h2 class="success"><b><?php echo htmlentities($Disapproved_requests_number );?> </b></h2>
-                      <h4><b>Disapproved</b></h4>
-                    </div>
-                    <div>
-                      <i class="icon-user-follow info font-large-2 float-right"></i>
-                    </div>
-                  </div>
-                  <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                    <div class="progress-bar bg-gradient-x-secondary" role="progressbar" style="width: 100%"
-                    aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </a>
-              </div>
-            </div>
-          </div>
-
-
-
-          <div title="in excutin at host places" class="col-xl-3 col-lg-3 col-sm-3  ">
-            <div class="card pull-up">
-              <div class="card-content">
-                 <a .php">
-                <div class="card-body">
-                  <div class="media d-flex">
-                    <div class="media-body text-center">
-                <?php 
-                
-
-                $InExcution_requests = [];
-                $InExcution_requests_number = 0;
-                if ($college_requests != null) {
-                foreach ($college_requests as $key => $value) {
-                    if ($college_requests[$key]["progress"] == 3) {
-                        $InExcution_requests[] = $college_requests;
-                    }
-                }
-                $InExcution_requests_number =  count($InExcution_requests);
-
-                }
-                ?>
-
-           <h2 class="success"> <b><?php echo htmlentities($InExcution_requests_number);?></b></h2>
-                      <h4><b>In Excution</b></h4>
-                    </div>
-                    <div>
-                      <i class="icon-direction info font-large-2 float-right"></i>
-                    </div>
-                  </div>
-                  <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                    <div class="progress-bar bg-gradient-x-secondary" role="progressbar" style="width: 100%"
-                    aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </a>
-              </div>
-            </div>
-          </div>
-                    
-          </div>
+  
 
           <?php if (isset($_GET['option']) AND $_GET['option'] == "change-password"):  
         include_once('../change-password.php');
@@ -615,11 +452,6 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
         </div>
         </div>
         </div>
-  
-
-
-
-
 
     <!-- request details preview start -->
 
@@ -724,33 +556,35 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   
   <!-- END MODERN JS-->
 
-  <!-- js bootstrap table from jwrly template -->
-  <script src="js/data-table/bootstrap-table.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+
+  <!-- js bootstrap table from jwrly template-->
+  <!-- <script src="js/data-table/bootstrap-table.js"></script>
     <script src="js/data-table/tableExport.js"></script>
     <script src="js/data-table/data-table-active.js"></script>
-    <!-- <script src="js/data-table/bootstrap-table-editable.js"></script> -->
+    <script src="js/data-table/bootstrap-table-editable.js"></script>
     <script src="js/data-table/bootstrap-editable.js"></script>
     <script src="js/data-table/bootstrap-table-resizable.js"></script>
     <script src="js/data-table/colResizable-1.5.source.js"></script>
     <script src="js/data-table/bootstrap-table-export.js"></script>
-
+ -->
 
 
             <!-- datapicker JS
 		============================================ -->
-    <script src="js/datapicker/bootstrap-datepicker.js"></script>
-    <script src="js/datapicker/datepicker-active.js"></script>
+    <script src="../super-admins/js/datapicker/bootstrap-datepicker.js"></script>
+    <script src="../super-admins/js/datapicker/datepicker-active.js"></script>
     <!-- input-mask JS
 		============================================ -->
-    <script src="js/input-mask/jasny-bootstrap.min.js"></script>
+    <script src="../super-admins/js/input-mask/jasny-bootstrap.min.js"></script>
     <!-- chosen JS
 		============================================ -->
-    <script src="js/chosen/chosen.jquery.js"></script>
-    <script src="js/chosen/chosen-active.js"></script>    
+    <script src="../super-admins/js/chosen/chosen.jquery.js"></script>
+    <script src="../super-admins/js/chosen/chosen-active.js"></script>    
     <!-- notification JS
 		============================================ -->
-    <script src="js/notifications/Lobibox.js"></script>
-    <script src="js/notifications/notification-active.js"></script>
+    <script src="../super-admins/js/notifications/Lobibox.js"></script>
+    <script src="../super-admins/js/notifications/notification-active.js"></script>
 
     
 

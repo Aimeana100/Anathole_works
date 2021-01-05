@@ -9,7 +9,7 @@
        
        <?php
        if(isset($staff_details)) {
-         $depertement = $staff_details[0]["dept_name"];
+         $depertement = $staff_details[0]["scl_name"];
          }
         if (!empty($depertement)) {
           echo $depertement;
