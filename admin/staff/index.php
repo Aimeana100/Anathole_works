@@ -135,7 +135,6 @@ div.row-flex-container{
   <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
 
 
- <!-- <link rel="stylesheet" type="text/css" href="../includes/regform-36/css/add-new-staff.css"> -->
  <link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css">
 
 
@@ -203,9 +202,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <div class="content-body">
 
     <?php if (isset($_GET['option']) AND $_GET['option'] == "change-password"):  
-    include_once('../change-password.php');
- 
+    include_once('../change-password.php'); 
 
+    elseif(isset($_GET['view']) ):  
+      
+      include('../scripts/staff-request-details.php');
+      exit();
     else:
       ?>
 
@@ -289,7 +291,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                          <input data-target="#staff-track-request-progress" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-secondary staff-track-request" value="track" data-toggle="modal" > 
                                          <input data-target="#Request-view-details" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-info btn-glow view-request-details" value="View" data-toggle="modal" > 
                                          <input data-target="#mission-report" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" type="button" class="btn btn-blue give-mission-report" value="report" data-toggle="modal" > 
- 
+                                         <a href="./?view=<?php echo $request_instance[$key]["req_id"]; ?>" req-id="<?php echo htmlentities($request_instance[$key]["req_id"]) ?>" style="margin: 0px ;padding: 3px;" class="btn btn-info btn-glow view-request-details"  >download</a>
                                             </div>
                                           </td>
                                           

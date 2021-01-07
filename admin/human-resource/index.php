@@ -31,28 +31,20 @@ $loginFunctions = new Functions();
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
 
-    if($staff_details[0]['role_id'] != $stf_role):
+    if($staff_details[0]['role_id'] != 4):
 
   header('location:../logout.php');
   exit();
     else: 
   
-    
-
-$stf_role = 4;
-// $_SESSION['role'];
-$staf_id = 2;
-// $_SESSION['stf_id'];
-$college_id = 1;
-
 // check authentication
 $organisation = new Organisation();
 
 // instantiate request
 
 $request = new Request();
-$request_instance = $request->getAllRequestsByStaff($staf_id);
-$college_requests = $request->getAllRequestsByCollege($college_id);
+$request_instance = $request->getAllRequestsByStaff($staff_details[0]['stf_id']);
+$college_requests = $request->getAllRequestsByCollege($staff_details[0]['coll_id']);
 // getting data to pre-fill the form
 $staff = new Staff();
 $staff_details = $staff->getStaffById($staf_id);
@@ -72,8 +64,6 @@ $_SESSION['userlogin'] = isset($staff_details[0]['username']) ? $staff_details[0
 <head>
   <title>URSTMS-Staff</title>
   <style type="text/css">
-
-
 
 .preLoader{
   display: block;

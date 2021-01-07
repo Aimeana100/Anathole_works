@@ -28,7 +28,7 @@ $loginFunctions = new Functions();
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-    if($staff_details[0]['role_id'] != 3):
+    if($staff_details[0]['role_id'] != 18):
 
     header('location:../index.php');
     exit();
@@ -479,7 +479,7 @@ function AddDept()
           dept_name: dept.result.dept_name,
           scl_name: dept.result.scl_name,
           coll_name: dept.result.coll_name,
-          action: '<input data-target="#mdl-edit-school" data-toggle="modal" dept-id="' + dept.result.dept_id +'" type="button" class="btn-sm btn-primary border-0 class-dept" value="edit"/>'
+          action: '<input data-target="#mdl-edit-dept" data-toggle="modal" dept-id="'+ dept.result.dept_id +'" type="button" class="btn-sm btn-primary border-0 class-dept" value="edit"/>'
         };
         $('#form-add-dept')[0].reset();
 

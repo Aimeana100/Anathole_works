@@ -31,8 +31,9 @@
 			$send_email = send_email($email,$pmsg,$first_name,$subject);																
 			if($send_email){
 				$save_staff = $staff->addStaff($emp_id,$first_name,$last_name,$gender,$telphone, $email,$currdate,$email, $password_hashed, $depertment,$position,0);
+				$connection->commitTransaction();
 				$inserted_staff = $staff->getStaffById($save_staff);
-			   $connection->commitTransaction();
+			   
 			echo json_encode(array("success" => true, "new_user_info" => $inserted_staff[0]));
 		
 			}

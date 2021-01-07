@@ -40,6 +40,17 @@ class Organisation {
         return $insertId;
     }
 
+    function InsertPosition($position_name){
+        $query = "INSERT INTO `urstms`.`roles` (role_name) VALUES (?)";
+        $paramType = "s";
+        $paramValue = array(
+            $position_name
+        );
+        $insertId = $this->db_handle->insert($query, $paramType, $paramValue);
+        return $insertId;
+    }
+    
+
     
     // //request details by request id
 
@@ -73,7 +84,7 @@ class Organisation {
         // get dept by school id    
         function getDeptByDeptId($dept_id)
         {
-            $query = "SELECT * FROM departements INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON schools.coll_id = colleges.coll_id AND  = departements.dept_id = ?";
+            $query = "SELECT * FROM departements INNER JOIN schools ON schools.scl_id = departements.scl_id INNER JOIN colleges ON schools.coll_id = colleges.coll_id AND departements.dept_id = ?";
             $paramType = "i";
             $paramValue = array(
                 $dept_id
@@ -108,6 +119,22 @@ class Organisation {
                 $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
                 return $result;
             }
+
+                   // get colleg by colllege id    
+                   function getPositionByPosId($pos_id)
+                   {
+                       $query = "SELECT * FROM roles WHERE  role_id = ?";
+                       $paramType = "i";
+                       $paramValue = array(
+                           $pos_id
+                       );
+                       
+                       $result = $this->db_handle->runQuery($query, $paramType, $paramValue);
+                       return $result;
+                   }
+       
+
+            
 
             function UpdateCollege($coll_id, $coll_name)
             {

@@ -1,30 +1,37 @@
 <?php
-session_start();
-// error_reporting(0);
+if(!isset($_GET['view'])){
+  session_start();
+$Req_id = $_POST['req_id'];
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 
-$staf_id = $_POST['staf_id'];
-$Req_id = $_POST['req_id'];
-$who_views_single_req = "";
-if(isset($_POST['download'])){
-  echo "done"; exit();
+}
+// error_reporting(0);
+// $staf_id = $_POST['staf_id'];
+if(isset($_GET['view']))
+{
+$Req_id = $_GET['view'];
+
+include('../pdf.php');
+
+if(isset($_POST['download']))
+{
+  $doc = new DomDocument;
+  
+  echo "done";
 
 }
+}
 
-// if(isset($_POST['dean_view_single_req'])){
-//   $dean_view_single_req = $_POST["dean_view_single_req"];
-// }
+
 
 
 $staff = new Staff();
 $request = new Request();
 
 $request_details = $request->getRequestDeatailsByReq_id($Req_id);
-
-
 
 $statt_details = $staff->getStaffById($request_details[0]['stf_id']);
 $staff_hod_details = $staff->getStaff_HODbyDept($statt_details[0]['dept_id']);
@@ -38,80 +45,11 @@ $staff_HR_details = $staff->getStaff_HRbycollege($statt_details[0]['coll_id']);
 // $query_update->bindParam(':req_id',$Req_id,PDO::PARAM_STR);
 // $query_update->execute();
 
-
-
-
-
-
 ?>
-
- <!-- <!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
-<head>
-
-  <title> Staff request details
-  </title>
-
-   <style>
-       div.row-flex-container{
-     display: flex;
-     background-color: #0044cc;
-     flex-direction: row;
-   }
- *{
-    
-  }
-  .row.pl-4{
-   /* font-family: Crimson Text;*/
-    font-size: 14px;
-    margin-bottom: 15px;
-    margin-top: 10px;
-  }
-  </style>  -->
-
-
- <!--  <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico"> -->
- <!--  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Quicksand:300,400,500,700"
-  rel="stylesheet">
-  <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css"
-  rel="stylesheet"> -->
-
-  <!-- BEGIN VENDOR CSS-->
-
- <!--  <link rel="stylesheet" type="text/css" href="app-assets/css/vendors.css">
-  <link rel="stylesheet" type="text/css" href="app-assets/css/app.css">
-
-  <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
-  <link rel="stylesheet" type="text/css" href="app-assets/css/core/colors/palette-gradient.css">
-  <link rel="stylesheet" type="text/css" href="app-assets/css/pages/invoice.css">
-
-<link rel="stylesheet" type="text/css" href="../css/style.css">
-
-
- 
-
-</head>
-<body class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar"
-data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> --> 
 
   <div class="">
     <div class="content-wrapper">
 
- <!--      <div class="content-header row bg-primary">
-        <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-          <h3 class="content-header-title mb-0 d-inline-block">Request details</h3>
-          <div class="row breadcrumbs-top d-inline-block">
-            <div class="breadcrumb-wrapper col-12">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active">Request details</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-    
-      </div> -->
 
    <div id="testh2c" style="background: white;padding-top: 2px; color: black; border: 1px solid black" class="content-body container-fluid">
 
@@ -120,7 +58,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
 
 
 
-       <form class="" method="POST" id="staff-form-request" name="staff-form-request" >  
+
+        <form class="" method="POST" id="staff-form-request" name="staff-form-request" >  
         <div style="color: black" class="container-fluid" id="request" >  
  
          <div class="row">
@@ -220,7 +159,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
       <b>07. </b> Distance in KM (to and from):
       </div>
       <div  class="colomn-flex-middle">
-        <?php echo isset($request_details[0]["mission_n_days"]) ? $request_details[0]["mission_n_days"] : "Unknown";  ?>
+        <?php echo $request_details[0]["req_purpose"];  ?>
       </div>
       </div>
 
@@ -358,7 +297,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
 
 
         <div class="row-flex-container">
-          <div class="column-flex-container">
+          <div class="column-flex-container " style="width: auto;">
                   <div class="c-flex-item"><b>Visa for Destination</b></div>
                   <div class="c-flex-item"><b>Stamp and Signature</b></div>
                   <div class="c-flex-item">Arrival Date .....</div>
@@ -373,21 +312,21 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns"> -->
 
   </form>
 
+  
+
   <?php
   
-    // if($who_views_single_req == "hod"):
-    //   if($request_details[0]["hod_sansation"] == 0):
   ?>
  <div id="hold-viwer-action" class="text-center">
 
   </div>
 
-
+  <!-- 
   <form method="POST" action="">
   <input class="downloadPdf btn btn-sm" type="submit" value="download PDF" name ="download" />
-  </form>
+  </form> -->
 
-  <button class="download" >downLoad</button>
+  <button onclick="PrintElem()" class="download btn btn-sm" >downLoad</button>
 
    </section>        
     
@@ -511,7 +450,7 @@ $(document).ready(function(){
     mywindow.document.write('<link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap.min.css">');
     mywindow.document.write('<link rel="stylesheet" type="text/css" href="../app-assets/css/new-customized.css">');
 
-    mywindow.document.write('<style>*{font-size:23px} div.row-flex-container{display: flex;margin: 12px 0px;flex-direction: row;font-size: 100%;} .colomn-flex-left{flex: 0 0 165px;} .colomn-flex-right{place-items: start;display: flex;flex: 1;flex-wrap: nowrap;justify-content: space-around;} .colomn-flex-middle{display: flex; min-width: 30%; place-items: start; flex-wrap: nowrap;} div.row-flex-container.has-long-label .colomn-flex-left{flex: 0 1 270px;} .colomn-flex-right label{margin: 0em 1px;} .column-flex-container{display: flex; flex: auto; flex-direction: column; place-items: right;}</style>');
+    mywindow.document.write('<style>*{font-size:20px} div.row-flex-container{display: flex;margin: 12px 0px;flex-direction: row;font-size: 100%;} .colomn-flex-left{flex: 0 0 165px;} .colomn-flex-right{place-items: start;display: flex;flex: 1;flex-wrap: nowrap;justify-content: space-around;} .colomn-flex-middle{display: flex; min-width: 30%; place-items: start; flex-wrap: nowrap;} div.row-flex-container.has-long-label .colomn-flex-left{flex: 0 1 270px;} .colomn-flex-right label{margin: 0em 1px;} .column-flex-container{display: flex; flex: auto; flex-direction: column; place-items: right;}</style>');
      
 
     mywindow.document.write('</head><body >');
@@ -526,7 +465,6 @@ $(document).ready(function(){
 
     return true;
 }
-
   </script>
 
 

@@ -28,7 +28,7 @@ $loginFunctions = new Functions();
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-    if($staff_details[0]['role_id'] != 3):
+    if($staff_details[0]['role_id'] != 18):
 
     header('location:../index.php');
     exit();
@@ -259,7 +259,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <!-- <td>< ?php// echo $All_schools[$key]["stf_lname"]; ?></td> -->
                                                
                                                 <td class="datatable-ct" >
-                                                <input data-target="#mdl-edit-college" data-toggle="modal"  school-id="<?php echo htmlentities($All_schools[$key]["scl_id"]);  ?>" type="button" class="btn-sm btn-primary border-0 class-college " value="edit"/>
+                                                <input data-target="#mdl-edit-school" data-toggle="modal"  school-id="<?php echo htmlentities($All_schools[$key]["scl_id"]);  ?>" type="button" class="btn-sm btn-primary border-0 class-college " value="edit"/>
                                                 </td>
                                             </tr>
                                             <?php endforeach; endif;?>

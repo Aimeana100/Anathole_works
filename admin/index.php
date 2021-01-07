@@ -85,10 +85,9 @@
   <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
   <link rel="stylesheet" type="text/css" href="app-assets/css/core/colors/palette-gradient.css">
   <link rel="stylesheet" type="text/css" href="app-assets/css/pages/login-register.css">
-  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <link rel="stylesheet" type="text/css" href="app-assets/css/style.css">
 </head>
-<body  style=" background: #6A5ACD;" class=""
-data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
+<body  style=" background: #6A5ACD;" class="" data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
  
       <div class="content-body h-100 row">
         <!-- <section class=" flexbox-container"> -->

@@ -1,7 +1,6 @@
 <?php
 session_start();
 // error_reporting(0);
-
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');

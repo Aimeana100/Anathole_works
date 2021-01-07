@@ -138,14 +138,14 @@ class Functions{
             // $_SESSION['scl_id'] = $direct_page_id;
             header('Location: dean-of-school/index.php');
           break;
-        //   case '3':
-        //     // $_SESSION['coll_id'] = $direct_page_id;     
-        //     header('Location: principal-of-college/college-all-requests.php');
-        //   break;
-
           case '3':
             // $_SESSION['coll_id'] = $direct_page_id;     
-            header('Location: super-admins/admin-all-requests.php');
+            header('Location: principal-of-college/college-all-requests.php');
+          break;
+
+          case '18':
+            // $_SESSION['coll_id'] = $direct_page_id;     
+            header('Location: super-admins/super-admin-dashboard.php');
           break;
 
           case '4':
@@ -157,7 +157,7 @@ class Functions{
           default:
         //   $_SESSION['stfId'] = $fetchedUserData[0]['stf_id'];
         //   $_SESSION['role'] = $user_role;
-          header('Location: staff/');
+          header('Location: staff/index.php');
           break;
           }
                 }

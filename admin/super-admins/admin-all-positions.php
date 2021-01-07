@@ -1,6 +1,7 @@
 <?php
 session_start();
 // error_reporting(0);
+
 include('../Classes/DBController.php');
 include('../Classes/Staff_class.php');
 include('../Classes/Requests_class.php');
@@ -49,6 +50,7 @@ $organisation = new Organisation();
 $request = new Request();
 // $request_instance = $request->getAllRequestsByStaff($staf_id);
 // getting data to pre-fill the form
+
 $staff = new Staff();
 $staff_details = $staff->getStaffById($staf_id);
 // $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
@@ -56,8 +58,7 @@ $staff_details = $staff->getStaffById($staf_id);
 // $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
 
 $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
-$All_colleges = $organisation->getAllColleges();
-
+$All_positions = $organisation->getAllPositions(); 
 //  echo json_encode(array("staff_id" =>$staff_details[0]["stf_id"], "depertement" => $staff_details[0]["dept_id"], "college_id" => $staff_details[0]['coll_id'])  );
 // $_SESSION['userlogin'] = isset($staff_details[0]['username']) ? $staff_details[0]['username'] : $staff_details[0]['stf_email'];
  ?>
@@ -151,8 +152,14 @@ div.row-flex-container{
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script> -->
 
+
+
+
  <!-- from jewery temperate -->
+
+
  <!-- boot table -->
+ 
  <link rel="stylesheet" type="text/css" href="css/data-table/bootstrap-table.css">
 <!-- css -->
 <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -216,11 +223,11 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                         <div class="sparkline13-list">
                             <div class="sparkline13-hd row">
                                 <div class="main-sparkline13-hd co-6">
-                                    <h1>ALL <span class="table-project-n">COLLEGES </span></h1>
+                                    <h1>ALL <span class="table-project-n"> Positions</span></h1>
                                 </div>
                                 <div class="main-sparkline13-hd col-10 text-right ">
                                     <button class="btn-md m-b-r-0 b-0 add-staff float-right">
-                                    <a class="zoomInDown mg-t secondary p-2" href="#" data-toggle="modal" data-target="#admin-add-college">Add College</a>
+                                    <a class="zoomInDown mg-t secondary p-2" href="#" data-toggle="modal" data-target="#admin-add-position">Add Position</a>
                                     </button>
                                 </div>
                             </div>
@@ -238,25 +245,24 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                         <thead>
                                             <tr>
                                                 <th data-field="state" data-checkbox="true"></th>
-                                                <th data-field="id">college_ID</th>
-                                                <th data-field="college_name" data-editable="true">college name</th>
-                                                <!-- <th data-field="principal-name" data-editable="true">Principal name</th> -->
+                                                <th data-field="id">position_ID</th>
+                                                <th data-field="pos_name" data-editable="true">Position title</th>
                                                 <th data-field="action">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php if(!empty($All_colleges)):
+                                        <?php if(!empty($All_positions)):
                                           $cont_rows=1;
-                                          foreach($All_colleges as $key => $value):
+                                          foreach($All_positions as $key => $value):
                                             ?>
                                             <tr>
                                                 <td></td>
-                                                <td><?php echo $All_colleges[$key]["coll_id"]; ?></td>
-                                                <td><?php echo $All_colleges[$key]["coll_name"]; ?></td>
-                                                <!-- <td>< ?php// echo $All_colleges[$key]["stf_lname"]; ?></td> -->
-                                               
+                                                <td><?php echo $All_positions[$key]["role_id"]; ?></td>
+                                                <td><?php echo $All_positions[$key]["role_name"]; ?></td>
+
+
                                                 <td class="datatable-ct" >
-                                                <input data-target="#mdl-edit-college" data-toggle="modal"  college-id="<?php echo htmlentities($All_colleges[$key]["coll_id"]);  ?>" type="button" class="btn-sm btn-primary border-0 edit-class-college " value="edit"/>
+                                                <input data-target="#mdl-edit-dept" data-toggle="modal"  role-id="<?php echo htmlentities($All_positions[$key]["role_id"]);  ?>" type="button" class="btn-sm btn-primary border-0 class-positions " value="edit"/>
                                                 </td>
                                             </tr>
                                             <?php endforeach; endif;?>
@@ -265,6 +271,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                     </table>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
 
@@ -283,25 +291,30 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
         </div>
         </div>
   
-<div class="modal fade bd-example-modal-lg1 add-college" id="admin-add-college" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+
+
+
+ <div class="modal fade bd-example-modal-lg1 add-college" id="admin-add-position" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-md" >
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><b>Edit College</b></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><b>Add Positions</b></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" id="add-colle-container">
+      <div class="modal-body" id="add-dept-container">
 
-      <form id="form-add-college">
+      <form id="form-add-postion">
+
       <div class="form-group-inner">
       <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-              <label class="login2" for="first_name ">college name</label>
+              <label class="login2" for="departement ">Position title</label>
           </div>
           <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-              <input id="college_name" name="college_name" type="text" class="form-control" placeholder="college title" />
+              <input id="position" name="position" type="text" class="form-control" placeholder="position title" />
           </div>
       </div>
   </div>
@@ -311,7 +324,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
          <div class="login-horizental">
-             <input id="add-staff" type="button" onclick="AddCollege()" name="register"  class="btn btn-sm btn-primary login-submit-cs" value="Add College now" />
+             <input id="add-staff" type="button" onclick="AddPosition()" name="register"  class="btn btn-sm btn-primary login-submit-cs" value="Add College now" />
          </div>
      </div>
  </div>
@@ -327,12 +340,12 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     </div>
   </div>
 </div>
- 
+
 
 
 <!-- edit college -->
 
-<div class="modal fade bd-example-modal-lg1 edit-colle" id="mdl-edit-college" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg1 edit-dept" id="mdl-edit-dept" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -341,7 +354,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" id="edit-colle-container">
+      <div class="modal-body" id="edit-departement-container">
 
      
       </div>
@@ -351,7 +364,6 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     </div>
   </div>
 </div>
-
 
 </div>
 
@@ -379,7 +391,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   <script src="../app-assets/js/scripts/customizer.js" type="text/javascript"></script>
   <!-- END MODERN JS-->
 
-  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+
 
   <!-- js bootstrap table from jwrly template -->
   <!-- <script src="js/data-table/bootstrap-table.js"></script>
@@ -388,8 +400,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     <script src="js/data-table/bootstrap-editable.js"></script>
     <script src="js/data-table/bootstrap-table-resizable.js"></script>
     <script src="js/data-table/colResizable-1.5.source.js"></script>
-    <script src="js/data-table/bootstrap-table-export.js"></script> -->
-
+    <script src="js/data-table/bootstrap-table-export.js"></script>
+ -->
 
         <!-- datapicker JS
 		============================================ -->
@@ -411,14 +423,16 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
     <!-- custom js -->
   <!-- <script src="../app-assets/js/customJs.js" type="text/javascript"></script> -->
 
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
 
  <script>
 
-function AddCollege()
+
+function AddPosition()
 {
-  var college_name = $("#college_name").val();
-  if(college_name.length == 0) {
-    $("#college_name").focus();
+  var pos_name = $("#position").val();
+  if(pos_name.length == 0) {
+    $("#position").focus();
     Lobibox.notify('error', {
         sound: false,
         width: 300,
@@ -429,32 +443,33 @@ function AddCollege()
   } 
   else
   {
-    $.post("../scripts/add-college.php",
-    {college_name:college_name},
+    $.post("../scripts/add-positions.php",
+    {pos_name:pos_name},
     function(response){
-      let college = JSON.parse(response);
-      console.log(college);
-      if(college.success){
+      console.log(response);
+      let position = JSON.parse(response);
+      console.log(position);
+      if(position.success){
         let row = 
         {
           state: '<b>New</b>',
-          id: college.result.coll_id,
-          college_name: college.result.coll_name,
-          action: '<input data-target="#mdl-edit-college" data-toggle="modal" college-id="' + college.result.coll_id +'" type="button" class="btn-sm btn-primary border-0 class-college " value="edit"/>'
+          id: position.result.role_id,
+          pos_name: position.result.role_name,
+          action: '<input data-target="#mdl-edit-dept" data-toggle="modal" role-id="'+ position.result.role_id +'" type="button" class="btn-sm btn-primary border-0 class-dept" value="edit"/>'
         };
-        $('#form-add-college')[0].reset();
+        $('#form-add-postion')[0].reset();
 
         var $table = $('#table');
-        var rowId = $("#table >tbody >tr").length;
+        // var rowId = $("#table >tbody >tr").length;
         $table.bootstrapTable('insertRow', {
-        index: rowId,
+        index: 0,
         row: row
       });
       Lobibox.notify('success', {
         sound: false,
         width: 300,
         position: 'top right',
-        msg: '<b> College Added</b>'
+        msg: '<b> position Added</b>'
     });
       }
 
@@ -464,25 +479,30 @@ function AddCollege()
 
 
 
-
- // hod view the single staff request
- 
-$('#table tbody').on( 'click', 'td input.edit-class-college', function () {
-
+ // hod view the single staff request 
+$('#table tbody').on( 'click', 'td input.current-staff-status', function () {
+  if(confirm('you are about to change staff status')){
   var thisButton = $(this);
   // var this_table_data = $(this).closest()
   // var name = $(this).closest('td');
   // console.log(name);
-  var college_id = $(this).attr("college-id");
+  var current_status = $(this).attr("value");
+  var staffId = $(this).attr("staff-id");
+  var newstatus = "";
   $.ajax({  
-                url:"../scripts/update-college.php", 
+                url:"../scripts/change-staff-status.php", 
                 method:"post",  
-                data:{college_id:college_id},
+                data:{staff_id:staffId},
                 success:function(data){
-                  $('#edit-colle-container').html(data);
+                  console.log(data);
+                  data =  JSON.parse(data);
+                  let newStatus = data.status;
+                  thisButton.removeClass(newStatus == 1 ? 'btn-warning' : 'btn-success');
+                  thisButton.addClass(newStatus == 1 ? 'btn-success' : 'btn-warning');
+                  thisButton.val(newStatus == 1 ? "Active" : "Deactive");
             } 
            });
-          
+          }
 } );
 
 

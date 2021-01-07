@@ -7,13 +7,38 @@ include('../Classes/Requests_class.php');
 include('../Classes/Notification_class.php');
 include('../Classes/Organisation_class.php');
 include('../Classes/Report_class.php');
+include('../Classes/Login/Sessions_class.php');
+include('../Classes/Login/Functions.php');
 
-$stf_role = 3;
+$session_instance = new Sessions();
+$loginFunctions = new Functions();
+
+  // if(((strlen($_SESSION['userlogin'])==0) OR (!isset($_SESSION['stf_id']) ) OR  (strlen($_SESSION['stf_id'])==0))):
+  if(!$loginFunctions->checkLoginState($session_instance)):
+    
+
+  header('location:../index.php');
+
+  else:
+    // $_SESSION['userlogin'] = $_SESSION['user_username'];
+    $stf_role = $_SESSION['role_id'];
+    // $staf_id = 4;
+    $staf_id = $_SESSION['user_id'];
+
+    $staff = new Staff();
+    $staff_details = $staff->getStaffById($_SESSION['user_id']);
+    if($staff_details[0]['role_id'] != 18):
+
+  header('location:../index.php');
+  exit();
+    else: 
+
+
+// $stf_role = 3;
 // $_SESSION['role'];
-$staf_id = 2;
+// $staf_id = 2;
 // $_SESSION['stf_id'];
 
-$college_id = 1;
 
 // check authentication
 $organisation = new Organisation();
@@ -26,14 +51,16 @@ $staff = new Staff();
 $reports = new Report();
 
 $staff_details = $staff->getStaffById($staf_id);
+// $college_id = 1;
+
 $staff_hod_details = $staff->getStaff_HODbyDept($staff_details[0]['dept_id']);
 $staff_dean_details = $staff->getStaff_DeanbySchool($staff_details[0]['scl_id']);
 $staff_principal_details = $staff->getStaff_Principalbycollege($staff_details[0]['coll_id']);
 $staff_HR_details = $staff->getStaff_HRbycollege($staff_details[0]['coll_id']);
 
-$All_college_requests = $request->getAllRequestsByCollege($college_id);
-$All_college_staffs = $staff->getAllStaff_in_college($college_id);
-$All_college_reports = $reports->getAllReportByCollegeId($college_id);
+$All_college_requests = $request->getAllRequestsByCollege($staff_details[0]['coll_id']);
+$All_college_staffs = $staff->getAllStaff_in_college($staff_details[0]['coll_id']);
+$All_college_reports = $reports->getAllReportByCollegeId($staff_details[0]['coll_id']);
 $All_host_Place = $request->getAllDestination();
 
 
@@ -720,17 +747,17 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 	// });
   
   
-  $(document).ready(function() {
-    $('#table').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-    } );
-} );
+//   $(document).ready(function() {
+//     $('#table').DataTable( {
+//         dom: 'Bfrtip',
+//         buttons: [
+//             'copy', 'csv', 'excel', 'pdf', 'print'
+//         ]
+//     } );
+// } );
  </script>
 
 
 </body>
 </html>
-<!-- <?php// endif;?>  -->
+<?php endif; endif;?> 

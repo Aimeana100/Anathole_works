@@ -28,7 +28,7 @@ $loginFunctions = new Functions();
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-    if($staff_details[0]['role_id'] != 3):
+    if($staff_details[0]['role_id'] != 18):
 
   header('location:../index.php');
   exit();
@@ -259,9 +259,13 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                                                 <td><?php echo $All_college_staffs[$key]["stf_lname"]; ?></td>
                                                 <td><?php echo $All_college_staffs[$key]["role_name"]; ?></td>
                                                 <td><?php echo $All_college_staffs[$key]["dept_name"]; ?></td>
-                                                <td><?php echo $All_college_staffs[$key]["statuses"]; ?></td>
-                                                <td class="datatable-ct" >
+                                                <td>
                                                 <input staff-id="<?php echo htmlentities($All_college_staffs[$key]["stf_id"]);  ?>" type="button" class="btn-sm border-0 current-staff-status <?php echo $All_college_staffs[$key]['statuses'] == 1 ? 'btn-success': 'btn-warning'; ?>" value="<?php echo $All_college_staffs[$key]['statuses'] == 1 ? 'Active': 'Disactive'; ?>" />
+
+                                                </td>
+                                                <td class="datatable-ct" >
+                                                <input data-target="#mdl-edit-staff" data-toggle="modal" staff-id="<?php echo htmlentities($All_college_staffs[$key]["stf_id"]);  ?>" type="button" class="btn-sm border-0 edit-staff " value="Edit" />
+
                                                 </td>
                                             </tr>
                                             <?php endforeach; endif;?>
@@ -279,6 +283,30 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
             </div>
         </div>
         <!-- table end -->
+
+
+
+<div class="modal fade bd-example-modal-lg1 edit-colle" id="mdl-edit-staff" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><b>Edit College</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="edit-staff-container">
+
+     
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
       
                             <div class="sparkline11-graph">
                                 <div class="basic-login-form-ad">
@@ -518,6 +546,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
  // hod view the single staff request
  
+ 
 $('#table tbody').on( 'click', 'td input.current-staff-status', function () {
   if(confirm('you are about to change staff status')){
   var thisButton = $(this);
@@ -546,46 +575,63 @@ $('#table tbody').on( 'click', 'td input.current-staff-status', function () {
 
 
 
+$('#table tbody').on( 'click', 'td input.edit-staff', function () {
+  var staffId = $(this).attr("staff-id");
+  $.ajax({  
+                url:"../scripts/edit-staff.php", 
+                method:"post",  
+                data:{staff_id:staffId},
+                success:function(data){
+                 $('#edit-staff-container').html(data);
 
-function ValidateEmail(obj){
-  // let Obj = obj;
-  var emailValue = obj.value;
+            } 
+           });
+          
+} );
+
+
+
+
+
+// function ValidateEmail(obj){
+//   // let Obj = obj;
+//   var emailValue = obj.value;
   
-  var atpos = emailValue.indexOf("@");
-  var dotpos = emailValue.lastIndexOf(".");
-  var emailError = document.getElementById("emailError"); 
+//   var atpos = emailValue.indexOf("@");
+//   var dotpos = emailValue.lastIndexOf(".");
+//   var emailError = document.getElementById("emailError"); 
 
-  if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailValue.length) {
-    emailError.innerHTML = "Enter valid email Address";
-  }
-  else
-  {
-    verfyEmailDB(emailValue).then((data)=>{
-      let mycalback = JSON.parse(data);
-      if(mycalback.success){
-      emailError.innerHTML = 'email has been already';
-    }})
+//   if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailValue.length) {
+//     emailError.innerHTML = "Enter valid email Address";
+//   }
+//   else
+//   {
+//     verfyEmailDB(emailValue).then((data)=>{
+//       let mycalback = JSON.parse(data);
+//       if(mycalback.success){
+//       emailError.innerHTML = 'email has been already';
+//     }})
 
-  }
-}
+//   }
+// }
 
 
-async function verfyEmailDB(email)
-{
-  let Email = email;
-  let result;
-  try {
-    result = await $.ajax({
-    url: '../scripts/validate-email-DB-live.php',
-    type: 'GET',
-    data: {staff_email: Email}
-  })
-  return result;
+// async function verfyEmailDB(email)
+// {
+//   let Email = email;
+//   let result;
+//   try {
+//     result = await $.ajax({
+//     url: '../scripts/validate-email-DB-live.php',
+//     type: 'GET',
+//     data: {staff_email: Email}
+//   })
+//   return result;
 
-  } catch (error) {
-    console.log(error);    
-  }
-}
+//   } catch (error) {
+//     console.log(error);    
+//   }
+// }
 
 
 

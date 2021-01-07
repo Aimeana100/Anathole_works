@@ -30,7 +30,7 @@ $loginFunctions = new Functions();
 
     $staff = new Staff();
     $staff_details = $staff->getStaffById($_SESSION['user_id']);
-    if($staff_details[0]['role_id'] != 3):
+    if($staff_details[0]['role_id'] != 18):
 
   header('location:../index.php');
   exit();

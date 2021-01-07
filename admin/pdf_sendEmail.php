@@ -27,8 +27,23 @@ if(isset($_POST['generate'])){
     // (Optional) Setup the paper size and orientation 
    $pdf->setPaper('A4', 'landscape'); 
     $pdf->render();
-    $pdf->stream($filename, array("Attachment" => 0));
-    echo $pdf->output();
+    $pdf->stream($filename, array("Attachment" => 1));
+    echo $pdf->stream();
 
 }
+// // reference the Dompdf namespace
+use Dompdf\Dompdf;
+
+// instantiate and use the dompdf class
+$dompdf = new Dompdf();
+$dompdf->loadHtml('hello world');
+
+// (Optional) Setup the paper size and orientation
+$dompdf->setPaper('A4', 'landscape');
+
+// Render the HTML as PDF
+$dompdf->render();
+
+// Output the generated PDF to Browser
+$dompdf->stream();
 ?>

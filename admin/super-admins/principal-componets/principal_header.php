@@ -24,7 +24,7 @@
           <ul class="nav navbar-nav mr-auto float-left">
             <li class="nav-item d-none d-md-block">
               <a class="nav-link nav-link-expand text-white " href="#">
-              Logged In As: <span style=" font-size: 24px"> <?php echo $staff_details[0]['role_name']; ?> </span> </a></li>
+              Logged In As: <span style=" font-size: 24px"> <?php echo "Admin" //$staff_details[0]['role_name']; ?> </span> </a></li>
 
            
           </ul>
